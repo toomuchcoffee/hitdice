@@ -1,6 +1,6 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
-import static de.hackandstash.utilities.Dice.D2;
+import de.toomuchcoffee.hackandstash.utilities.Dice;
 
 public class Hero extends Combatant {
 
@@ -24,7 +24,7 @@ public class Hero extends Combatant {
     }
 
     public int damage() {
-        return (getWeapon() != null ? getWeapon().damage() : D2.roll()) + getAttributeBonus(getStrength());
+        return (getWeapon() != null ? getWeapon().damage() : Dice.D2.roll()) + getAttributeBonus(getStrength());
     }
 
     public void stash(Treasure... treasures) {

@@ -1,13 +1,12 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
-import de.hackandstash.gameflow.Combat;
-import de.hackandstash.gameflow.HeroFactory;
+import de.toomuchcoffee.hackandstash.factories.HeroFactory;
+import de.toomuchcoffee.hackandstash.Main;
 
 import java.io.*;
 import java.util.Date;
 import java.util.Random;
 
-import static de.hackandstash.Main.*;
 import static java.lang.System.lineSeparator;
 
 public class Game implements Serializable {
@@ -31,7 +30,7 @@ public class Game implements Serializable {
             @Override
             public void run() {
                 if (hero.isAlive()) {
-                    draw("Saving current game...");
+                    Main.draw("Saving current game...");
                     try {
                         Game.saveGameState();
                     } catch (Exception e) {
@@ -48,7 +47,7 @@ public class Game implements Serializable {
     }
 
     public void nextTurn() {
-        String option = dialog("Move North (n), West (w), East(e), South (s), show inventory (i), quit (q): ");
+        String option = Main.dialog("Move North (n), West (w), East(e), South (s), show inventory (i), quit (q): ");
         if ("n".equalsIgnoreCase(option)) {
             world.goNorth();
             checkIncident();
@@ -66,10 +65,10 @@ public class Game implements Serializable {
         } else if ("m".equalsIgnoreCase(option)) {
             printStatus();
         } else if ("q".equalsIgnoreCase(option)) {
-            draw("Bye!");
+            Main.draw("Bye!");
             System.exit(0);
         } else {
-            draw("What else do you want to do? Fly? Think again.");
+            Main.draw("What else do you want to do? Fly? Think again.");
         }
     }
 
@@ -88,28 +87,28 @@ public class Game implements Serializable {
             }
             case POTION: {
                 int recovery = (Integer) poi.getObject();
-                draw("You found a healing potion and recover %d of stamina.", recovery);
+                Main.draw("You found a healing potion and recover %d of stamina.", recovery);
                 hero.recoverStaminaBy(recovery);
                 world.markAsVisited();
                 break;
             }
             case TREASURE: {
                 Treasure treasure = (Treasure) poi.getObject();
-                draw("You found a %s", treasure.getName());
+                Main.draw("You found a %s", treasure.getName());
                 printInventory();
-                if (confirm("Do you want to take the " + treasure.getName() + "?")) {
+                if (Main.confirm("Do you want to take the " + treasure.getName() + "?")) {
                     hero.stash(treasure);
                 }
                 world.markAsVisited();
                 break;
             }
             case EXPLORED: {
-                draw("You've been here before. Turn the page and move on.");
+                Main.draw("You've been here before. Turn the page and move on.");
                 world.markAsVisited();
                 break;
             }
             case MAGIC_DOOR: {
-                draw("You see a strange mystical sign that someone has drawn on the floor" + lineSeparator() +
+                Main.draw("You see a strange mystical sign that someone has drawn on the floor" + lineSeparator() +
                         "As you step on it suddenly everything around you dissolves into strange shapes and colors" + lineSeparator() +
                         " only to reshape into a complete new surrounding!" + lineSeparator() +
                         "You entered yet another world. Oh no!");
@@ -119,7 +118,7 @@ public class Game implements Serializable {
             case EMPTY:{
             }
             default: {
-                draw("Pretty boring area here. Let's move on.");
+                Main.draw("Pretty boring area here. Let's move on.");
                 world.markAsVisited();
             }
         }
@@ -159,26 +158,26 @@ public class Game implements Serializable {
     }
 
     public void printHealth() {
-        draw("Stamina: %d/%d", hero.getCurrentStamina(), hero.getStamina());
+        Main.draw("Stamina: %d/%d", hero.getCurrentStamina(), hero.getStamina());
     }
 
     public void printExperience() {
-        draw("Experience: %d. (Level %d).", hero.getExperience(), hero.getLevel());
+        Main.draw("Experience: %d. (Level %d).", hero.getExperience(), hero.getLevel());
     }
 
     public void printMap() {
-        draw(world.getMap());
+        Main.draw(world.getMap());
     }
 
     public void printAttributes() {
-        draw("%s's attributes are: strength (%d), dexterity (%d), stamina (%d)",
+        Main.draw("%s's attributes are: strength (%d), dexterity (%d), stamina (%d)",
                 hero.getName(), hero.getStrength(), hero.getDexterity(), hero.getStamina());
     }
 
     public void printInventory() {
-        draw("%s's inventory: ", hero.getName());
+        Main.draw("%s's inventory: ", hero.getName());
         for (Treasure t : hero.getInventory()) {
-            draw("- %s", t.getName());
+            Main.draw("- %s", t.getName());
         }
     }
 

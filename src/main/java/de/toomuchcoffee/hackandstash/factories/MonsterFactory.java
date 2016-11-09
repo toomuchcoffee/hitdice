@@ -1,11 +1,11 @@
-package de.hackandstash.gameflow;
+package de.toomuchcoffee.hackandstash.factories;
 
-import de.hackandstash.Main;
-import de.hackandstash.serializable.Combatant;
-import de.hackandstash.serializable.Monster;
-import de.hackandstash.serializable.Weapon;
+import de.toomuchcoffee.hackandstash.Main;
+import de.toomuchcoffee.hackandstash.domain.Combatant;
+import de.toomuchcoffee.hackandstash.domain.Monster;
+import de.toomuchcoffee.hackandstash.domain.Weapon;
 
-import static de.hackandstash.utilities.Dice.*;
+import static de.toomuchcoffee.hackandstash.utilities.Dice.*;
 
 public class MonsterFactory {
     public static Monster createMonster() {

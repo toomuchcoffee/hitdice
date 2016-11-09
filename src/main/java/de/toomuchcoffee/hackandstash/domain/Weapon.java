@@ -1,6 +1,6 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
-import de.hackandstash.utilities.Dice;
+import de.toomuchcoffee.hackandstash.utilities.Dice;
 
 public class Weapon extends Treasure {
     private int diceNumber;

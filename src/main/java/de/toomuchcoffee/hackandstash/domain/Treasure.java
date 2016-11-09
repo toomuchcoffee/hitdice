@@ -1,4 +1,4 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
 import java.io.Serializable;
 

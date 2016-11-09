@@ -1,24 +1,24 @@
-package de.hackandstash.gameflow;
+package de.toomuchcoffee.hackandstash.factories;
 
-import de.hackandstash.Main;
-import de.hackandstash.serializable.Armor;
-import de.hackandstash.serializable.Combatant;
-import de.hackandstash.serializable.Treasure;
-import de.hackandstash.serializable.Weapon;
-import de.hackandstash.utilities.Dice;
+import de.toomuchcoffee.hackandstash.Main;
+import de.toomuchcoffee.hackandstash.domain.Armor;
+import de.toomuchcoffee.hackandstash.domain.Combatant;
+import de.toomuchcoffee.hackandstash.domain.Treasure;
+import de.toomuchcoffee.hackandstash.domain.Weapon;
+import de.toomuchcoffee.hackandstash.utilities.Dice;
 
-import static de.hackandstash.utilities.Dice.*;
+import static de.toomuchcoffee.hackandstash.utilities.Dice.*;
 
 public class TreasureFactory {
     public static Armor LEATHER = new Armor("leather armor", 2, false);
     public static Armor CHAIN = new Armor("chain mail", 3, true);
     public static Armor PLATE = new Armor("plate armor", 4, true);
-    public static Weapon DAGGER = new Weapon("dagger", 1, Dice.D4, 0, true);
+    public static Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
     public static Weapon SHORTSWORD = new Weapon("shortsword", 1, Dice.D6, 0, true);
     public static Weapon LONGSWORD = new Weapon("longsword", 1, Dice.D8, 0, true);
-    public static Weapon CLUB = new Weapon("club", 1, Dice.D4, 0, false);
+    public static Weapon CLUB = new Weapon("club", 1, D4, 0, false);
     public static Weapon MACE = new Weapon("mace", 1, Dice.D6, 1, true);
-    public static Weapon STAFF = new Weapon("staff", 1, Dice.D4, 1, false);
+    public static Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
 
     public static Treasure createTreasure() {
         int result = D100.roll();

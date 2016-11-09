@@ -1,12 +1,12 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
-import de.hackandstash.gameflow.PoiFactory;
+import de.toomuchcoffee.hackandstash.factories.PoiFactory;
+import de.toomuchcoffee.hackandstash.Main;
 
 import java.io.Serializable;
 import java.util.Random;
 
-import static de.hackandstash.Main.draw;
-import static de.hackandstash.serializable.Poi.PoiType;
+import static de.toomuchcoffee.hackandstash.domain.Poi.PoiType;
 
 public class World implements Serializable {
     private static final long serialVersionUID = -9180826864067510787L;
@@ -124,7 +124,7 @@ public class World implements Serializable {
     }
 
     private void bump() {
-        draw("Ouch! You reached the end of the world and it hurt. Go into another direction.");
+        Main.draw("Ouch! You reached the end of the world and it hurt. Go into another direction.");
     }
 
     public void setPosition(Position pos) {

@@ -1,4 +1,4 @@
-package de.hackandstash.serializable;
+package de.toomuchcoffee.hackandstash.domain;
 
 public class Armor extends Treasure {
     private int protection;

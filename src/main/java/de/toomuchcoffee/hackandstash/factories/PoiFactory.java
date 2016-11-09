@@ -1,10 +1,9 @@
-package de.hackandstash.gameflow;
+package de.toomuchcoffee.hackandstash.factories;
 
-import de.hackandstash.serializable.Poi;
+import de.toomuchcoffee.hackandstash.domain.Poi;
 
-import static de.hackandstash.serializable.Poi.PoiType;
-import static de.hackandstash.utilities.Dice.D20;
-import static de.hackandstash.utilities.Dice.D6;
+import static de.toomuchcoffee.hackandstash.domain.Poi.PoiType;
+import static de.toomuchcoffee.hackandstash.utilities.Dice.*;
 
 public class PoiFactory {
 

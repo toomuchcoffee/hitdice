@@ -1,8 +1,8 @@
-package de.hackandstash;
+package de.toomuchcoffee.hackandstash;
 
-import de.hackandstash.gameflow.HeroFactory;
-import de.hackandstash.serializable.Game;
-import de.hackandstash.serializable.Hero;
+import de.toomuchcoffee.hackandstash.factories.HeroFactory;
+import de.toomuchcoffee.hackandstash.domain.Game;
+import de.toomuchcoffee.hackandstash.domain.Hero;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
