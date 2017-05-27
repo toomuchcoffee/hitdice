@@ -26,16 +26,13 @@ public class Game implements Serializable {
     }
 
     public void start() {
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (hero.isAlive()) {
-                    Main.draw("Saving current game...");
-                    try {
-                        Game.saveGameState();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (hero.isAlive()) {
+                Main.draw("Saving current game...");
+                try {
+                    Game.saveGameState();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }));
