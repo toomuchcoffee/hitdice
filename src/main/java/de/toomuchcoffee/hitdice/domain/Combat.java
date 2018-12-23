@@ -1,8 +1,8 @@
-package de.toomuchcoffee.hackandstash.domain;
+package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hackandstash.Main;
+import de.toomuchcoffee.hitdice.Main;
 
-import static de.toomuchcoffee.hackandstash.utilities.Dice.D20;
+import static de.toomuchcoffee.hitdice.utilities.Dice.D20;
 
 public class Combat {
 

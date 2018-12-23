@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h3>Create Hero</h3>
+
+<dl>
+    <dt>Strength</dt>
+    <dd th:text="${hero.strength}"></dd>
+    <dt>Dexterity</dt>
+    <dd th:text="${hero.dexterity}"></dd>
+    <dt>Stamina</dt>
+    <dd th:text="${hero.stamina}"></dd>
+</dl>
+
+<a href="/hero/create">Roll again</a>
+<a href="/hero/edit">Continue</a>
+
+</body>
+</html>

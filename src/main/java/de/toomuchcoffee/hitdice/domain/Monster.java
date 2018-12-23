@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hackandstash.domain;
+package de.toomuchcoffee.hitdice.domain;
 
 public class Monster extends Combatant {
 

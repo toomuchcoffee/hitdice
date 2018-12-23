@@ -1,7 +1,7 @@
-package de.toomuchcoffee.hackandstash.domain;
+package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hackandstash.factories.HeroFactory;
-import de.toomuchcoffee.hackandstash.Main;
+import de.toomuchcoffee.hitdice.Main;
+import de.toomuchcoffee.hitdice.factories.HeroFactory;
 
 import java.io.*;
 import java.util.Date;
@@ -16,7 +16,7 @@ public class Game implements Serializable {
     private Date timestamp;
     private World world;
 
-    public static String FILEPATH = ".hackandstash.ser";
+    public static String FILEPATH = ".hitdice.ser";
 
     private static Game instance;
 

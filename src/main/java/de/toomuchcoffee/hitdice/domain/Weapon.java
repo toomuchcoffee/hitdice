@@ -1,6 +1,6 @@
-package de.toomuchcoffee.hackandstash.domain;
+package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hackandstash.utilities.Dice;
+import de.toomuchcoffee.hitdice.utilities.Dice;
 
 public class Weapon extends Treasure {
     private int diceNumber;

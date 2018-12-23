@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hackandstash.domain;
+package de.toomuchcoffee.hitdice.domain;
 
 public class Armor extends Treasure {
     private int protection;

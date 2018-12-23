@@ -1,9 +1,9 @@
-package de.toomuchcoffee.hackandstash.factories;
+package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hackandstash.domain.Game;
-import de.toomuchcoffee.hackandstash.domain.Hero;
-import de.toomuchcoffee.hackandstash.utilities.Dice;
-import de.toomuchcoffee.hackandstash.Main;
+import de.toomuchcoffee.hitdice.Main;
+import de.toomuchcoffee.hitdice.domain.Game;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.utilities.Dice;
 
 import static java.lang.System.lineSeparator;
 

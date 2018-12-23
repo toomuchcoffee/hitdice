@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hackandstash.utilities;
+package de.toomuchcoffee.hitdice.utilities;
 
 import java.util.Random;
 

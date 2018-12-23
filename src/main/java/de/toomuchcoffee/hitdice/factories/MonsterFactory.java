@@ -1,11 +1,11 @@
-package de.toomuchcoffee.hackandstash.factories;
+package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hackandstash.Main;
-import de.toomuchcoffee.hackandstash.domain.Combatant;
-import de.toomuchcoffee.hackandstash.domain.Monster;
-import de.toomuchcoffee.hackandstash.domain.Weapon;
+import de.toomuchcoffee.hitdice.Main;
+import de.toomuchcoffee.hitdice.domain.Combatant;
+import de.toomuchcoffee.hitdice.domain.Monster;
+import de.toomuchcoffee.hitdice.domain.Weapon;
 
-import static de.toomuchcoffee.hackandstash.utilities.Dice.*;
+import static de.toomuchcoffee.hitdice.utilities.Dice.*;
 
 public class MonsterFactory {
     public static Monster createMonster() {

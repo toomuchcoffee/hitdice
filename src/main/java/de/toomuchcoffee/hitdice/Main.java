@@ -1,8 +1,8 @@
-package de.toomuchcoffee.hackandstash;
+package de.toomuchcoffee.hitdice;
 
-import de.toomuchcoffee.hackandstash.factories.HeroFactory;
-import de.toomuchcoffee.hackandstash.domain.Game;
-import de.toomuchcoffee.hackandstash.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.Game;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.factories.HeroFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

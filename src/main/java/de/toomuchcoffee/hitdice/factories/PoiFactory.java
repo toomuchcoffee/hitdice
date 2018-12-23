@@ -1,9 +1,10 @@
-package de.toomuchcoffee.hackandstash.factories;
+package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hackandstash.domain.Poi;
+import de.toomuchcoffee.hitdice.domain.Poi;
 
-import static de.toomuchcoffee.hackandstash.domain.Poi.PoiType;
-import static de.toomuchcoffee.hackandstash.utilities.Dice.*;
+import static de.toomuchcoffee.hitdice.domain.Poi.PoiType;
+import static de.toomuchcoffee.hitdice.utilities.Dice.D20;
+import static de.toomuchcoffee.hitdice.utilities.Dice.D6;
 
 public class PoiFactory {
 
