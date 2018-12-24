@@ -1,8 +1,15 @@
 package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.utilities.Dice;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.UUID;
+
+@Getter
+@Setter
 public class Hero extends Combatant {
+    private UUID id;
 
     private int experience;
 
@@ -13,10 +20,6 @@ public class Hero extends Combatant {
         this.dexterity = dexterity;
         this.stamina = stamina;
         this.currentStamina = stamina;
-    }
-
-    public int getExperience() {
-        return experience;
     }
 
     public void increaseExperience(int experience) {
@@ -44,13 +47,5 @@ public class Hero extends Combatant {
     @Override
     public boolean isAlive() {
         return getStrength() > 0 && super.isAlive();
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h3>Complete your hero</h3>
+
+<dl>
+    <dt>Strength</dt>
+    <dd th:text="${hero.strength}"></dd>
+    <dt>Dexterity</dt>
+    <dd th:text="${hero.dexterity}"></dd>
+    <dt>Stamina</dt>
+    <dd th:text="${hero.stamina}"></dd>
+</dl>
+
+<form action="#" th:action="@{/hero/create/3}" th:object="${hero}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <input type="submit" value="Save">
+</form>
+
+</body>
+</html>

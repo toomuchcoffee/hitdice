@@ -1,9 +1,14 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public abstract class Combatant implements Serializable {
     private static final long serialVersionUID = -7292227750870699859L;
 
@@ -18,38 +23,6 @@ public abstract class Combatant implements Serializable {
     protected Weapon weapon;
     protected Armor armor;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getDexterity() {
-        return dexterity;
-    }
-
-    public void setDexterity(int dexterity) {
-        this.dexterity = dexterity;
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
-
     public boolean isAlive() {
         return getCurrentStamina() > 0;
     }
@@ -62,18 +35,6 @@ public abstract class Combatant implements Serializable {
         this.currentStamina -= decreasement;
     }
 
-    public Armor getArmor() {
-        return armor;
-    }
-
-    public void setArmor(Armor armor) {
-        this.armor = armor;
-    }
-
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
     public List<Treasure> getInventory() {
         List<Treasure> inventory = new ArrayList<Treasure>();
         if (getWeapon()!=null) {
@@ -83,10 +44,6 @@ public abstract class Combatant implements Serializable {
             inventory.add(getArmor());
         }
         return inventory;
-    }
-
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
     }
 
     public abstract int damage();

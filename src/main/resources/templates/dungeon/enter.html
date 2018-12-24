@@ -5,7 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<h3>Create Hero</h3>
+<h3>Enter the dungeon</h3>
+
+    <p th:text="${dungeon}"></p>
 
 <dl>
     <dt>Strength</dt>
@@ -15,9 +17,6 @@
     <dt>Stamina</dt>
     <dd th:text="${hero.stamina}"></dd>
 </dl>
-
-<a href="/hero/create">Roll again</a>
-<a href="/hero/edit">Continue</a>
 
 </body>
 </html>
