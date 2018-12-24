@@ -1,10 +1,14 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
+<div layout:fragment="page_content" id="page_content">
 <h3>Complete your hero</h3>
 
 <dl>
@@ -22,6 +26,6 @@
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
     <input type="submit" value="Save">
 </form>
-
+</div>
 </body>
 </html>
