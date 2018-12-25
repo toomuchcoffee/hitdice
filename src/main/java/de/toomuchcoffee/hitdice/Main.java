@@ -17,13 +17,11 @@ public class Main {
         if (createNewHero) {
             Hero hero = HeroFactory.create();
             Game game = Game.createGame(hero);
-            game.start();
         } else {
             if (new File(Game.FILEPATH).exists()) {
                 try {
                     Game game = Game.recoverGameState();
                     draw("Resuming existing game from %s", new SimpleDateFormat().format(game.getTimestamp()));
-                    game.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

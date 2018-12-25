@@ -9,9 +9,22 @@
 </head>
 <body>
 <div layout:fragment="page_content" id="page_content">
-<h3>Explore dungeon</h3>
+    <h3>Explore dungeon</h3>
 
     <pre th:text="${dungeon}"></pre>
+
+    <a href="/dungeon/explore/WEST">
+        <i class="fas fa-arrow-circle-left"></i>
+    </a>
+    <a href="/dungeon/explore/NORTH">
+        <i class="fas fa-arrow-circle-up"></i>
+    </a>
+    <a href="/dungeon/explore/SOUTH">
+        <i class="fas fa-arrow-circle-down"></i>
+    </a>
+    <a href="/dungeon/explore/EAST">
+        <i class="fas fa-arrow-circle-right"></i>
+    </a>
 
     <div th:replace="fragments/hero :: hero"></div>
 
