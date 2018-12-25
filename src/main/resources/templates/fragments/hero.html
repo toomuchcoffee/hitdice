@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:fragment="hero" id="hero">
+    <h2>Hero statistics</h2>
+
+    <dl>
+        <span th:if="${hero.name}">
+            <dt>Name</dt>
+            <dd th:text="${hero.name}"></dd>
+        </span>
+        <dt>Strength</dt>
+        <dd th:text="${hero.strength}"></dd>
+        <dt>Dexterity</dt>
+        <dd th:text="${hero.dexterity}"></dd>
+        <dt>Stamina</dt>
+        <dd th:text="${hero.stamina}"></dd>
+    </dl>
+
+</div>
+</body>
+</html>

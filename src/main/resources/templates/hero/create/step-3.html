@@ -11,18 +11,9 @@
 <div layout:fragment="page_content" id="page_content">
 <h3>Complete your hero</h3>
 
-<dl>
-    <dt>Name</dt>
-    <dd th:text="${hero.name}"></dd>
-    <dt>Strength</dt>
-    <dd th:text="${hero.strength}"></dd>
-    <dt>Dexterity</dt>
-    <dd th:text="${hero.dexterity}"></dd>
-    <dt>Stamina</dt>
-    <dd th:text="${hero.stamina}"></dd>
-</dl>
+    <div th:replace="fragments/hero :: hero"></div>
 
-<a href="/dungeon/enter">Start dungeon crawl</a>
+<a href="/dungeon/explore">Start dungeon crawl</a>
 </div>
 </body>
 </html>

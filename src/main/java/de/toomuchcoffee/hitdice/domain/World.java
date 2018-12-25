@@ -34,6 +34,10 @@ public class World implements Serializable {
     }
 
     public Position getAnyUnoccupiedPosition() {
+        if (size == 1) {
+            return new Position(0, 0);
+        }
+
         Position pos;
         do {
             pos = getAnyPosition();

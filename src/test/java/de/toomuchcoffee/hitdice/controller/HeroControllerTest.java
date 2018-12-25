@@ -46,14 +46,8 @@ public class HeroControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Create Hero")))
-                .andExpect(content().string(containsString("<dl>\n" +
-                        "    <dt>Strength</dt>\n" +
-                        "    <dd>10</dd>\n" +
-                        "    <dt>Dexterity</dt>\n" +
-                        "    <dd>11</dd>\n" +
-                        "    <dt>Stamina</dt>\n" +
-                        "    <dd>12</dd>\n" +
-                        "</dl>")))
+                .andExpect(content().string(containsString("<dt>Strength</dt>")))
+                .andExpect(content().string(containsString("<dd>10</dd>")))
                 .andExpect(content().string(containsString("Roll again")))
                 .andExpect(content().string(containsString("Continue")))
         ;
@@ -72,14 +66,9 @@ public class HeroControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Complete your hero")))
-                .andExpect(content().string(containsString("<dl>\n" +
-                        "    <dt>Strength</dt>\n" +
-                        "    <dd>10</dd>\n" +
-                        "    <dt>Dexterity</dt>\n" +
-                        "    <dd>11</dd>\n" +
-                        "    <dt>Stamina</dt>\n" +
-                        "    <dd>12</dd>\n" +
-                        "</dl>")))
+                .andExpect(content().string(containsString("<dt>Strength</dt>")))
+                .andExpect(content().string(containsString("<dd>10</dd>")))
+
                 .andExpect(content().string(containsString("Save")))
         ;
     }
@@ -101,16 +90,10 @@ public class HeroControllerTest {
                 )))).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Complete your hero")))
-                .andExpect(content().string(containsString("<dl>\n" +
-                        "    <dt>Name</dt>\n" +
-                        "    <dd>Alrik</dd>\n" +
-                        "    <dt>Strength</dt>\n" +
-                        "    <dd>10</dd>\n" +
-                        "    <dt>Dexterity</dt>\n" +
-                        "    <dd>11</dd>\n" +
-                        "    <dt>Stamina</dt>\n" +
-                        "    <dd>12</dd>\n" +
-                        "</dl>")))
+                .andExpect(content().string(containsString("<dt>Name</dt>")))
+                .andExpect(content().string(containsString("<dd>Alrik</dd>")))
+                .andExpect(content().string(containsString("<dt>Strength</dt>")))
+                .andExpect(content().string(containsString("<dd>10</dd>")))
                 .andExpect(content().string(containsString("Start dungeon crawl")))
         ;
 

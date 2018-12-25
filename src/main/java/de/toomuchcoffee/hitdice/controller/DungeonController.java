@@ -17,14 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 public class DungeonController {
     private final DungeonService dungeonService;
 
-    @GetMapping("enter")
-    public String enter(Model model, HttpServletRequest request) {
+    @GetMapping("explore")
+    public String explore(Model model, HttpServletRequest request) {
         World world = dungeonService.create();
         model.addAttribute("dungeon", world.getMap());
 
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         model.addAttribute("hero", hero);
 
-        return "dungeon/enter";
+        return "dungeon/explore";
     }
 }
