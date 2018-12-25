@@ -11,8 +11,8 @@ import java.util.Random;
 @Service
 public class DungeonService {
 
-    public Dungeon create() {
-        Dungeon dungeon = new Dungeon(8);
+    public Dungeon create(int size) {
+        Dungeon dungeon = new Dungeon(size);
         initPois(dungeon);
         return dungeon;
     }

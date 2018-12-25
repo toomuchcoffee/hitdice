@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 public class DungeonController {
     private final DungeonService dungeonService;
 
-    @GetMapping("enter")
-    public String enter(Model model, HttpServletRequest request) {
-        Dungeon dungeon = dungeonService.create();
+    @GetMapping("create/{size}")
+    public String enter(@PathVariable int size, Model model, HttpServletRequest request) {
+        Dungeon dungeon = dungeonService.create(size);
         request.getSession().setAttribute("dungeon", dungeon);
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 

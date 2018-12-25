@@ -94,6 +94,10 @@ public class Dungeon {
         this.posY = pos.y;
     }
 
+    public Position getPosition() {
+        return new Position(this.posX, this.posY);
+    }
+
     public Poi getPoi() {
         return poiMap[posX][posY];
     }

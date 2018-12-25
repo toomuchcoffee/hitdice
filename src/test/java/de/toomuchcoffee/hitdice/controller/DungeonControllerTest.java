@@ -36,12 +36,12 @@ public class DungeonControllerTest {
 
     @Test
     public void dungeonExplorePage() throws Exception {
-        when(dungeonService.create()).thenReturn(new Dungeon(1));
+        when(dungeonService.create(1)).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", new Hero(10, 11, 12));
 
-        this.mvc.perform(get("/dungeon/enter")
+        this.mvc.perform(get("/dungeon/create/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
