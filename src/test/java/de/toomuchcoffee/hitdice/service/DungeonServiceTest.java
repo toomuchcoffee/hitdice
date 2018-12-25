@@ -49,6 +49,6 @@ public class DungeonServiceTest {
     public void shouldMoveWest() {
         dungeonService.explore(WEST, dungeon, hero);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
+        assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));
     }
 }

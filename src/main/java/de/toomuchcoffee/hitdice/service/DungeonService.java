@@ -11,9 +11,14 @@ import java.util.Random;
 @Service
 public class DungeonService {
 
+    private static final Random RANDOM = new Random();
+
     public Dungeon create(int size) {
         Dungeon dungeon = new Dungeon(size);
         initPois(dungeon);
+        Position start = getAnyUnoccupiedPosition(dungeon);
+        dungeon.setPosition(start);
+        markAsVisited(dungeon);
         return dungeon;
     }
 
@@ -32,7 +37,7 @@ public class DungeonService {
                     HeroFactory.gainExperience(hero, combat.getExperienceValue());
                     markAsVisited(dungeon);
                 } else {
-                    setAnyUnoccupiedPosition(dungeon);
+                    dungeon.setPosition(getAnyUnoccupiedPosition(dungeon));
                 }
                 break;
             }
@@ -53,21 +58,17 @@ public class DungeonService {
                 markAsVisited(dungeon);
                 break;
             }
-            case EXPLORED: {
-                //Main.draw("You've been here before. Turn the page and move on.");
-                markAsVisited(dungeon);
-                break;
-            }
             case MAGIC_DOOR: {
                 //Main.draw("You see a strange mystical sign that someone has drawn on the floor" + lineSeparator() +
                 //      "As you step on it suddenly everything around you dissolves into strange shapes and colors" + lineSeparator() +
                 //    " only to reshape into a complete new surrounding!" + lineSeparator() +
                 //  "You entered yet another world. Oh no!");
-                enterNewWorld(dungeon, hero);
+                create(RANDOM.nextInt(hero.getLevel() + 4) + 5);
                 break;
             }
             case EMPTY: {
             }
+            case EXPLORED:
             default: {
                 //Main.draw("Pretty boring area here. Let's move on.");
                 markAsVisited(dungeon);
@@ -75,27 +76,14 @@ public class DungeonService {
         }
     }
 
-    public void enterNewWorld(Dungeon dungeon, Hero hero) {
-        dungeon = new Dungeon(new Random().nextInt(hero.getLevel() + 4) + 5);
-        Position start = getAnyUnoccupiedPosition(dungeon);
-        dungeon.setPosition(start);
-        markAsVisited(dungeon);
-    }
-
-
-    private Position getAnyPosition(Dungeon dungeon) {
-        Random random = new Random();
-        return new Position(random.nextInt(dungeon.getSize()), random.nextInt(dungeon.getSize()));
-    }
-
-    public Position getAnyUnoccupiedPosition(Dungeon dungeon) {
+    private Position getAnyUnoccupiedPosition(Dungeon dungeon) {
         if (dungeon.getSize() == 1) {
             return new Position(0, 0);
         }
 
         Position pos;
         do {
-            pos = getAnyPosition(dungeon);
+            pos = new Position(RANDOM.nextInt(dungeon.getSize()), RANDOM.nextInt(dungeon.getSize()));
         } while (dungeon.getPoiMap()[pos.x][pos.y].isOccupied());
         return pos;
     }
@@ -112,23 +100,6 @@ public class DungeonService {
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
         dungeon.getPoiMap()[door.x][door.y] = new Poi(Poi.PoiType.MAGIC_DOOR);
-    }
-
-    private void bump() {
-        Main.draw("Ouch! You reached the end of the world and it hurt. Go into another direction.");
-    }
-
-    public void setPosition(Dungeon dungeon, Position pos) {
-        dungeon.setPosX(pos.x);
-        dungeon.setPosY(pos.y);
-    }
-
-    public void setAnyUnoccupiedPosition(Dungeon dungeon) {
-        setPosition(dungeon, getAnyUnoccupiedPosition(dungeon));
-    }
-
-    public Poi getPoi(Dungeon dungeon, int posX, int posY) {
-        return dungeon.getPoiMap()[posX][posY];
     }
 
 }
