@@ -2,9 +2,9 @@ package de.toomuchcoffee.hitdice.controller;
 
 
 import de.toomuchcoffee.hitdice.domain.Direction;
+import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Position;
-import de.toomuchcoffee.hitdice.domain.World;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class DungeonControllerTest {
 
     @Test
     public void dungeonExplorePage() throws Exception {
-        when(dungeonService.create()).thenReturn(new World(1));
+        when(dungeonService.create()).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", new Hero(10, 11, 12));
@@ -62,9 +62,9 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         Hero hero = new Hero(10, 11, 12);
         session.setAttribute("hero", hero);
-        World world = new World(2);
-        world.setPosition(new Position(0, 0));
-        session.setAttribute("dungeon", world);
+        Dungeon dungeon = new Dungeon(2);
+        dungeon.setPosition(new Position(0, 0));
+        session.setAttribute("dungeon", dungeon);
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
@@ -75,6 +75,6 @@ public class DungeonControllerTest {
                 .andExpect(content().string(containsString("<dd>10</dd>")))
         ;
 
-        verify(dungeonService).explore(eq(Direction.SOUTH), eq(world), eq(hero));
+        verify(dungeonService).explore(eq(Direction.SOUTH), eq(dungeon), eq(hero));
     }
 }

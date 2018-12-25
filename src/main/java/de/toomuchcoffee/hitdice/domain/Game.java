@@ -2,15 +2,16 @@ package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.Main;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 
-public class Game implements Serializable {
-    private static final long serialVersionUID = -8649070405517008038L;
+public class Game {
 
     private Hero hero;
     private Date timestamp;
-    private World world;
 
     public static String FILEPATH = ".hitdice.ser";
 
@@ -54,10 +55,6 @@ public class Game implements Serializable {
         Main.draw("Experience: %d. (Level %d).", hero.getExperience(), hero.getLevel());
     }
 
-    public void printMap() {
-        Main.draw(world.getMap());
-    }
-
     public void printAttributes() {
         Main.draw("%s's attributes are: strength (%d), dexterity (%d), stamina (%d)",
                 hero.getName(), hero.getStrength(), hero.getDexterity(), hero.getStamina());
@@ -70,11 +67,6 @@ public class Game implements Serializable {
         }
     }
 
-    public void printStatus() {
-        printHealth();
-        printExperience();
-        printMap();
-    }
 
     public void setTimestamp() {
         this.timestamp = new Date();

@@ -1,8 +1,8 @@
 package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Direction;
+import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.World;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,24 +21,24 @@ public class DungeonController {
 
     @GetMapping("enter")
     public String enter(Model model, HttpServletRequest request) {
-        World world = dungeonService.create();
-        request.getSession().setAttribute("dungeon", world);
+        Dungeon dungeon = dungeonService.create();
+        request.getSession().setAttribute("dungeon", dungeon);
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
-        model.addAttribute("dungeon", world.getMap());
+        model.addAttribute("dungeon", dungeon.getMap());
         model.addAttribute("hero", hero);
         return "dungeon/explore";
     }
 
     @GetMapping("explore/{direction}")
     public String explore(@PathVariable Direction direction, Model model, HttpServletRequest request) {
-        World world = (World) request.getSession().getAttribute("dungeon");
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
-        boolean explored = dungeonService.explore(direction, world, hero);
+        boolean explored = dungeonService.explore(direction, dungeon, hero);
         // TODO return message if bumping
 
-        model.addAttribute("dungeon", world.getMap());
+        model.addAttribute("dungeon", dungeon.getMap());
         model.addAttribute("hero", hero);
         return "dungeon/explore";
     }

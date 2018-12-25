@@ -3,16 +3,11 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Random;
-
 import static de.toomuchcoffee.hitdice.domain.Poi.PoiType;
 
 @Getter
 @Setter
-public class World implements Serializable {
-    private static final long serialVersionUID = -9180826864067510787L;
-
+public class Dungeon {
     private int size;
 
     private Poi[][] poiMap;
@@ -20,18 +15,47 @@ public class World implements Serializable {
     private int posX;
     private int posY;
 
-    private Position getAnyPosition() {
-        Random random = new Random();
-        return new Position(random.nextInt(size), random.nextInt(size));
-    }
-
-    public World(int size) {
+    public Dungeon(int size) {
         this.size = size;
         poiMap = new Poi[size][size];
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 poiMap[x][y] = new Poi(PoiType.EMPTY);
             }
+        }
+    }
+
+    public boolean explore(Direction direction) {
+        switch (direction) {
+            case NORTH: {
+                if (posY > 0) {
+                    posY--;
+                    return true;
+                }
+                return false;
+            }
+            case EAST: {
+                if (posX < size - 1) {
+                    posX++;
+                    return true;
+                }
+                return false;
+            }
+            case SOUTH: {
+                if (posY < size - 1) {
+                    posY++;
+                    return true;
+                }
+                return false;
+            }
+            case WEST: {
+                if (posX > 0) {
+                    posX--;
+                    return true;
+                }
+                return false;
+            }
+            default: throw new IllegalArgumentException("invalid direction: " + direction);
         }
     }
 
