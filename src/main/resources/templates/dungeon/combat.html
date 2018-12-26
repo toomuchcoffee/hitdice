@@ -15,8 +15,9 @@
 
         <span th:if="${round} > 0">
             <div>
-                You caused <span th:text="${damageCaused}"></span> points of damage.
-                You received <span th:text="${damageReceived}"></span> points of damage.
+                <h5>Round <span th:text="${round}"></span>:</h5>
+                <p>Your attack caused <span th:text="${damageCaused}"></span> points of damage.</p>
+                <p>You received <span th:text="${damageReceived}"></span> points of damage.</p>
             </div>
         </span>
 
@@ -34,8 +35,8 @@
         </dl>
 
         <span th:if="${session.monster.alive}">
-            <a href="combat/attack">Attack</a>
-            <a href="combat/flee">Flee</a>
+            <a th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
+            <a href="/combat/flee">Flee</a>
         </span>
         <span th:unless="${session.monster.alive}">
             <p>The <span th:text="${session.monster.name}"></span> is dead!</p>

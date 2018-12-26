@@ -82,25 +82,4 @@ public class DungeonControllerTest {
         verify(dungeonService).explore(eq(SOUTH), eq(dungeon), eq(hero));
     }
 
-    @Test
-    public void dungeonReenterPage() throws Exception {
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
-        session.setAttribute("hero", new Hero(10, 11, 12));
-
-        this.mvc.perform(get("/dungeon/reenter")
-                .session(session)
-                .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Explore dungeon")))
-                .andExpect(content().string(containsString(
-                        "<pre>" +
-                                "+---+\n" +
-                                "|(#)|\n" +
-                                "+---+" +
-                                "</pre>")))
-                .andExpect(content().string(containsString("<dt>Strength</dt>")))
-                .andExpect(content().string(containsString("<dd>10</dd>")))
-        ;
-    }
 }

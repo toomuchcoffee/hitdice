@@ -7,7 +7,6 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ public class DungeonController {
     public String create(@PathVariable int size, HttpServletRequest request) {
         Dungeon dungeon = dungeonService.create(size);
         request.getSession().setAttribute("dungeon", dungeon);
-        return "dungeon/explore";
+        return "/dungeon/explore";
     }
 
     @GetMapping("explore/{direction}")
@@ -37,7 +36,7 @@ public class DungeonController {
         switch (event.getType()) {
             case MONSTER: {
                 request.getSession().setAttribute("monster", event.getObject());
-                return "redirect:/dungeon/combat";
+                return "redirect:/combat/attack";
             }
             case TREASURE:
             case POTION:
@@ -48,18 +47,6 @@ public class DungeonController {
                 return "/dungeon/explore";
             }
         }
-    }
-
-    @GetMapping("combat")
-    public String enterCombat(Model model, HttpServletRequest request) {
-        model.addAttribute("round", 0);
-        return "dungeon/combat";
-    }
-
-
-    @GetMapping("reenter")
-    public String reenter() {
-        return "dungeon/explore";
     }
 
 }
