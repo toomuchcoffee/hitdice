@@ -4,6 +4,7 @@ import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
+import de.toomuchcoffee.hitdice.service.DungeonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.factories.TreasureFactory.CLUB;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,13 +28,17 @@ public class CombatControllerTest {
     @MockBean
     private CombatService combatService;
 
+    @MockBean
+    private DungeonService dungeonService;
+
     @Autowired
     private MockMvc mvc;
 
     @Test
     public void combatExit() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
+        Dungeon dungeon = new Dungeon(1);
+        session.setAttribute("dungeon", dungeon);
         session.setAttribute("hero", new Hero(10, 11, 12));
 
         this.mvc.perform(get("/combat/exit")
@@ -53,6 +57,8 @@ public class CombatControllerTest {
                 .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
                 .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
         ;
+
+        verify(dungeonService).markAsVisited(dungeon);
     }
 
     @Test

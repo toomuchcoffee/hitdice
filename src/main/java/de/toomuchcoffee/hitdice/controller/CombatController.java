@@ -1,8 +1,10 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
+import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class CombatController {
     private final CombatService combatService;
+    private final DungeonService dungeonService;
 
     @GetMapping("attack")
     public String enter() {
@@ -43,7 +46,9 @@ public class CombatController {
 
 
     @GetMapping("exit")
-    public String exit() {
+    public String exit(HttpServletRequest request) {
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        dungeonService.markAsVisited(dungeon);
         return "/dungeon/explore";
     }
 

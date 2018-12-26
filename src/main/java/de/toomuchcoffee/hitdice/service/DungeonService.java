@@ -76,7 +76,7 @@ public class DungeonService {
         return pos;
     }
 
-    private void markAsVisited(Dungeon dungeon) {
+    public void markAsVisited(Dungeon dungeon) {
         dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = new Event(EventType.EXPLORED);
     }
 
