@@ -37,7 +37,7 @@ public class DungeonController {
 
         switch (event.getType()) {
             case MONSTER: {
-                return "/combat/attack";
+                return "redirect:/combat/attack";
             }
             case TREASURE: {
                 return "/dungeon/treasure";
