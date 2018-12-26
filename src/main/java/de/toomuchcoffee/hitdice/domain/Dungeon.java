@@ -3,6 +3,8 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import static de.toomuchcoffee.hitdice.domain.Event.EMPTY_EVENT;
+
 @Getter
 @Setter
 public class Dungeon {
@@ -18,7 +20,7 @@ public class Dungeon {
         eventMap = new Event[size][size];
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                eventMap[x][y] = new Event(EventType.EMPTY);
+                eventMap[x][y] = EMPTY_EVENT;
             }
         }
     }
@@ -68,7 +70,7 @@ public class Dungeon {
                 if (x == posX && y == posY) {
                     builder.append("(#)");
                 } else if (Math.abs(x - posX) < 2 && Math.abs(y - posY) < 2 || eventMap[x][y].getType().equals(EventType.EXPLORED)) {
-                    builder.append(" ").append(eventMap[x][y].getSymbol()).append(" ");
+                    builder.append(" ").append(eventMap[x][y].getType().getSymbol()).append(" ");
                 } else {
                     builder.append(" ? ");
                 }

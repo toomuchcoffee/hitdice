@@ -1,33 +1,19 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import static de.toomuchcoffee.hitdice.domain.EventType.*;
+
+@Getter
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Event {
+    public static final Event EMPTY_EVENT = new Event(EMPTY);
+    public static final Event MAGIC_DOOR_EVENT = new Event(MAGIC_DOOR);
+    public static final Event EXPLORED_EVENT = new Event(EXPLORED);
 
-    private EventType type;
-    private Object obj;
-
-    public Event(EventType type) {
-        this.type = type;
-    }
-
-    public Event(EventType type, Object obj) {
-        this.type = type;
-        this.obj = obj;
-    }
-
-    public boolean isOccupied() {
-        return obj != null;
-    }
-
-    public String getSymbol() {
-        return type.getSymbol();
-    }
-
-    public Object getObject() {
-        return obj;
-    }
-
-    public EventType getType() {
-        return type;
-    }
-
+    private final EventType type;
+    private Object object;
 }

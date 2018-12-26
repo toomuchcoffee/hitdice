@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+import static de.toomuchcoffee.hitdice.domain.Event.EXPLORED_EVENT;
+import static de.toomuchcoffee.hitdice.domain.Event.MAGIC_DOOR_EVENT;
+
 @Service
 public class DungeonService {
 
@@ -72,22 +75,22 @@ public class DungeonService {
         Position pos;
         do {
             pos = new Position(RANDOM.nextInt(dungeon.getSize()), RANDOM.nextInt(dungeon.getSize()));
-        } while (dungeon.getEventMap()[pos.getX()][pos.getY()].isOccupied());
+        } while (dungeon.getEventMap()[pos.getX()][pos.getY()].getType().isOccupied());
         return pos;
     }
 
     public void markAsVisited(Dungeon dungeon) {
-        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = new Event(EventType.EXPLORED);
+        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = EXPLORED_EVENT;
     }
 
     private void initPois(Dungeon dungeon) {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getEventMap()[x][y] = EventFactory.createPoi();
+                dungeon.getEventMap()[x][y] = EventFactory.create();
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
-        dungeon.getEventMap()[door.getX()][door.getY()] = new Event(EventType.MAGIC_DOOR);
+        dungeon.getEventMap()[door.getX()][door.getY()] = MAGIC_DOOR_EVENT;
     }
 
 }
