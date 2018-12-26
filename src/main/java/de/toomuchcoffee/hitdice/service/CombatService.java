@@ -24,9 +24,11 @@ public class CombatService {
         return null;
     }
 
-    public void won(Hero hero, Monster monster) {
+    public boolean won(Hero hero, Monster monster) {
         if (!monster.isAlive()) {
             hero.increaseExperience(monster.getValue());
+            return true;
         }
+        return false;
     }
 }

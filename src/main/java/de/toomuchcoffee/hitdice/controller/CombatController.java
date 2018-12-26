@@ -25,7 +25,6 @@ public class CombatController {
 
     @GetMapping("attack/{round}")
     public String attack(@PathVariable int round, Model model, HttpServletRequest request) {
-
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 
@@ -37,8 +36,17 @@ public class CombatController {
             model.addAttribute("damageReceived", damageReceived);
         }
 
-        combatService.won(hero, monster);
+        if (!hero.isAlive()) {
+            return "/dungeon/dead";
+        }
 
+        boolean won = combatService.won(hero, monster);
+        model.addAttribute("won", won);
+        if (won) {
+            request.getSession().removeAttribute("monster");
+        }
+
+        model.addAttribute("monster", monster);
         model.addAttribute("round", round);
         return "/dungeon/combat";
     }

@@ -10,40 +10,38 @@
 <body>
 <div layout:fragment="page_content" id="page_content">
 
-    <span th:if="${session.hero.alive}">
-        <h3>Combat between you and <span th:text="${session.monster.name}"></span></h3>
+    <h3>Combat between you and <span th:text="${monster.name}"></span></h3>
 
-        <span th:if="${round} > 0">
+    <span th:if="${round} > 0">
             <div id="combat-round">
                 <h5>Round <span th:text="${round}"></span>:</h5>
-                <p>Your attack caused <span th:text="${damageCaused}"></span> points of damage.</p>
-                <p>You received <span th:text="${damageReceived}"></span> points of damage.</p>
+                <ul>
+                    <li th:if="${damageCaused}">Your attack caused <span class="green" th:text="${damageCaused}"></span> points of damage.</li>
+                    <li th:if="${damageReceived}">You received <span class="red" th:text="${damageReceived}"></span> points of damage.</li>
+                </ul>
             </div>
         </span>
 
-        <dl id="combat-stats">
-            <dt>Your stamina:</dt>
-            <dd><span th:text="${session.hero.currentStamina}"></span> / <span th:text="${session.hero.stamina}"></span></dd>
-            <dt><span th:text="${session.monster.name}"></span>'s stamina:</dt>
-            <dd><span th:text="${session.monster.currentStamina}"></span> / <span
-                    th:text="${session.monster.stamina}"></span></dd>
-        </dl>
+    <dl id="combat-stats">
+        <dt>Your stamina:</dt>
+        <dd><span th:text="${session.hero.currentStamina}"></span> / <span th:text="${session.hero.stamina}"></span></dd>
+        <dt><span th:text="${monster.name}"></span>'s stamina:</dt>
+        <dd><span th:text="${monster.currentStamina}"></span> / <span
+                th:text="${monster.stamina}"></span></dd>
+    </dl>
 
-        <div id="combat-actions" th:if="${session.monster.alive}">
-            <a th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
-            <a href="/combat/flee">Flee</a>
-        </div>
-        <div id="combat-exit" th:unless="${session.monster.alive}">
-            <p>The <span th:text="${session.monster.name}"></span> is dead!</p>
-            <p>You earned <span th:text="${session.monster.value}"></span> experience points!</p>
-            <a href="/dungeon/continue">Return to explore the dungeon</a>
-        </div>
+    <div id="combat-actions" th:unless="${won}">
+        <a th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
+        <a href="/combat/flee">Flee</a>
+    </div>
+    <div id="combat-exit" th:if="${won}">
+        <p>The <span th:text="${monster.name}"></span> is dead!</p>
+        <p>You earned <span th:text="${monster.value}"></span> experience points!</p>
+        <a href="/dungeon/continue">Return to explore the dungeon</a>
+    </div>
 
-        <div id="hero" th:replace="fragments/hero :: hero"></div>
-    </span>
-    <span th:unless="${session.hero.alive}">
-        <p>You are dead!</p>
-    </span>
+    <div id="hero" th:replace="fragments/hero :: hero"></div>
+
 </div>
 </body>
 </html>

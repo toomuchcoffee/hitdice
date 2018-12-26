@@ -80,8 +80,8 @@ public class CombatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/dungeon/combat"))
                 .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
-                .andExpect(xpath("//div[@id='combat-round']/p[1]").string("Your attack caused 3 points of damage."))
-                .andExpect(xpath("//div[@id='combat-round']/p[2]").string("You received 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/ul/li[1]").string("Your attack caused 3 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/ul/li[2]").string("You received 2 points of damage."))
                 .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//dl[@id='combat-stats']/dt[1]").string("Your stamina:"))
@@ -102,7 +102,7 @@ public class CombatControllerTest {
         Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
-        doCallRealMethod().when(combatService).won(hero, monster);
+        when(combatService.won(hero, monster)).thenCallRealMethod();
 
         int damageCaused = 7;
         when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
@@ -118,8 +118,8 @@ public class CombatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/dungeon/combat"))
                 .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
-                .andExpect(xpath("//div[@id='combat-round']/p[1]").string("Your attack caused 7 points of damage."))
-                .andExpect(xpath("//div[@id='combat-round']/p[2]").string("You received 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[1]").string("Your attack caused 7 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[2]").string("You received 2 points of damage."))
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//dl[@id='combat-stats']/dt[1]").string("Your stamina:"))
                 .andExpect(xpath("//dl[@id='combat-stats']/dd[1]").string("10 / 12"))
@@ -132,6 +132,7 @@ public class CombatControllerTest {
         ;
 
         assertThat(hero.getExperience()).isEqualTo(15);
+        assertThat(session.getAttribute("monster")).isNull();
     }
 
     @Test
@@ -155,12 +156,9 @@ public class CombatControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/combat"))
-                .andExpect(xpath("//div[@id='combat-round']").doesNotExist())
-                .andExpect(xpath("//dl[@id='combat-stats']").doesNotExist())
-                .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
-                .andExpect(xpath("//div[@id='combat-exit']").doesNotExist())
-                .andExpect(xpath("//p").string("You are dead!"))
+                .andExpect(view().name("/dungeon/dead"))
+                .andExpect(xpath("//h2").string("You are dead!"))
+                .andExpect(xpath("//div[@id='page_content']/a/@href").string("/hero/create"))
         ;
     }
 

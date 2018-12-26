@@ -8,3 +8,11 @@ dd {
     padding: .25em 0;
 }
 dl:after {content:"";display:table;clear:both;}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
