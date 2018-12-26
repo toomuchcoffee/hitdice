@@ -4,7 +4,6 @@ import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
-import de.toomuchcoffee.hitdice.service.DungeonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.factories.TreasureFactory.CLUB;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,45 +28,17 @@ public class CombatControllerTest {
     @MockBean
     private CombatService combatService;
 
-    @MockBean
-    private DungeonService dungeonService;
-
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void combatExit() throws Exception {
-        MockHttpSession session = new MockHttpSession();
-        Dungeon dungeon = new Dungeon(1);
-        session.setAttribute("dungeon", dungeon);
-        session.setAttribute("hero", new Hero(10, 11, 12));
-
-        this.mvc.perform(get("/combat/exit")
-                .session(session)
-                .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/explore"))
-                .andExpect(xpath("//pre[@id='dungeon-map']").string(
-                        "+---+\n" +
-                        "|(#)|\n" +
-                        "+---+" ))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
-        ;
-
-        verify(dungeonService).markAsVisited(dungeon);
-    }
-
-    @Test
-    public void engageCombat() throws Exception {
+    public void combatStart() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
-        session.setAttribute("hero", new Hero(10, 11, 12));
-        session.setAttribute("monster", new Monster("Orc", 6, 7, CLUB, 15));
+        Hero hero = new Hero(10, 11, 12);
+        session.setAttribute("hero", hero);
+        Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
+        session.setAttribute("monster", monster);
 
         this.mvc.perform(get("/combat/attack/0")
                 .session(session)
@@ -82,7 +54,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
         ;
 
-        verifyZeroInteractions(combatService);
+        verify(combatService, never()).attack(any(), any());
     }
 
     @Test
@@ -130,6 +102,8 @@ public class CombatControllerTest {
         Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
+        doCallRealMethod().when(combatService).won(hero, monster);
+
         int damageCaused = 7;
         when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
         monster.decreaseCurrentStaminaBy(damageCaused);
@@ -154,12 +128,14 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
                 .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
                 .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 15 experience points!"))
-                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/combat/exit"))
+                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/continue"))
         ;
+
+        assertThat(hero.getExperience()).isEqualTo(15);
     }
 
     @Test
-    public void combatAttackKillsHerro() throws Exception {
+    public void combatAttackKillsHero() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
         Hero hero = new Hero(10, 11, 12);

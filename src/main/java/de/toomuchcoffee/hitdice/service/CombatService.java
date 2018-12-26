@@ -1,6 +1,8 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.Combatant;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.Monster;
 import org.springframework.stereotype.Service;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
@@ -20,5 +22,11 @@ public class CombatService {
             //defender.specialDefense(attacker);
         }
         return null;
+    }
+
+    public void won(Hero hero, Monster monster) {
+        if (!monster.isAlive()) {
+            hero.increaseExperience(monster.getValue());
+        }
     }
 }

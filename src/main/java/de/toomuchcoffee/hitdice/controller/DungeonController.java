@@ -4,9 +4,11 @@ import de.toomuchcoffee.hitdice.domain.Direction;
 import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Event;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.factories.TreasureFactory;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,7 @@ public class DungeonController {
     }
 
     @GetMapping("explore/{direction}")
-    public String explore(@PathVariable Direction direction, HttpServletRequest request) {
+    public String explore(@PathVariable Direction direction, Model model, HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
@@ -38,7 +40,10 @@ public class DungeonController {
                 request.getSession().setAttribute("monster", event.getObject());
                 return "redirect:/combat/attack";
             }
-            case TREASURE:
+            case TREASURE: {
+                model.addAttribute("treasure", TreasureFactory.createTreasure());
+                return "redirect:/dungeon/treasure";
+            }
             case POTION:
             case MAGIC_DOOR:
             case EMPTY:
@@ -47,6 +52,13 @@ public class DungeonController {
                 return "/dungeon/explore";
             }
         }
+    }
+
+    @GetMapping("continue")
+    public String continueExploring(HttpServletRequest request) {
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        dungeonService.markAsVisited(dungeon);
+        return "/dungeon/explore";
     }
 
 }

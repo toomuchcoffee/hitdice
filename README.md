@@ -1,15 +1,13 @@
-# == Hack & Stash == 
-A CLI based, fantasy themed, turn-by-turn role playing game
+# HitDice
+A simple, fantasy themed, turn-by-turn based **R**ole **P**laying browser **G**ame.
 
-Objectives
-==========
+## Objectives
 * Create a character with attributes for strength, dexterity, etc.
 * Explore a fantasy world with monsters, treasures, magic potions, and magic doors.
 * Fight (or flee from) goblins, trolls, vampires, and... dragons. 
 * Gain experience and develop your character's skills.
 
-Hints
-=====
+## Hints
 * Look out for potions whenever you are wounded. Even small opponents can be deadly.
 * Find weapons and armor to better defend yourself against the dangers of this world.
 * Watch your metallic items, they might get eaten by the rust monsters.

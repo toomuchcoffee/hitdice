@@ -90,4 +90,31 @@ public class DungeonControllerTest {
         verify(dungeonService).explore(eq(SOUTH), eq(dungeon), eq(hero));
     }
 
+    @Test
+    public void dungeonContinue() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        Dungeon dungeon = new Dungeon(1);
+        session.setAttribute("dungeon", dungeon);
+        session.setAttribute("hero", new Hero(10, 11, 12));
+
+        this.mvc.perform(get("/dungeon/continue")
+                .session(session)
+                .accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/dungeon/explore"))
+                .andExpect(xpath("//pre[@id='dungeon-map']").string(
+                        "+---+\n" +
+                                "|(#)|\n" +
+                                "+---+" ))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
+        ;
+
+        verify(dungeonService).markAsVisited(dungeon);
+    }
+
 }

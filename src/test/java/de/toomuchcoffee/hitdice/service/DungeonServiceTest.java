@@ -25,28 +25,28 @@ public class DungeonServiceTest {
     }
 
     @Test
-    public void shouldMoveNorth() {
+    public void exploreNorth() {
         dungeonService.explore(NORTH, dungeon, hero);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 0));
     }
 
     @Test
-    public void shouldMoveSouth() {
+    public void exploreSouth() {
         dungeonService.explore(SOUTH, dungeon, hero);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
     }
 
     @Test
-    public void shouldMoveEast() {
+    public void exploreEast() {
         dungeonService.explore(EAST, dungeon, hero);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(2, 1));
     }
 
     @Test
-    public void shouldMoveWest() {
+    public void exploreWest() {
         dungeonService.explore(WEST, dungeon, hero);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));

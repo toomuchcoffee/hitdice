@@ -36,7 +36,7 @@
         <div id="combat-exit" th:unless="${session.monster.alive}">
             <p>The <span th:text="${session.monster.name}"></span> is dead!</p>
             <p>You earned <span th:text="${session.monster.value}"></span> experience points!</p>
-            <a href="/combat/exit">Return to explore the dungeon</a>
+            <a href="/dungeon/continue">Return to explore the dungeon</a>
         </div>
 
         <div id="hero" th:replace="fragments/hero :: hero"></div>
