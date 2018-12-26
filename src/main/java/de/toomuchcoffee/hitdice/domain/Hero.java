@@ -29,16 +29,6 @@ public class Hero extends Combatant {
         return (getWeapon() != null ? getWeapon().damage() : Dice.D2.roll()) + getAttributeBonus(getStrength());
     }
 
-    public void stash(Treasure... treasures) {
-        for (Treasure treasure : treasures) {
-            if (treasure instanceof Armor) {
-                setArmor((Armor) treasure);
-            } else if (treasure instanceof Weapon) {
-                setWeapon((Weapon) treasure);
-            }
-        }
-    }
-
     public void recoverStaminaBy(int recovery) {
         this.currentStamina = Math.min(this.currentStamina + recovery, this.stamina);
     }

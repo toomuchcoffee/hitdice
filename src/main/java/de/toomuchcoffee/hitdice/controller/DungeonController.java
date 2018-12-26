@@ -1,10 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import de.toomuchcoffee.hitdice.domain.Direction;
-import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Event;
-import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.factories.TreasureFactory;
+import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,17 +31,23 @@ public class DungeonController {
 
         Event event = dungeonService.explore(direction, dungeon, hero);
 
+        if (event.getObject() != null) {
+            request.getSession().setAttribute(event.getType().name().toLowerCase(), event.getObject());
+        }
+
         switch (event.getType()) {
             case MONSTER: {
-                request.getSession().setAttribute("monster", event.getObject());
-                return "redirect:/combat/attack";
+                return "/combat/attack";
             }
             case TREASURE: {
-                model.addAttribute("treasure", TreasureFactory.createTreasure());
-                return "redirect:/dungeon/treasure";
+                return "/dungeon/treasure";
             }
-            case POTION:
-            case MAGIC_DOOR:
+            case POTION: {
+                return "/dungeon/potion";
+            }
+            case MAGIC_DOOR: {
+                // TODO
+            }
             case EMPTY:
             case EXPLORED:
             default: {
@@ -57,6 +59,17 @@ public class DungeonController {
     @GetMapping("continue")
     public String continueExploring(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        dungeonService.markAsVisited(dungeon);
+        return "/dungeon/explore";
+    }
+
+    @GetMapping("collect")
+    public String collect(HttpServletRequest request) {
+        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        Treasure treasure= (Treasure) request.getSession().getAttribute("treasure");
+        dungeonService.collectTreasure(hero, treasure);
+        request.getSession().removeAttribute("treasure");
         dungeonService.markAsVisited(dungeon);
         return "/dungeon/explore";
     }

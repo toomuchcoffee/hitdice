@@ -42,11 +42,6 @@ public class DungeonService {
                 break;
             }
             case TREASURE: {
-                Treasure treasure = (Treasure) event.getObject();
-                //Main.draw("You found a %s", treasure.getName());
-                //printInventory();
-                //if (Main.confirm("Do you want to take the " + treasure.getName() + "?")) {
-                markAsVisited(dungeon);
                 break;
             }
             case MAGIC_DOOR: {
@@ -81,6 +76,14 @@ public class DungeonService {
 
     public void markAsVisited(Dungeon dungeon) {
         dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = EXPLORED_EVENT;
+    }
+
+    public void collectTreasure(Hero hero, Treasure treasure) {
+        if (treasure instanceof Armor) {
+            hero.setArmor((Armor) treasure);
+        } else if (treasure instanceof Weapon) {
+            hero.setWeapon((Weapon) treasure);
+        }
     }
 
     private void initPois(Dungeon dungeon) {

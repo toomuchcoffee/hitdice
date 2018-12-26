@@ -20,6 +20,10 @@
             <dd th:text="${session.hero.dexterity}"></dd>
             <dt>Stamina</dt>
             <dd th:text="${session.hero.stamina}"></dd>
+            <dt>Weapon</dt>
+            <dd th:if="${session.hero.weapon}" th:text="${session.hero.weapon.name}"></dd>
+            <dt>Armor</dt>
+            <dd th:if="${session.hero.armor}" th:text="${session.hero.armor.name}"></dd>
         </dl>
     </fieldset>
 

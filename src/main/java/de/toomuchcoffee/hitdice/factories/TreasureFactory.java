@@ -5,15 +5,15 @@ import de.toomuchcoffee.hitdice.domain.*;
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
 
 public class TreasureFactory {
-    public static Armor LEATHER = new Armor("leather armor", 2, false);
-    public static Armor CHAIN = new Armor("chain mail", 3, true);
-    public static Armor PLATE = new Armor("plate armor", 4, true);
-    public static Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
-    public static Weapon SHORTSWORD = new Weapon("shortsword", 1, Dice.D6, 0, true);
-    public static Weapon LONGSWORD = new Weapon("longsword", 1, Dice.D8, 0, true);
-    public static Weapon CLUB = new Weapon("club", 1, D4, 0, false);
-    public static Weapon MACE = new Weapon("mace", 1, Dice.D6, 1, true);
-    public static Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
+    public static final Armor LEATHER = new Armor("leather armor", 2, false);
+    public static final Armor CHAIN = new Armor("chain mail", 3, true);
+    public static final Armor PLATE = new Armor("plate armor", 4, true);
+    public static final Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
+    public static final Weapon SHORTSWORD = new Weapon("shortsword", 1, Dice.D6, 0, true);
+    public static final Weapon LONGSWORD = new Weapon("longsword", 1, Dice.D8, 0, true);
+    public static final Weapon CLUB = new Weapon("club", 1, D4, 0, false);
+    public static final Weapon MACE = new Weapon("mace", 1, Dice.D6, 1, true);
+    public static final Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
 
     public static Treasure createTreasure() {
         int result = D100.roll();
