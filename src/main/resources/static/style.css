@@ -1,0 +1,10 @@
+dt {
+    float: left;
+    padding: .25em;
+    clear: left;
+}
+dd {
+    float: left;
+    padding: .25em 0;
+}
+dl:after {content:"";display:table;clear:both;}
