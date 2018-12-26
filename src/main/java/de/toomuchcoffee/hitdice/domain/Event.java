@@ -19,7 +19,7 @@ public class Event {
     }
 
     public String getSymbol() {
-        return type.symbol;
+        return type.getSymbol();
     }
 
     public Object getObject() {
@@ -28,23 +28,6 @@ public class Event {
 
     public EventType getType() {
         return type;
-    }
-
-    public enum EventType {
-        EMPTY(" ", false),
-        MONSTER("¥", true),
-        POTION("†", true),
-        TREASURE("$", true),
-        EXPLORED(" ", false),
-        MAGIC_DOOR("§", true);
-
-        String symbol;
-        boolean occupied;
-
-        EventType(String symbol, boolean occupied) {
-            this.symbol = symbol;
-            this.occupied = occupied;
-        }
     }
 
 }

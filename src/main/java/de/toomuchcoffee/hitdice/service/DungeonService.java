@@ -1,9 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.Main;
 import de.toomuchcoffee.hitdice.domain.*;
-import de.toomuchcoffee.hitdice.factories.HeroFactory;
-import de.toomuchcoffee.hitdice.factories.PoiFactory;
+import de.toomuchcoffee.hitdice.factories.EventFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -31,13 +29,6 @@ public class DungeonService {
         Event event = null;
         switch (event.getType()) {
             case MONSTER: {
-                Combat combat = new Combat(hero, (Monster) event.getObject());
-                if (combat.fight()) {
-                    HeroFactory.gainExperience(hero, combat.getExperienceValue());
-                    markAsVisited(dungeon);
-                } else {
-                    dungeon.setPosition(getAnyUnoccupiedPosition(dungeon));
-                }
                 break;
             }
             case POTION: {
@@ -51,9 +42,7 @@ public class DungeonService {
                 Treasure treasure = (Treasure) event.getObject();
                 //Main.draw("You found a %s", treasure.getName());
                 //printInventory();
-                if (Main.confirm("Do you want to take the " + treasure.getName() + "?")) {
-                    hero.stash(treasure);
-                }
+                //if (Main.confirm("Do you want to take the " + treasure.getName() + "?")) {
                 markAsVisited(dungeon);
                 break;
             }
@@ -88,17 +77,17 @@ public class DungeonService {
     }
 
     private void markAsVisited(Dungeon dungeon) {
-        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = new Event(Event.EventType.EXPLORED);
+        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = new Event(EventType.EXPLORED);
     }
 
     private void initPois(Dungeon dungeon) {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getEventMap()[x][y] = PoiFactory.createPoi();
+                dungeon.getEventMap()[x][y] = EventFactory.createPoi();
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
-        dungeon.getEventMap()[door.getX()][door.getY()] = new Event(Event.EventType.MAGIC_DOOR);
+        dungeon.getEventMap()[door.getX()][door.getY()] = new Event(EventType.MAGIC_DOOR);
     }
 
 }

@@ -3,15 +3,12 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public abstract class Combatant implements Serializable {
-    private static final long serialVersionUID = -7292227750870699859L;
-
+public abstract class Combatant {
     protected String name;
 
     protected int strength;
@@ -25,10 +22,6 @@ public abstract class Combatant implements Serializable {
 
     public boolean isAlive() {
         return getCurrentStamina() > 0;
-    }
-
-    public int getCurrentStamina() {
-        return currentStamina;
     }
 
     public void decreaseCurrentStaminaBy(int decreasement) {

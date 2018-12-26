@@ -1,7 +1,5 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hitdice.utilities.Dice;
-
 public class Weapon extends Treasure {
     private int diceNumber;
     private Dice dice;

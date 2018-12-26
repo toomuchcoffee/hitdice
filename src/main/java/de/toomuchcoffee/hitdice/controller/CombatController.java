@@ -19,7 +19,7 @@ public class CombatController {
     private final CombatService combatService;
 
     @GetMapping("attack")
-    public String enterCombat() {
+    public String enter() {
         return "redirect:/combat/attack/0";
     }
 
@@ -41,7 +41,7 @@ public class CombatController {
 
 
     @GetMapping("exit")
-    public String reenter() {
+    public String exit() {
         return "/dungeon/explore";
     }
 

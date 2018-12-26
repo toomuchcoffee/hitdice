@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hitdice.utilities;
+package de.toomuchcoffee.hitdice.domain;
 
 import java.util.Random;
 

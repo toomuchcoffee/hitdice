@@ -1,12 +1,12 @@
 package de.toomuchcoffee.hitdice.factories;
 
 import de.toomuchcoffee.hitdice.domain.Event;
+import de.toomuchcoffee.hitdice.domain.EventType;
 
-import static de.toomuchcoffee.hitdice.domain.Event.EventType;
-import static de.toomuchcoffee.hitdice.utilities.Dice.D20;
-import static de.toomuchcoffee.hitdice.utilities.Dice.D6;
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
+import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 
-public class PoiFactory {
+public class EventFactory {
 
     public static Event createPoi() {
         int d = D20.roll();

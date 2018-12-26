@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
-import static de.toomuchcoffee.hitdice.domain.Event.EventType.EMPTY;
+import static de.toomuchcoffee.hitdice.domain.EventType.EMPTY;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;

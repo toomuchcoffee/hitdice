@@ -1,11 +1,10 @@
 package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hitdice.Main;
 import de.toomuchcoffee.hitdice.domain.Combatant;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.Weapon;
 
-import static de.toomuchcoffee.hitdice.utilities.Dice.*;
+import static de.toomuchcoffee.hitdice.domain.Dice.*;
 
 public class MonsterFactory {
     public static Monster createMonster() {
@@ -23,10 +22,10 @@ public class MonsterFactory {
                     if (D20.roll() < 9) {
                         if (hero.getWeapon() != null && hero.getWeapon().isMetallic()) {
                             hero.setWeapon(null);
-                            Main.draw("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
+                            //Main.draw("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
                         } else if (hero.getArmor() != null && hero.getArmor().isMetallic()) {
                             hero.setArmor(null);
-                            Main.draw("Friggin rust monster! It hit your armor and it crumbles to rust.");
+                            //Main.draw("Friggin rust monster! It hit your armor and it crumbles to rust.");
                         }
                     }
                 }
@@ -38,7 +37,7 @@ public class MonsterFactory {
                     if (this.getCurrentStamina() < this.getStamina()) {
                         int regeneration = D3.roll();
                         this.setStamina(this.getStamina() + regeneration);
-                        Main.draw("Oh no! The troll regenerated %d points of stamina!", regeneration);
+                        //Main.draw("Oh no! The troll regenerated %d points of stamina!", regeneration);
                     }
                 }
             };
@@ -48,8 +47,8 @@ public class MonsterFactory {
                 public void specialDefense(Combatant hero) {
                     if (D20.roll() < 6) {
                         hero.setStrength(hero.getStrength()-1);
-                        Main.draw("Don't you just hate vampires? " +
-                                "This fella just sucked away one point of strength from you!");
+                        //Main.draw("Don't you just hate vampires? " +
+                          //      "This fella just sucked away one point of strength from you!");
                     }
                 }
             };

@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hitdice.utilities.Dice;
 import lombok.Getter;
 import lombok.Setter;
 

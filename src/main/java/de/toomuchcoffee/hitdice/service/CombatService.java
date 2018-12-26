@@ -3,7 +3,7 @@ package de.toomuchcoffee.hitdice.service;
 import de.toomuchcoffee.hitdice.domain.Combatant;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.utilities.Dice.D20;
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 
 @Service
 public class CombatService {

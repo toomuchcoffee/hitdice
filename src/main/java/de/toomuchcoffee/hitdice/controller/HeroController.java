@@ -2,6 +2,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.factories.TreasureFactory;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -38,9 +39,12 @@ public class HeroController {
     public String save(HttpServletRequest request, HeroUpdate heroUpdate) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
+
+        // TODO
+        hero.setWeapon(TreasureFactory.DAGGER);
+
         // TODO save into DB?
         return "hero/create/step-3";
     }
-
 
 }

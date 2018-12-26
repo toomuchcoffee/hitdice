@@ -1,10 +1,6 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import java.io.Serializable;
-
-public class Treasure implements Serializable {
-    private static final long serialVersionUID = 8609046467486911921L;
-
+public class Treasure {
     protected String name;
     protected boolean metallic;
 

@@ -1,13 +1,8 @@
 package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hitdice.Main;
-import de.toomuchcoffee.hitdice.domain.Armor;
-import de.toomuchcoffee.hitdice.domain.Combatant;
-import de.toomuchcoffee.hitdice.domain.Treasure;
-import de.toomuchcoffee.hitdice.domain.Weapon;
-import de.toomuchcoffee.hitdice.utilities.Dice;
+import de.toomuchcoffee.hitdice.domain.*;
 
-import static de.toomuchcoffee.hitdice.utilities.Dice.*;
+import static de.toomuchcoffee.hitdice.domain.Dice.*;
 
 public class TreasureFactory {
     public static Armor LEATHER = new Armor("leather armor", 2, false);
@@ -47,8 +42,8 @@ public class TreasureFactory {
                     if (D20.roll() < 6) {
                         int extraDamage = D4.roll();
                         defender.decreaseCurrentStaminaBy(extraDamage);
-                        Main.draw("Wohoo, the magic sword lit up like a torch");
-                        Main.draw("The fire caused %d extra points of damage on your enemy.", extraDamage);
+                        //Main.draw("Wohoo, the magic sword lit up like a torch");
+                        //Main.draw("The fire caused %d extra points of damage on your enemy.", extraDamage);
                     }
                 }
             };

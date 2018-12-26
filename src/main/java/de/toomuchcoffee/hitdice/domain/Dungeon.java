@@ -3,8 +3,6 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import static de.toomuchcoffee.hitdice.domain.Event.EventType;
-
 @Getter
 @Setter
 public class Dungeon {
