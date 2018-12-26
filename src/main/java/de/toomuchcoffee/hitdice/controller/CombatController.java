@@ -29,11 +29,13 @@ public class CombatController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 
-        Integer damageCaused = combatService.attack(hero, monster);
-        model.addAttribute("damageCaused", damageCaused);
+        if (round > 0) {
+            Integer damageCaused = combatService.attack(hero, monster);
+            model.addAttribute("damageCaused", damageCaused);
 
-        Integer damageReceived = combatService.attack(monster, hero);
-        model.addAttribute("damageReceived", damageReceived);
+            Integer damageReceived = combatService.attack(monster, hero);
+            model.addAttribute("damageReceived", damageReceived);
+        }
 
         model.addAttribute("round", round);
         return "/dungeon/combat";

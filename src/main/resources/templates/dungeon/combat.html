@@ -14,40 +14,35 @@
         <h3>Combat between you and <span th:text="${session.monster.name}"></span></h3>
 
         <span th:if="${round} > 0">
-            <div>
+            <div id="combat-round">
                 <h5>Round <span th:text="${round}"></span>:</h5>
                 <p>Your attack caused <span th:text="${damageCaused}"></span> points of damage.</p>
                 <p>You received <span th:text="${damageReceived}"></span> points of damage.</p>
             </div>
         </span>
 
-        <dl>
+        <dl id="combat-stats">
             <dt>Your stamina:</dt>
-            <dd>
-                <span th:text="${session.hero.currentStamina}"></span> /
-                <span th:text="${session.hero.stamina}"></span>
-            </dd>
+            <dd><span th:text="${session.hero.currentStamina}"></span> / <span th:text="${session.hero.stamina}"></span></dd>
             <dt><span th:text="${session.monster.name}"></span>'s stamina:</dt>
-            <dd>
-                <span th:text="${session.monster.currentStamina}"></span> /
-                <span th:text="${session.monster.stamina}"></span>
-            </dd>
+            <dd><span th:text="${session.monster.currentStamina}"></span> / <span
+                    th:text="${session.monster.stamina}"></span></dd>
         </dl>
 
-        <span th:if="${session.monster.alive}">
+        <div id="combat-actions" th:if="${session.monster.alive}">
             <a th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
             <a href="/combat/flee">Flee</a>
-        </span>
-        <span th:unless="${session.monster.alive}">
+        </div>
+        <div id="combat-exit" th:unless="${session.monster.alive}">
             <p>The <span th:text="${session.monster.name}"></span> is dead!</p>
             <p>You earned <span th:text="${session.monster.value}"></span> experience points!</p>
-            <a href="/dungeon/reenter">Return to explore the dungeon</a>
-        </span>
+            <a href="/combat/exit">Return to explore the dungeon</a>
+        </div>
 
-        <div th:replace="fragments/hero :: hero"></div>
+        <div id="hero" th:replace="fragments/hero :: hero"></div>
     </span>
     <span th:unless="${session.hero.alive}">
-        <p>You are dead! </p>
+        <p>You are dead!</p>
     </span>
 </div>
 </body>

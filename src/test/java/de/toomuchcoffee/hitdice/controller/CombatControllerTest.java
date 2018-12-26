@@ -15,12 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.factories.TreasureFactory.CLUB;
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = CombatController.class)
 @RunWith(SpringRunner.class)
@@ -33,7 +32,7 @@ public class CombatControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void dungeonReenterPage() throws Exception {
+    public void combatExit() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
         session.setAttribute("hero", new Hero(10, 11, 12));
@@ -42,20 +41,22 @@ public class CombatControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Explore dungeon")))
-                .andExpect(content().string(containsString(
-                        "<pre>" +
-                                "+---+\n" +
-                                "|(#)|\n" +
-                                "+---+" +
-                                "</pre>")))
-                .andExpect(content().string(containsString("<dt>Strength</dt>")))
-                .andExpect(content().string(containsString("<dd>10</dd>")))
+                .andExpect(view().name("/dungeon/explore"))
+                .andExpect(xpath("//pre[@id='dungeon-map']").string(
+                        "+---+\n" +
+                        "|(#)|\n" +
+                        "+---+" ))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
+                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
         ;
     }
 
     @Test
-    public void dungeonEnterCombatPage() throws Exception {
+    public void engageCombat() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
         session.setAttribute("hero", new Hero(10, 11, 12));
@@ -65,33 +66,21 @@ public class CombatControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(
-                        "<h3>Combat between you and <span>Orc</span></h3>\n" +
-                                "\n" +
-                                "        \n" +
-                                "\n" +
-                                "        <dl>\n" +
-                                "            <dt>Your stamina:</dt>\n" +
-                                "            <dd>\n" +
-                                "                <span>12</span> /\n" +
-                                "                <span>12</span>\n" +
-                                "            </dd>\n" +
-                                "            <dt><span>Orc</span>'s stamina:</dt>\n" +
-                                "            <dd>\n" +
-                                "                <span>7</span> /\n" +
-                                "                <span>7</span>\n" +
-                                "            </dd>\n" +
-                                "        </dl>\n" +
-                                "\n" +
-                                "        <span>\n" +
-                                "            <a href=\"/combat/attack/1\">Attack</a>\n" +
-                                "            <a href=\"/combat/flee\">Flee</a>\n" +
-                                "        </span>")))
+                .andExpect(view().name("/dungeon/combat"))
+                .andExpect(xpath("//h3").string("Combat between you and Orc"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[1]").string("Your stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[1]").string("12 / 12"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[2]").string("Orc's stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[2]").string("7 / 7"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/1"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
         ;
+
+        verifyZeroInteractions(combatService);
     }
 
     @Test
-    public void dungeonFightCombatPage() throws Exception {
+    public void combatAttack() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
         Hero hero = new Hero(10, 11, 12);
@@ -99,41 +88,97 @@ public class CombatControllerTest {
         Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
-        when(combatService.attack(eq(hero), eq(monster))).thenReturn(7);
-        when(combatService.attack(eq(monster), eq(hero))).thenReturn(5);
+        int damageCaused = 3;
+        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
+        monster.decreaseCurrentStaminaBy(damageCaused);
+
+        int damageReceived = 2;
+        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
+        hero.decreaseCurrentStaminaBy(damageReceived);
 
         this.mvc.perform(get("/combat/attack/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(
-                        "<h3>Combat between you and <span>Orc</span></h3>\n" +
-                                "\n" +
-                                "        <span>\n" +
-                                "            <div>\n" +
-                                "                <h5>Round <span>1</span>:</h5>\n" +
-                                "                <p>Your attack caused <span>7</span> points of damage.</p>\n" +
-                                "                <p>You received <span>5</span> points of damage.</p>\n" +
-                                "            </div>\n" +
-                                "        </span>\n" +
-                                "\n" +
-                                "        <dl>\n" +
-                                "            <dt>Your stamina:</dt>\n" +
-                                "            <dd>\n" +
-                                "                <span>12</span> /\n" +
-                                "                <span>12</span>\n" +
-                                "            </dd>\n" +
-                                "            <dt><span>Orc</span>'s stamina:</dt>\n" +
-                                "            <dd>\n" +
-                                "                <span>7</span> /\n" +
-                                "                <span>7</span>\n" +
-                                "            </dd>\n" +
-                                "        </dl>\n" +
-                                "\n" +
-                                "        <span>\n" +
-                                "            <a href=\"/combat/attack/2\">Attack</a>\n" +
-                                "            <a href=\"/combat/flee\">Flee</a>\n" +
-                                "        </span>")))
+                .andExpect(view().name("/dungeon/combat"))
+                .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
+                .andExpect(xpath("//div[@id='combat-round']/p[1]").string("Your attack caused 3 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/p[2]").string("You received 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
+                .andExpect(xpath("//h3").string("Combat between you and Orc"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[1]").string("Your stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[1]").string("10 / 12"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[2]").string("Orc's stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[2]").string("4 / 7"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/2"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
+        ;
+    }
+
+    @Test
+    public void combatAttackKillsMonster() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("dungeon", new Dungeon(1));
+        Hero hero = new Hero(10, 11, 12);
+        session.setAttribute("hero", hero);
+        Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
+        session.setAttribute("monster", monster);
+
+        int damageCaused = 7;
+        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
+        monster.decreaseCurrentStaminaBy(damageCaused);
+
+        int damageReceived = 2;
+        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
+        hero.decreaseCurrentStaminaBy(damageReceived);
+
+        this.mvc.perform(get("/combat/attack/1")
+                .session(session)
+                .accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/dungeon/combat"))
+                .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
+                .andExpect(xpath("//div[@id='combat-round']/p[1]").string("Your attack caused 7 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/p[2]").string("You received 2 points of damage."))
+                .andExpect(xpath("//h3").string("Combat between you and Orc"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[1]").string("Your stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[1]").string("10 / 12"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dt[2]").string("Orc's stamina:"))
+                .andExpect(xpath("//dl[@id='combat-stats']/dd[2]").string("0 / 7"))
+                .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
+                .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
+                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 15 experience points!"))
+                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/combat/exit"))
+        ;
+    }
+
+    @Test
+    public void combatAttackKillsHerro() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("dungeon", new Dungeon(1));
+        Hero hero = new Hero(10, 11, 12);
+        session.setAttribute("hero", hero);
+        Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
+        session.setAttribute("monster", monster);
+
+        int damageCaused = 2;
+        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
+        monster.decreaseCurrentStaminaBy(damageCaused);
+
+        int damageReceived = 12;
+        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
+        hero.decreaseCurrentStaminaBy(damageReceived);
+
+        this.mvc.perform(get("/combat/attack/1")
+                .session(session)
+                .accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/dungeon/combat"))
+                .andExpect(xpath("//div[@id='combat-round']").doesNotExist())
+                .andExpect(xpath("//dl[@id='combat-stats']").doesNotExist())
+                .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
+                .andExpect(xpath("//div[@id='combat-exit']").doesNotExist())
+                .andExpect(xpath("//p").string("You are dead!"))
         ;
     }
 

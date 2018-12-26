@@ -9,17 +9,17 @@
 </head>
 <body>
 <div layout:fragment="page_content" id="page_content">
-<h3>Complete your hero</h3>
+    <h3>Complete your hero</h3>
 
     <div th:replace="fragments/hero :: hero"></div>
 
 
-<form action="#" th:action="@{/hero/create/3}" th:object="${hero}" method="post">
-    <label for="name">Name</label>
-    <input type="text" th:field="*{name}" id="name" placeholder="Name">
-    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-    <input type="submit" value="Save">
-</form>
+    <form action="#" th:action="@{/hero/create/3}" th:object="${hero}" method="post">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Name"/>
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        <input type="submit" value="Save"/>
+    </form>
 </div>
 </body>
 </html>

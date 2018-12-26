@@ -9,11 +9,9 @@
 <div th:fragment="hero" id="hero">
     <h4>Hero statistics</h4>
 
-    <dl>
-        <span th:if="${session.hero.name}">
-            <dt>Name</dt>
-            <dd th:text="${session.hero.name}"></dd>
-        </span>
+    <dl id="hero-stats">
+        <dt th:if="${session.hero.name}">Name</dt>
+        <dd th:if="${session.hero.name}" th:text="${session.hero.name}"></dd>
         <dt>Strength</dt>
         <dd th:text="${session.hero.strength}"></dd>
         <dt>Dexterity</dt>
