@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div layout:fragment="page_content" id="page_content">
+
+    <span th:if="${session.hero.alive}">
+        <h3>Combat between you and <span th:text="${session.monster.name}"></span></h3>
+
+        <span th:if="${round} > 0">
+            <div>
+                You caused <span th:text="${damageCaused}"></span> points of damage.
+                You received <span th:text="${damageReceived}"></span> points of damage.
+            </div>
+        </span>
+
+        <dl>
+            <dt>Your stamina:</dt>
+            <dd>
+                <span th:text="${session.hero.currentStamina}"></span> /
+                <span th:text="${session.hero.stamina}"></span>
+            </dd>
+            <dt><span th:text="${session.monster.name}"></span>'s stamina:</dt>
+            <dd>
+                <span th:text="${session.monster.currentStamina}"></span> /
+                <span th:text="${session.monster.stamina}"></span>
+            </dd>
+        </dl>
+
+        <span th:if="${session.monster.alive}">
+            <a href="combat/attack">Attack</a>
+            <a href="combat/flee">Flee</a>
+        </span>
+        <span th:unless="${session.monster.alive}">
+            <p>The <span th:text="${session.monster.name}"></span> is dead!</p>
+            <p>You earned <span th:text="${session.monster.value}"></span> experience points!</p>
+            <a href="/dungeon/reenter">Return to explore the dungeon</a>
+        </span>
+
+        <div th:replace="fragments/hero :: hero"></div>
+    </span>
+    <span th:unless="${session.hero.alive}">
+        <p>You are dead! </p>
+    </span>
+</div>
+</body>
+</html>

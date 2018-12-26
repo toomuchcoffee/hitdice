@@ -1,8 +1,8 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.domain.Direction;
 import de.toomuchcoffee.hitdice.domain.Dungeon;
+import de.toomuchcoffee.hitdice.domain.Event;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
@@ -16,6 +16,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
+import static de.toomuchcoffee.hitdice.domain.Event.EventType.EMPTY;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -35,7 +37,7 @@ public class DungeonControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void dungeonExplorePage() throws Exception {
+    public void dungeonCreatePage() throws Exception {
         when(dungeonService.create(1)).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
@@ -66,6 +68,8 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
+        when(dungeonService.explore(SOUTH, dungeon, hero)).thenReturn(new Event(EMPTY));
+
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
@@ -75,6 +79,28 @@ public class DungeonControllerTest {
                 .andExpect(content().string(containsString("<dd>10</dd>")))
         ;
 
-        verify(dungeonService).explore(eq(Direction.SOUTH), eq(dungeon), eq(hero));
+        verify(dungeonService).explore(eq(SOUTH), eq(dungeon), eq(hero));
+    }
+
+    @Test
+    public void dungeonReenterPage() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("dungeon", new Dungeon(1));
+        session.setAttribute("hero", new Hero(10, 11, 12));
+
+        this.mvc.perform(get("/dungeon/reenter")
+                .session(session)
+                .accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Explore dungeon")))
+                .andExpect(content().string(containsString(
+                        "<pre>" +
+                                "+---+\n" +
+                                "|(#)|\n" +
+                                "+---+" +
+                                "</pre>")))
+                .andExpect(content().string(containsString("<dt>Strength</dt>")))
+                .andExpect(content().string(containsString("<dd>10</dd>")))
+        ;
     }
 }

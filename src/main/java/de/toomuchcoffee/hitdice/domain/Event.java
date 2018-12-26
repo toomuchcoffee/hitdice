@@ -1,19 +1,15 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import java.io.Serializable;
+public class Event {
 
-public class Poi implements Serializable {
-
-    private static final long serialVersionUID = 8675100304180747456L;
-
-    private PoiType type;
+    private EventType type;
     private Object obj;
 
-    public Poi(PoiType type) {
+    public Event(EventType type) {
         this.type = type;
     }
 
-    public Poi(PoiType type, Object obj) {
+    public Event(EventType type, Object obj) {
         this.type = type;
         this.obj = obj;
     }
@@ -30,11 +26,11 @@ public class Poi implements Serializable {
         return obj;
     }
 
-    public PoiType getType() {
+    public EventType getType() {
         return type;
     }
 
-    public enum PoiType {
+    public enum EventType {
         EMPTY(" ", false),
         MONSTER("¥", true),
         POTION("†", true),
@@ -45,7 +41,7 @@ public class Poi implements Serializable {
         String symbol;
         boolean occupied;
 
-        PoiType(String symbol, boolean occupied) {
+        EventType(String symbol, boolean occupied) {
             this.symbol = symbol;
             this.occupied = occupied;
         }

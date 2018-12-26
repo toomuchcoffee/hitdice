@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.factories;
 
 import de.toomuchcoffee.hitdice.Main;
-import de.toomuchcoffee.hitdice.domain.Game;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.utilities.Dice;
 
@@ -36,7 +35,6 @@ public class HeroFactory {
             Main.draw("Yohoo, you gained a new experience level!" + lineSeparator() +
                     "You can add one point to one of your attribute scores." + lineSeparator() +
                     "Strength and dexterity can be only increased to a maximum of 18.");
-            Game.getInstance().printAttributes();
             increaseAttribute(hero);
         }
     }

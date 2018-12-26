@@ -18,7 +18,6 @@ public class Combat {
         Main.draw("%s encounters a %s.", hero.getName(), enemy.getName());
         boolean flee = false;
         while (!flee && hero.isAlive() && enemy.isAlive()) {
-            Game.getInstance().printHealth();
             flee = Main.confirm("Do you want to flee?");
             if (flee) {
                 Main.draw("You successfully fled from the deadly encounter.");

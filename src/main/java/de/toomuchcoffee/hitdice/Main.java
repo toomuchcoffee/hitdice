@@ -1,11 +1,8 @@
 package de.toomuchcoffee.hitdice;
 
-import de.toomuchcoffee.hitdice.domain.Game;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.factories.HeroFactory;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -16,16 +13,6 @@ public class Main {
         boolean createNewHero = confirm("Do you want to create a new hero?");
         if (createNewHero) {
             Hero hero = HeroFactory.create();
-            Game game = Game.createGame(hero);
-        } else {
-            if (new File(Game.FILEPATH).exists()) {
-                try {
-                    Game game = Game.recoverGameState();
-                    draw("Resuming existing game from %s", new SimpleDateFormat().format(game.getTimestamp()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

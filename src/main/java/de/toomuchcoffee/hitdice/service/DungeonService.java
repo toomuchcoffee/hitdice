@@ -22,17 +22,16 @@ public class DungeonService {
         return dungeon;
     }
 
-    public boolean explore(Direction direction, Dungeon dungeon, Hero hero) {
-        boolean result = dungeon.explore(direction);
-        checkIncident(dungeon, hero);
-        return result;
+    public Event explore(Direction direction, Dungeon dungeon, Hero hero) {
+        Position position = dungeon.explore(direction);
+        return dungeon.getPoi(position);
     }
 
     private void checkIncident(Dungeon dungeon, Hero hero) {
-        Poi poi = dungeon.getPoi();
-        switch (poi.getType()) {
+        Event event = null;
+        switch (event.getType()) {
             case MONSTER: {
-                Combat combat = new Combat(hero, (Monster) poi.getObject());
+                Combat combat = new Combat(hero, (Monster) event.getObject());
                 if (combat.fight()) {
                     HeroFactory.gainExperience(hero, combat.getExperienceValue());
                     markAsVisited(dungeon);
@@ -42,14 +41,14 @@ public class DungeonService {
                 break;
             }
             case POTION: {
-                int recovery = (Integer) poi.getObject();
+                int recovery = (Integer) event.getObject();
                 //Main.draw("You found a healing potion and recover %d of stamina.", recovery);
                 hero.recoverStaminaBy(recovery);
                 markAsVisited(dungeon);
                 break;
             }
             case TREASURE: {
-                Treasure treasure = (Treasure) poi.getObject();
+                Treasure treasure = (Treasure) event.getObject();
                 //Main.draw("You found a %s", treasure.getName());
                 //printInventory();
                 if (Main.confirm("Do you want to take the " + treasure.getName() + "?")) {
@@ -84,22 +83,22 @@ public class DungeonService {
         Position pos;
         do {
             pos = new Position(RANDOM.nextInt(dungeon.getSize()), RANDOM.nextInt(dungeon.getSize()));
-        } while (dungeon.getPoiMap()[pos.x][pos.y].isOccupied());
+        } while (dungeon.getEventMap()[pos.getX()][pos.getY()].isOccupied());
         return pos;
     }
 
     private void markAsVisited(Dungeon dungeon) {
-        dungeon.getPoiMap()[dungeon.getPosX()][dungeon.getPosY()] = new Poi(Poi.PoiType.EXPLORED);
+        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = new Event(Event.EventType.EXPLORED);
     }
 
     private void initPois(Dungeon dungeon) {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getPoiMap()[x][y] = PoiFactory.createPoi();
+                dungeon.getEventMap()[x][y] = PoiFactory.createPoi();
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
-        dungeon.getPoiMap()[door.x][door.y] = new Poi(Poi.PoiType.MAGIC_DOOR);
+        dungeon.getEventMap()[door.getX()][door.getY()] = new Event(Event.EventType.MAGIC_DOOR);
     }
 
 }

@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,9 +21,8 @@ public class HeroController {
     private final HeroService heroService;
 
     @GetMapping("create")
-    public String create(Model model, HttpServletRequest request) {
+    public String create(HttpServletRequest request) {
         Hero hero = heroService.create();
-        model.addAttribute("hero", hero);
         request.getSession().setAttribute("hero", hero);
         return "hero/create/step-1";
     }
@@ -37,10 +35,9 @@ public class HeroController {
     }
 
     @PostMapping(value = "create/3", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String save(Model model, HttpServletRequest request, @ModelAttribute HeroUpdate heroUpdate) {
+    public String save(HttpServletRequest request, HeroUpdate heroUpdate) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
-        model.addAttribute("hero", hero);
         // TODO save into DB?
         return "hero/create/step-3";
     }

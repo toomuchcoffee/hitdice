@@ -2,6 +2,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Direction;
 import de.toomuchcoffee.hitdice.domain.Dungeon;
+import de.toomuchcoffee.hitdice.domain.Event;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
@@ -20,26 +21,45 @@ public class DungeonController {
     private final DungeonService dungeonService;
 
     @GetMapping("create/{size}")
-    public String enter(@PathVariable int size, Model model, HttpServletRequest request) {
+    public String create(@PathVariable int size, HttpServletRequest request) {
         Dungeon dungeon = dungeonService.create(size);
         request.getSession().setAttribute("dungeon", dungeon);
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
-
-        model.addAttribute("dungeon", dungeon.getMap());
-        model.addAttribute("hero", hero);
         return "dungeon/explore";
     }
 
     @GetMapping("explore/{direction}")
-    public String explore(@PathVariable Direction direction, Model model, HttpServletRequest request) {
+    public String explore(@PathVariable Direction direction, HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
-        boolean explored = dungeonService.explore(direction, dungeon, hero);
-        // TODO return message if bumping
+        Event event = dungeonService.explore(direction, dungeon, hero);
 
-        model.addAttribute("dungeon", dungeon.getMap());
-        model.addAttribute("hero", hero);
+        switch (event.getType()) {
+            case MONSTER: {
+                request.getSession().setAttribute("monster", event.getObject());
+                return "redirect:/dungeon/combat";
+            }
+            case TREASURE:
+            case POTION:
+            case MAGIC_DOOR:
+            case EMPTY:
+            case EXPLORED:
+            default: {
+                return "/dungeon/explore";
+            }
+        }
+    }
+
+    @GetMapping("combat")
+    public String enterCombat(Model model, HttpServletRequest request) {
+        model.addAttribute("round", 0);
+        return "dungeon/combat";
+    }
+
+
+    @GetMapping("reenter")
+    public String reenter() {
         return "dungeon/explore";
     }
+
 }

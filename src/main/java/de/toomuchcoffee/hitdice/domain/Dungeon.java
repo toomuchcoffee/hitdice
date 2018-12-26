@@ -3,60 +3,57 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import static de.toomuchcoffee.hitdice.domain.Poi.PoiType;
+import static de.toomuchcoffee.hitdice.domain.Event.EventType;
 
 @Getter
 @Setter
 public class Dungeon {
     private int size;
 
-    private Poi[][] poiMap;
+    private Event[][] eventMap;
 
     private int posX;
     private int posY;
 
     public Dungeon(int size) {
         this.size = size;
-        poiMap = new Poi[size][size];
+        eventMap = new Event[size][size];
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                poiMap[x][y] = new Poi(PoiType.EMPTY);
+                eventMap[x][y] = new Event(EventType.EMPTY);
             }
         }
     }
 
-    public boolean explore(Direction direction) {
+    public Position explore(Direction direction) {
         switch (direction) {
             case NORTH: {
                 if (posY > 0) {
                     posY--;
-                    return true;
                 }
-                return false;
+                break;
             }
             case EAST: {
                 if (posX < size - 1) {
                     posX++;
-                    return true;
                 }
-                return false;
+                break;
             }
             case SOUTH: {
                 if (posY < size - 1) {
                     posY++;
-                    return true;
                 }
-                return false;
+                break;
             }
             case WEST: {
                 if (posX > 0) {
                     posX--;
-                    return true;
                 }
-                return false;
+                break;
             }
             default: throw new IllegalArgumentException("invalid direction: " + direction);
         }
+        return new Position(this.posX, this.posY);
     }
 
     public String getMap() {
@@ -72,8 +69,8 @@ public class Dungeon {
             for (int x = 0; x < size; x++) {
                 if (x == posX && y == posY) {
                     builder.append("(#)");
-                } else if (Math.abs(x - posX) < 2 && Math.abs(y - posY) < 2 || poiMap[x][y].getType().equals(PoiType.EXPLORED)) {
-                    builder.append(" ").append(poiMap[x][y].getSymbol()).append(" ");
+                } else if (Math.abs(x - posX) < 2 && Math.abs(y - posY) < 2 || eventMap[x][y].getType().equals(EventType.EXPLORED)) {
+                    builder.append(" ").append(eventMap[x][y].getSymbol()).append(" ");
                 } else {
                     builder.append(" ? ");
                 }
@@ -90,15 +87,15 @@ public class Dungeon {
     }
 
     public void setPosition(Position pos) {
-        this.posX = pos.x;
-        this.posY = pos.y;
+        this.posX = pos.getX();
+        this.posY = pos.getY();
     }
 
     public Position getPosition() {
         return new Position(this.posX, this.posY);
     }
 
-    public Poi getPoi() {
-        return poiMap[posX][posY];
+    public Event getPoi(Position position) {
+        return eventMap[position.getX()][position.getY()];
     }
 }

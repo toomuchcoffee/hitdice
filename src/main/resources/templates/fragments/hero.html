@@ -10,16 +10,16 @@
     <h4>Hero statistics</h4>
 
     <dl>
-        <span th:if="${hero.name}">
+        <span th:if="${session.hero.name}">
             <dt>Name</dt>
-            <dd th:text="${hero.name}"></dd>
+            <dd th:text="${session.hero.name}"></dd>
         </span>
         <dt>Strength</dt>
-        <dd th:text="${hero.strength}"></dd>
+        <dd th:text="${session.hero.strength}"></dd>
         <dt>Dexterity</dt>
-        <dd th:text="${hero.dexterity}"></dd>
+        <dd th:text="${session.hero.dexterity}"></dd>
         <dt>Stamina</dt>
-        <dd th:text="${hero.stamina}"></dd>
+        <dd th:text="${session.hero.stamina}"></dd>
     </dl>
 
 </div>
