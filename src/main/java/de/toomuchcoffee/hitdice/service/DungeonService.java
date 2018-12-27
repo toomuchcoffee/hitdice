@@ -35,10 +35,6 @@ public class DungeonService {
                 break;
             }
             case POTION: {
-                int recovery = (Integer) event.getObject();
-                //Main.draw("You found a healing potion and recover %d of stamina.", recovery);
-                hero.recoverStaminaBy(recovery);
-                markAsVisited(dungeon);
                 break;
             }
             case TREASURE: {
@@ -84,6 +80,10 @@ public class DungeonService {
         } else if (treasure instanceof Weapon) {
             hero.setWeapon((Weapon) treasure);
         }
+    }
+
+    public void drinkPotion(Hero hero, Potion potion) {
+        hero.setCurrentStamina(Math.min(hero.getCurrentStamina() + potion.getPower(), hero.getStamina()));
     }
 
     private void initPois(Dungeon dungeon) {

@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.factories;
 
 import de.toomuchcoffee.hitdice.domain.Event;
+import de.toomuchcoffee.hitdice.domain.Potion;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
@@ -12,7 +13,7 @@ public class EventFactory {
     public static Event create() {
         int d = D20.roll();
         if (d > 17) {
-            return new Event(POTION, D6.roll(2));
+            return new Event(POTION, new Potion(D6.roll(2)));
         } else if (d > 14) {
             return new Event(TREASURE, TreasureFactory.createTreasure());
         } else if (d > 11) {

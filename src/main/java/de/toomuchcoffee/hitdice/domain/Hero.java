@@ -29,10 +29,6 @@ public class Hero extends Combatant {
         return (getWeapon() != null ? getWeapon().damage() : Dice.D2.roll()) + getAttributeBonus(getStrength());
     }
 
-    public void recoverStaminaBy(int recovery) {
-        this.currentStamina = Math.min(this.currentStamina + recovery, this.stamina);
-    }
-
     @Override
     public boolean isAlive() {
         return getStrength() > 0 && super.isAlive();

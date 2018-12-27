@@ -15,7 +15,7 @@
         <ul class="list-group">
             <li class="list-group-item"><span class="key">Strength</span>: <span class="value" th:text="${hero.strength}"></span></li>
             <li class="list-group-item"><span class="key">Dexterity</span>: <span class="value" th:text="${hero.dexterity}"></span></li>
-            <li class="list-group-item"><span class="key">Stamina</span>: <span class="value" th:text="${hero.stamina}"></span></li>
+            <li class="list-group-item"><span class="key">Stamina</span>: <span class="value" th:text="${hero.currentStamina} + '/' + ${hero.stamina}"></span></li>
             <li class="list-group-item"><span class="key">Weapon</span>: <span class="value" th:if="${hero.weapon}" th:text="${hero.weapon.name}"></span></li>
             <li class="list-group-item"><span class="key">Armor</span>: <span class="value" th:if="${hero.armor}" th:text="${hero.armor.name}"></span></li>
         </ul>

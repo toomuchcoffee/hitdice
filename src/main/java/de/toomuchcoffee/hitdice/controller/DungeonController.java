@@ -59,6 +59,9 @@ public class DungeonController {
     @GetMapping("continue")
     public String continueExploring(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        // TODO cleanup session in a better way
+        request.getSession().removeAttribute("treasure");
+        request.getSession().removeAttribute("potion");
         dungeonService.markAsVisited(dungeon);
         return "/dungeon/explore";
     }
@@ -70,6 +73,17 @@ public class DungeonController {
         Treasure treasure= (Treasure) request.getSession().getAttribute("treasure");
         dungeonService.collectTreasure(hero, treasure);
         request.getSession().removeAttribute("treasure");
+        dungeonService.markAsVisited(dungeon);
+        return "/dungeon/explore";
+    }
+
+    @GetMapping("recover")
+    public String recover(HttpServletRequest request) {
+        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        Potion potion= (Potion) request.getSession().getAttribute("potion");
+        dungeonService.drinkPotion(hero, potion);
+        request.getSession().removeAttribute("potion");
         dungeonService.markAsVisited(dungeon);
         return "/dungeon/explore";
     }
