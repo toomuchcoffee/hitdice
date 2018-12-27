@@ -22,7 +22,7 @@ public class DungeonController {
     public String create(@PathVariable int size, HttpServletRequest request) {
         Dungeon dungeon = dungeonService.create(size);
         request.getSession().setAttribute("dungeon", dungeon);
-        return "/dungeon/explore";
+        return "dungeon/explore";
     }
 
     @GetMapping("explore/{direction}")
@@ -41,10 +41,10 @@ public class DungeonController {
                 return "redirect:/combat/attack";
             }
             case TREASURE: {
-                return "/dungeon/treasure";
+                return "dungeon/treasure";
             }
             case POTION: {
-                return "/dungeon/potion";
+                return "dungeon/potion";
             }
             case MAGIC_DOOR: {
                 int size = new Random().nextInt(hero.getLevel() + 4) + 5;
@@ -54,7 +54,7 @@ public class DungeonController {
             case EXPLORED:
             default: {
                 dungeonService.markAsVisited(dungeon);
-                return "/dungeon/explore";
+                return "dungeon/explore";
             }
         }
     }
@@ -64,7 +64,7 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Position position = dungeonService.getAnyUnoccupiedPosition(dungeon);
         dungeon.setPosition(position);
-        return "/dungeon/explore";
+        return "dungeon/explore";
     }
 
     @GetMapping("continue")
@@ -74,7 +74,7 @@ public class DungeonController {
         request.getSession().removeAttribute("treasure");
         request.getSession().removeAttribute("potion");
         dungeonService.markAsVisited(dungeon);
-        return "/dungeon/explore";
+        return "dungeon/explore";
     }
 
     @GetMapping("collect")
@@ -85,7 +85,7 @@ public class DungeonController {
         dungeonService.collectTreasure(hero, treasure);
         request.getSession().removeAttribute("treasure");
         dungeonService.markAsVisited(dungeon);
-        return "/dungeon/explore";
+        return "dungeon/explore";
     }
 
     @GetMapping("recover")
@@ -96,7 +96,7 @@ public class DungeonController {
         dungeonService.drinkPotion(hero, potion);
         request.getSession().removeAttribute("potion");
         dungeonService.markAsVisited(dungeon);
-        return "/dungeon/explore";
+        return "dungeon/explore";
     }
 
 }

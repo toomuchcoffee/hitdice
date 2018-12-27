@@ -47,7 +47,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/explore"))
+                .andExpect(view().name("dungeon/explore"))
                 .andExpect(xpath("//pre[@id='dungeon-map']").string(
                         "+---+\n" +
                                 "|(#)|\n" +
@@ -73,7 +73,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/explore"))
+                .andExpect(view().name("dungeon/explore"))
                 .andExpect(xpath("//pre[@id='dungeon-map']").string(
                         "+------+\n" +
                                 "|      |\n" +
@@ -102,7 +102,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/treasure"))
+                .andExpect(view().name("dungeon/treasure"))
                 .andExpect(xpath("//div[@id='treasure-actions']/a[1]/@href").string("/dungeon/collect"))
                 .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon/continue"))
         ;
@@ -121,7 +121,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/dungeon/explore"))
+                .andExpect(view().name("dungeon/explore"))
                 .andExpect(xpath("//pre[@id='dungeon-map']").string(
                         "+---+\n" +
                                 "|(#)|\n" +

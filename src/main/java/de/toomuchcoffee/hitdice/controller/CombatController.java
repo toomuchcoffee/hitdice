@@ -37,7 +37,7 @@ public class CombatController {
         }
 
         if (!hero.isAlive()) {
-            return "/dungeon/dead";
+            return "dungeon/dead";
         }
 
         boolean won = combatService.won(hero, monster);
@@ -48,7 +48,7 @@ public class CombatController {
 
         model.addAttribute("monster", monster);
         model.addAttribute("round", round);
-        return "/dungeon/combat";
+        return "dungeon/combat";
     }
 
 }
