@@ -8,23 +8,17 @@
 <body>
 <div th:fragment="hero" id="hero">
 
-    <fieldset>
-        <legend>Hero statistics</legend>
+    <fieldset id="hero-stats" th:with="hero=${session.hero}">
+        <legend th:unless="${hero.name}">Hero statistics</legend>
+        <legend th:if="${hero.name}" th:text="${hero.name}"></legend>
 
-        <dl id="hero-stats">
-            <dt th:if="${session.hero.name}">Name</dt>
-            <dd th:if="${session.hero.name}" th:text="${session.hero.name}"></dd>
-            <dt>Strength</dt>
-            <dd th:text="${session.hero.strength}"></dd>
-            <dt>Dexterity</dt>
-            <dd th:text="${session.hero.dexterity}"></dd>
-            <dt>Stamina</dt>
-            <dd th:text="${session.hero.stamina}"></dd>
-            <dt>Weapon</dt>
-            <dd th:if="${session.hero.weapon}" th:text="${session.hero.weapon.name}"></dd>
-            <dt>Armor</dt>
-            <dd th:if="${session.hero.armor}" th:text="${session.hero.armor.name}"></dd>
-        </dl>
+        <ul class="list-group">
+            <li class="list-group-item"><span class="key">Strength</span>: <span class="value" th:text="${hero.strength}"></span></li>
+            <li class="list-group-item"><span class="key">Dexterity</span>: <span class="value" th:text="${hero.dexterity}"></span></li>
+            <li class="list-group-item"><span class="key">Stamina</span>: <span class="value" th:text="${hero.stamina}"></span></li>
+            <li class="list-group-item"><span class="key">Weapon</span>: <span class="value" th:if="${hero.weapon}" th:text="${hero.weapon.name}"></span></li>
+            <li class="list-group-item"><span class="key">Armor</span>: <span class="value" th:if="${hero.armor}" th:text="${hero.armor.name}"></span></li>
+        </ul>
     </fieldset>
 
 </div>

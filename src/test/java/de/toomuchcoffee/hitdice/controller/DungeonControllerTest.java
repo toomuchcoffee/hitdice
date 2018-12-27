@@ -52,12 +52,9 @@ public class DungeonControllerTest {
                         "+---+\n" +
                                 "|(#)|\n" +
                                 "+---+" ))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
     }
 
@@ -82,12 +79,9 @@ public class DungeonControllerTest {
                                 "|      |\n" +
                                 "|(#)   |\n" +
                                 "+------+" ))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
 
         verify(dungeonService).explore(eq(SOUTH), eq(dungeon), eq(hero));
@@ -132,12 +126,9 @@ public class DungeonControllerTest {
                         "+---+\n" +
                                 "|(#)|\n" +
                                 "+---+" ))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[1]").string("Strength"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[1]").string("10"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[2]").string("Dexterity"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[2]").string("11"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dt[3]").string("Stamina"))
-                .andExpect(xpath("//dl[@id='hero-stats']/dd[3]").string("12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
 
         verify(dungeonService).markAsVisited(dungeon);

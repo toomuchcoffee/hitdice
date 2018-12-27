@@ -13,21 +13,20 @@
 
     <pre id="dungeon-map" th:text="${session.dungeon.map}"></pre>
 
-    <fieldset>
-        <legend>Maneuver</legend>
-        <a href="/dungeon/explore/WEST">
+    <div class="btn-group">
+        <a class="btn btn-outline-primary" href="/dungeon/explore/WEST">
             <i class="fas fa-arrow-circle-left"></i>
         </a>
-        <a href="/dungeon/explore/NORTH">
+        <a class="btn btn-outline-primary" href="/dungeon/explore/NORTH">
             <i class="fas fa-arrow-circle-up"></i>
         </a>
-        <a href="/dungeon/explore/SOUTH">
+        <a class="btn btn-outline-primary" href="/dungeon/explore/SOUTH">
             <i class="fas fa-arrow-circle-down"></i>
         </a>
-        <a href="/dungeon/explore/EAST">
+        <a class="btn btn-outline-primary" href="/dungeon/explore/EAST">
             <i class="fas fa-arrow-circle-right"></i>
         </a>
-    </fieldset>
+    </div>
 
     <div th:replace="fragments/hero :: hero"></div>
 

@@ -22,22 +22,25 @@
             </div>
         </span>
 
-    <dl id="combat-stats">
-        <dt>Your stamina:</dt>
-        <dd><span th:text="${session.hero.currentStamina}"></span> / <span th:text="${session.hero.stamina}"></span></dd>
-        <dt><span th:text="${monster.name}"></span>'s stamina:</dt>
-        <dd><span th:text="${monster.currentStamina}"></span> / <span
-                th:text="${monster.stamina}"></span></dd>
-    </dl>
+    <div id="combat-stats" th:with="hero=${session.hero}">
+        <div>
+            <span th:text="'Your stamina: ' + ${hero.currentStamina} + '/' + ${hero.stamina}"></span>
+            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.currentStamina}, max=${hero.stamina})"></div>
+        </div>
+        <div>
+            <span th:text="${monster.name} + '\'s stamina: ' + ${monster.currentStamina} + '/' + ${monster.stamina}"></span>
+            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.currentStamina}, max=${monster.stamina})"></div>
+        </div>
+    </div>
 
     <div id="combat-actions" th:unless="${won}">
-        <a th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
-        <a href="/combat/flee">Flee</a>
+        <a class="btn btn-success" th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
+        <a class="btn btn-warning" href="/combat/flee">Flee</a>
     </div>
     <div id="combat-exit" th:if="${won}">
         <p>The <span th:text="${monster.name}"></span> is dead!</p>
         <p>You earned <span th:text="${monster.value}"></span> experience points!</p>
-        <a href="/dungeon/continue">Return to explore the dungeon</a>
+        <a class="btn btn-primary btn-lg btn-block" href="/dungeon/continue">Return to explore the dungeon</a>
     </div>
 
     <div id="hero" th:replace="fragments/hero :: hero"></div>

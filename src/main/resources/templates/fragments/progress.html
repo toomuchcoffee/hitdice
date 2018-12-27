@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:fragment="progress (current, max)">
+    <div class="progress">
+        <div class="progress-bar bg-success"
+             role="progressbar"
+             th:style="'width: ' + 100 * ${current} / ${max} + '%'"
+             th:aria-valuenow="${current}"
+             aria-valuemin="0"
+             th:aria-valuemax="${max}">
+        </div>
+    </div>
+</div>
+</body>
+</html>
