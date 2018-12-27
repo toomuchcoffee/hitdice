@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 
 @Controller
 @RequestMapping("dungeon")
@@ -46,14 +47,24 @@ public class DungeonController {
                 return "/dungeon/potion";
             }
             case MAGIC_DOOR: {
-                // TODO
+                int size = new Random().nextInt(hero.getLevel() + 4) + 5;
+                return String.format("redirect:/dungeon/create/%d", size);
             }
             case EMPTY:
             case EXPLORED:
             default: {
+                dungeonService.markAsVisited(dungeon);
                 return "/dungeon/explore";
             }
         }
+    }
+
+    @GetMapping("flee")
+    public String flee(HttpServletRequest request) {
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon);
+        dungeon.setPosition(position);
+        return "/dungeon/explore";
     }
 
     @GetMapping("continue")

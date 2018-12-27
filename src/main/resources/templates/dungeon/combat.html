@@ -35,7 +35,7 @@
 
     <div id="combat-actions" th:unless="${won}">
         <a class="btn btn-success" th:href="@{/combat/attack/{round}(round=${round} + 1)}">Attack</a>
-        <a class="btn btn-warning" href="/combat/flee">Flee</a>
+        <a class="btn btn-warning" href="/dungeon/flee">Flee</a>
     </div>
     <div id="combat-exit" th:if="${won}">
         <p>The <span th:text="${monster.name}"></span> is dead!</p>

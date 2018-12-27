@@ -28,37 +28,7 @@ public class DungeonService {
         return dungeon.getPoi(position);
     }
 
-    private void checkIncident(Dungeon dungeon, Hero hero) {
-        Event event = null;
-        switch (event.getType()) {
-            case MONSTER: {
-                break;
-            }
-            case POTION: {
-                break;
-            }
-            case TREASURE: {
-                break;
-            }
-            case MAGIC_DOOR: {
-                //Main.draw("You see a strange mystical sign that someone has drawn on the floor" + lineSeparator() +
-                //      "As you step on it suddenly everything around you dissolves into strange shapes and colors" + lineSeparator() +
-                //    " only to reshape into a complete new surrounding!" + lineSeparator() +
-                //  "You entered yet another world. Oh no!");
-                create(RANDOM.nextInt(hero.getLevel() + 4) + 5);
-                break;
-            }
-            case EMPTY: {
-            }
-            case EXPLORED:
-            default: {
-                //Main.draw("Pretty boring area here. Let's move on.");
-                markAsVisited(dungeon);
-            }
-        }
-    }
-
-    private Position getAnyUnoccupiedPosition(Dungeon dungeon) {
+    public Position getAnyUnoccupiedPosition(Dungeon dungeon) {
         if (dungeon.getSize() == 1) {
             return new Position(0, 0);
         }
