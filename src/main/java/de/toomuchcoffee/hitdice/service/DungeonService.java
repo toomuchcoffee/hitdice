@@ -1,13 +1,16 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.*;
-import de.toomuchcoffee.hitdice.factories.EventFactory;
+import de.toomuchcoffee.hitdice.factories.MonsterFactory;
+import de.toomuchcoffee.hitdice.factories.TreasureFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.Event.EXPLORED_EVENT;
-import static de.toomuchcoffee.hitdice.domain.Event.MAGIC_DOOR_EVENT;
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
+import static de.toomuchcoffee.hitdice.domain.Dice.D6;
+import static de.toomuchcoffee.hitdice.domain.Event.*;
+import static de.toomuchcoffee.hitdice.domain.EventType.*;
 
 @Service
 public class DungeonService {
@@ -59,11 +62,24 @@ public class DungeonService {
     private void initPois(Dungeon dungeon) {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getEventMap()[x][y] = EventFactory.create();
+                dungeon.getEventMap()[x][y] = createEvent();
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
         dungeon.getEventMap()[door.getX()][door.getY()] = MAGIC_DOOR_EVENT;
+    }
+
+    private Event createEvent() {
+        int d = D20.roll();
+        if (d > 17) {
+            return new Event(POTION, new Potion(D6.roll(2)));
+        } else if (d > 14) {
+            return new Event(TREASURE, TreasureFactory.createTreasure());
+        } else if (d > 11) {
+            return new Event(MONSTER, MonsterFactory.createMonster());
+        } else {
+            return EMPTY_EVENT;
+        }
     }
 
 }

@@ -49,7 +49,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your stamina: 12/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's stamina: 7/7"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/1"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
         ;
 
         verify(combatService, never()).attack(any(), any());
@@ -80,12 +80,11 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
                 .andExpect(xpath("//div[@id='combat-round']/ul/li[1]").string("Your attack caused 3 points of damage."))
                 .andExpect(xpath("//div[@id='combat-round']/ul/li[2]").string("You received 2 points of damage."))
-                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your stamina: 10/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's stamina: 4/7"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/2"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
         ;
     }
 

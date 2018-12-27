@@ -1,18 +1,16 @@
 package de.toomuchcoffee.hitdice.domain;
 
-public class Weapon extends Treasure {
-    private int diceNumber;
-    private Dice dice;
-    private int bonus;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-
-    public Weapon(String name, int diceNumber, Dice dice, int bonus, boolean metallic) {
-        this.name = name;
-        this.diceNumber = diceNumber;
-        this.dice = dice;
-        this.bonus = bonus;
-        this.metallic = metallic;
-    }
+@Getter
+@RequiredArgsConstructor
+public class Weapon implements Treasure {
+    private final String name;
+    private final int diceNumber;
+    private final Dice dice;
+    private final int bonus;
+    private final boolean metallic;
 
     public int damage() {
         return dice.roll(diceNumber) + bonus;
@@ -21,5 +19,4 @@ public class Weapon extends Treasure {
     public void specialDamage(Combatant defender) {
 
     }
-
 }
