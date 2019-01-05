@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.factories.TreasureFactory.CLUB;
+import static de.toomuchcoffee.hitdice.domain.Weapon.CLUB;
 import static de.toomuchcoffee.hitdice.service.CombatService.CAUSED_DAMAGE_MESSAGE;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
@@ -185,7 +185,7 @@ public class CombatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/dead"))
                 .andExpect(xpath("//h2").string("You are dead!"))
-                .andExpect(xpath("//div[@id='page_content']/a/@href").string("/hero/create"))
+                .andExpect(xpath("//div[@id='page_content']/a/@href").string("/"))
         ;
     }
 

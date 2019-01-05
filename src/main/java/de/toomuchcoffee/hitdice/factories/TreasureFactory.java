@@ -1,23 +1,18 @@
 package de.toomuchcoffee.hitdice.factories;
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Combatant;
+import de.toomuchcoffee.hitdice.domain.Dice;
+import de.toomuchcoffee.hitdice.domain.Treasure;
+import de.toomuchcoffee.hitdice.domain.Weapon;
 
 import java.util.Optional;
 
+import static de.toomuchcoffee.hitdice.domain.Armor.*;
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
+import static de.toomuchcoffee.hitdice.domain.Weapon.*;
 import static java.lang.String.format;
 
 public class TreasureFactory {
-    public static final Armor LEATHER = new Armor("leather armor", 2, false);
-    public static final Armor CHAIN = new Armor("chain mail", 3, true);
-    public static final Armor PLATE = new Armor("plate armor", 4, true);
-    public static final Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
-    public static final Weapon SHORTSWORD = new Weapon("shortsword", 1, Dice.D6, 0, true);
-    public static final Weapon LONGSWORD = new Weapon("longsword", 1, Dice.D8, 0, true);
-    public static final Weapon CLUB = new Weapon("club", 1, D4, 0, false);
-    public static final Weapon MACE = new Weapon("mace", 1, Dice.D6, 1, true);
-    public static final Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
-
     public static Treasure createTreasure() {
         int result = D100.roll();
         if (result < 12) {

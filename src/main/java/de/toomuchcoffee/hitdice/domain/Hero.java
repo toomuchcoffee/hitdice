@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import static de.toomuchcoffee.hitdice.domain.Weapon.FISTS;
+
 @Getter
 @Setter
 public class Hero extends Combatant {
@@ -26,7 +28,12 @@ public class Hero extends Combatant {
     }
 
     public int damage() {
-        return (getWeapon() != null ? getWeapon().damage() : Dice.D2.roll()) + getAttributeBonus(getStrength());
+        return getWeapon().damage() + getAttributeBonus(getStrength());
+    }
+
+    @Override
+    public Weapon getWeapon() {
+        return weapon == null ? FISTS : super.getWeapon();
     }
 
     @Override

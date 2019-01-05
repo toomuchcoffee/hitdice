@@ -7,6 +7,8 @@ import de.toomuchcoffee.hitdice.domain.Weapon;
 import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
+import static de.toomuchcoffee.hitdice.domain.Weapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.Weapon.SHORTSWORD;
 import static java.lang.String.format;
 
 public class MonsterFactory {
@@ -15,9 +17,9 @@ public class MonsterFactory {
         if (result < 30) {
             return new Monster("Rat", 14, 2, new Weapon("teeth", 1, D3, 0, false), 5);
         } else if (result < 55) {
-            return new Monster("Goblin", D6.roll(2), D6.roll(2), TreasureFactory.SHORTSWORD, 15);
+            return new Monster("Goblin", D6.roll(2), D6.roll(2), SHORTSWORD, 15);
         } else if (result < 75) {
-            return new Monster("Orc", D6.roll(3) - 1, D6.roll(3) + 1, TreasureFactory.LONGSWORD, 25);
+            return new Monster("Orc", D6.roll(3) - 1, D6.roll(3) + 1, LONGSWORD, 25);
         } else if (result < 90) {
             return new Monster("Rust monster", D6.roll(3), D6.roll(4), new Weapon("tail", 1, D4, 0, false), 50) {
                 @Override
