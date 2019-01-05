@@ -34,10 +34,7 @@ public class CombatController {
 
         CombatRound combatRound = combatService.fight(hero, monster, round);
 
-        if (combatRound.getRound() > 0) {
-            model.addAttribute("damageCaused", combatRound.getDamageCaused());
-            model.addAttribute("damageReceived", combatRound.getDamageReceived());
-        }
+        model.addAttribute("events", combatRound.getEvents());
 
         if (combatRound.getResult() == DEATH) {
             return "dungeon/dead";

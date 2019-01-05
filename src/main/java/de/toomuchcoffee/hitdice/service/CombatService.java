@@ -8,32 +8,21 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 
 @Service
 public class CombatService {
-    @Getter
-    @RequiredArgsConstructor
-    @EqualsAndHashCode
-    public static class CombatRound {
-        private final int round;
-        private final Integer damageCaused;
-        private final Integer damageReceived;
-        private final CombatResult result;
-    }
-
-    public enum CombatResult {
-        ONGOING, VICTORY, DEATH
-    }
+    public static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
 
     public CombatRound fight(Hero hero, Monster monster, int round) {
-        Integer damageCaused = null;
-        Integer damageReceived = null;
-
+        List<String> events = new ArrayList<>();
         if (round > 0) {
-            damageCaused = attack(hero, monster);
-            damageReceived = attack(monster, hero);
+            events.addAll(attack(hero, monster));
+            events.addAll(attack(monster, hero));
         }
 
         CombatResult result = ONGOING;
@@ -43,20 +32,21 @@ public class CombatService {
             result = VICTORY;
         }
 
-        return new CombatRound(round + 1, damageCaused, damageReceived, result);
+        return new CombatRound(round + 1, events, result);
     }
 
-    private Integer attack(Combatant attacker, Combatant defender) {
+    private List<String> attack(Combatant attacker, Combatant defender) {
+        List<String> events = new ArrayList<>();
         int attackScore = Math.max(1, attacker.getDexterity() - defender.getAttributeBonus(defender.getDexterity()));
         if (D20.roll() <= attackScore) {
             int protection = defender.getArmor() != null ? defender.getArmor().getProtection() : 0;
             int damage = Math.max(0, attacker.damage() - protection);
             defender.decreaseCurrentStaminaBy(damage);
+            events.add(String.format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
             //attacker.specialAttack(defender);
             //defender.specialDefense(attacker);
-            return damage;
         }
-        return null;
+        return events;
     }
 
     private boolean won(Hero hero, Monster monster) {
@@ -65,5 +55,18 @@ public class CombatService {
             return true;
         }
         return false;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @EqualsAndHashCode
+    public static class CombatRound {
+        private final int round;
+        private final List<String> events;
+        private final CombatResult result;
+    }
+
+    public enum CombatResult {
+        ONGOING, VICTORY, DEATH
     }
 }

@@ -16,8 +16,7 @@
             <div id="combat-round">
                 <h5>Round <span th:text="${round}"></span>:</h5>
                 <ul>
-                    <li th:if="${damageCaused}">Your attack caused <span class="green" th:text="${damageCaused}"></span> points of damage.</li>
-                    <li th:if="${damageReceived}">You received <span class="red" th:text="${damageReceived}"></span> points of damage.</li>
+                    <li th:each="event : ${events}" th:text="${event}"></li>
                 </ul>
             </div>
         </span>
