@@ -17,9 +17,9 @@ public class Hero extends Combatant {
     private int level = 1;
 
     public Hero(int strength, int dexterity, int stamina) {
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.stamina = stamina;
+        this.strength = new Attribute(strength);
+        this.dexterity = new Attribute(dexterity);
+        this.stamina = new Attribute(stamina);
         this.currentStamina = stamina;
     }
 
@@ -28,7 +28,7 @@ public class Hero extends Combatant {
     }
 
     public int damage() {
-        return getWeapon().damage() + getAttributeBonus(getStrength());
+        return getWeapon().damage() + getStrength().getBonus();
     }
 
     @Override
@@ -38,6 +38,6 @@ public class Hero extends Combatant {
 
     @Override
     public boolean isAlive() {
-        return getStrength() > 0 && super.isAlive();
+        return getStrength().getValue() > 0 && super.isAlive();
     }
 }

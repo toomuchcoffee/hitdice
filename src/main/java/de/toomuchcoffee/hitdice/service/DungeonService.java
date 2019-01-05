@@ -56,7 +56,7 @@ public class DungeonService {
     }
 
     public void drinkPotion(Hero hero, Potion potion) {
-        hero.setCurrentStamina(Math.min(hero.getCurrentStamina() + potion.getPower(), hero.getStamina()));
+        hero.setCurrentStamina(Math.min(hero.getCurrentStamina() + potion.getPower(), hero.getStamina().getValue()));
     }
 
     private void initPois(Dungeon dungeon) {

@@ -37,7 +37,7 @@ public class CombatService {
 
     private List<String> attack(Combatant attacker, Combatant defender) {
         List<String> events = new ArrayList<>();
-        int attackScore = Math.max(1, attacker.getDexterity() - defender.getAttributeBonus(defender.getDexterity()));
+        int attackScore = Math.max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
         if (D20.roll() <= attackScore) {
             int protection = defender.getArmor() != null ? defender.getArmor().getProtection() : 0;
             int damage = Math.max(0, attacker.damage() - protection);

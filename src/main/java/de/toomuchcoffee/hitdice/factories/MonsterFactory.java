@@ -40,9 +40,9 @@ public class MonsterFactory {
             return new Monster("Troll", D6.roll(2), D6.roll(4), new Weapon("claws", 2, D6, 0, false), 100) {
                 @Override
                 public Optional<String> specialDefense(Combatant hero) {
-                    if (this.getCurrentStamina() < this.getStamina()) {
+                    if (this.getCurrentStamina() < this.getStamina().getValue()) {
                         int regeneration = D3.roll();
-                        this.setStamina(this.getStamina() + regeneration);
+                        this.setCurrentStamina(this.getCurrentStamina() + regeneration);
                         return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
                     }
                     return Optional.empty();
@@ -53,7 +53,7 @@ public class MonsterFactory {
                 @Override
                 public Optional<String> specialDefense(Combatant hero) {
                     if (D20.roll() < 6) {
-                        hero.setStrength(hero.getStrength() - 1);
+                        hero.getStrength().decrease();
                         return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
                     }
                     return Optional.empty();

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
+import static java.lang.Math.abs;
 import static java.lang.String.format;
 
 @Getter
@@ -27,7 +28,7 @@ public class Weapon implements Treasure {
 
     public String getDisplayName() {
         if (bonus < 0) {
-            return format("%s (dmg: %dD%s - %d)", name, diceNumber, dice.sides, -1 * bonus);
+            return format("%s (dmg: %dD%s - %d)", name, diceNumber, dice.sides, abs(bonus));
         } else if (bonus > 0) {
             return format("%s (dmg: %dD%s + %d)", name, diceNumber, dice.sides, bonus);
         }

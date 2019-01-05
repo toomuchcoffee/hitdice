@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title th:text="${monster.name} + ' attack!'"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
@@ -23,12 +23,12 @@
 
     <div id="combat-stats" th:with="hero=${session.hero}">
         <div>
-            <span th:text="'Your stamina: ' + ${hero.currentStamina} + '/' + ${hero.stamina}"></span>
-            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.currentStamina}, max=${hero.stamina})"></div>
+            <span th:text="'Your stamina: ' + ${hero.currentStamina} + '/' + ${hero.stamina.value}"></span>
+            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.currentStamina}, max=${hero.stamina.value})"></div>
         </div>
         <div>
-            <span th:text="${monster.name} + '\'s stamina: ' + ${monster.currentStamina} + '/' + ${monster.stamina}"></span>
-            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.currentStamina}, max=${monster.stamina})"></div>
+            <span th:text="${monster.name} + '\'s stamina: ' + ${monster.currentStamina} + '/' + ${monster.stamina.value}"></span>
+            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.currentStamina}, max=${monster.stamina.value})"></div>
         </div>
     </div>
 

@@ -47,7 +47,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//h3").string("Create Hero"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12/12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/hero/create"))
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[2]/@href").string("/hero/create/2"))
         ;
@@ -69,7 +69,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//h3").string("Complete your hero"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12/12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
                 .andExpect(xpath("//form/@action").string("/hero/create/3"))
                 .andExpect(xpath("//form/input[@name='name']").exists())
                 .andExpect(xpath("//form/input[@type='submit']/@value").string("Save"))
@@ -97,7 +97,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//fieldset[@id='hero-stats']/legend").string("Alrik"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12/12"))
+                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/dungeon/create/8"))
         ;
 

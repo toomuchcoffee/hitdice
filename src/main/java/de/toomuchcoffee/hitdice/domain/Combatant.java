@@ -12,9 +12,9 @@ import java.util.Optional;
 public abstract class Combatant {
     protected String name;
 
-    protected int strength;
-    protected int dexterity;
-    protected int stamina;
+    protected Attribute strength;
+    protected Attribute dexterity;
+    protected Attribute stamina;
 
     protected int currentStamina;
 
@@ -41,22 +41,6 @@ public abstract class Combatant {
     }
 
     public abstract int damage();
-
-    public int getAttributeBonus(int attributeValue) {
-        if (attributeValue >= 18) {
-            return 3;
-        }
-        if (attributeValue >= 16) {
-            return 2;
-        }
-        if (attributeValue >= 13) {
-            return 1;
-        }
-        if (attributeValue < 9) {
-            return -1;
-        }
-        return 0;
-    }
 
     public Optional<String> specialAttack(Combatant defender) {
         if (getWeapon() != null) {
