@@ -43,8 +43,8 @@ public class CombatService {
             int damage = Math.max(0, attacker.damage() - protection);
             defender.decreaseCurrentStaminaBy(damage);
             events.add(String.format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
-            //attacker.specialAttack(defender);
-            //defender.specialDefense(attacker);
+            attacker.specialAttack(defender).ifPresent(events::add);
+            defender.specialDefense(attacker).ifPresent(events::add);
         }
         return events;
     }

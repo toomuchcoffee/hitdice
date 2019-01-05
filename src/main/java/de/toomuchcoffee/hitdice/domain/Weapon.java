@@ -3,6 +3,8 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Getter
 @RequiredArgsConstructor
 public class Weapon implements Treasure {
@@ -16,7 +18,7 @@ public class Weapon implements Treasure {
         return dice.roll(diceNumber) + bonus;
     };
 
-    public void specialDamage(Combatant defender) {
-
+    public Optional<String> specialDamage(Combatant defender) {
+        return Optional.empty();
     }
 }

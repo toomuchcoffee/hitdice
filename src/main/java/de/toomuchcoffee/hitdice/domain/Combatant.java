@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -57,13 +58,14 @@ public abstract class Combatant {
         return 0;
     }
 
-    public void specialAttack(Combatant defender) {
-        if(getWeapon() != null) {
-            getWeapon().specialDamage(defender);
+    public Optional<String> specialAttack(Combatant defender) {
+        if (getWeapon() != null) {
+            return getWeapon().specialDamage(defender);
         }
+        return Optional.empty();
     }
 
-    public void specialDefense(Combatant attacker) {
-
+    public Optional<String> specialDefense(Combatant attacker) {
+        return Optional.empty();
     }
 }

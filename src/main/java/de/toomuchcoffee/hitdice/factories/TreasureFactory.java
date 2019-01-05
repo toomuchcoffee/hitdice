@@ -2,7 +2,10 @@ package de.toomuchcoffee.hitdice.factories;
 
 import de.toomuchcoffee.hitdice.domain.*;
 
+import java.util.Optional;
+
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
+import static java.lang.String.format;
 
 public class TreasureFactory {
     public static final Armor LEATHER = new Armor("leather armor", 2, false);
@@ -38,13 +41,13 @@ public class TreasureFactory {
         } else {
             return new Weapon("magic sword", 1, Dice.D8, 1, true) {
                 @Override
-                public void specialDamage(Combatant defender) {
+                public Optional<String> specialDamage(Combatant defender) {
                     if (D20.roll() < 6) {
                         int extraDamage = D4.roll();
                         defender.decreaseCurrentStaminaBy(extraDamage);
-                        //Main.draw("Wohoo, the magic sword lit up like a torch");
-                        //Main.draw("The fire caused %d extra points of damage on your enemy.", extraDamage);
+                        return Optional.of(format("Wohoo, the magic sword lit up like a torch: The fire caused %d extra points of damage on your enemy.", extraDamage));
                     }
+                    return Optional.empty();
                 }
             };
         }
