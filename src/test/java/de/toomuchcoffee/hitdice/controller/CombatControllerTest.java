@@ -4,6 +4,7 @@ import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
+import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.factories.TreasureFactory.CLUB;
+import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = CombatController.class)
+@WebMvcTest(controllers = CombatController.class, secure = false)
 @RunWith(SpringRunner.class)
 public class CombatControllerTest {
 
@@ -40,7 +43,11 @@ public class CombatControllerTest {
         Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
+        when(combatService.fight(eq(hero), eq(monster), anyInt()))
+                .thenReturn(new CombatRound(0, 0, 0, ONGOING));
+
         this.mvc.perform(get("/combat/attack/0")
+                .secure(true)
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
@@ -51,8 +58,6 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/1"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
         ;
-
-        verify(combatService, never()).attack(any(), any());
     }
 
     @Test
@@ -65,12 +70,13 @@ public class CombatControllerTest {
         session.setAttribute("monster", monster);
 
         int damageCaused = 3;
-        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
         monster.decreaseCurrentStaminaBy(damageCaused);
 
         int damageReceived = 2;
-        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
         hero.decreaseCurrentStaminaBy(damageReceived);
+
+        when(combatService.fight(eq(hero), eq(monster), anyInt()))
+                .thenReturn(new CombatRound(1, 3, 2, ONGOING));
 
         this.mvc.perform(get("/combat/attack/1")
                 .session(session)
@@ -97,15 +103,14 @@ public class CombatControllerTest {
         Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
-        when(combatService.won(hero, monster)).thenCallRealMethod();
-
         int damageCaused = 7;
-        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
         monster.decreaseCurrentStaminaBy(damageCaused);
 
         int damageReceived = 2;
-        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
         hero.decreaseCurrentStaminaBy(damageReceived);
+
+        when(combatService.fight(eq(hero), eq(monster), anyInt()))
+                .thenReturn(new CombatRound(1, 7, 2, VICTORY));
 
         this.mvc.perform(get("/combat/attack/1")
                 .session(session)
@@ -124,7 +129,6 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/continue"))
         ;
 
-        assertThat(hero.getExperience()).isEqualTo(15);
         assertThat(session.getAttribute("monster")).isNull();
     }
 
@@ -138,12 +142,13 @@ public class CombatControllerTest {
         session.setAttribute("monster", monster);
 
         int damageCaused = 2;
-        when(combatService.attack(eq(hero), eq(monster))).thenReturn(damageCaused);
         monster.decreaseCurrentStaminaBy(damageCaused);
 
         int damageReceived = 12;
-        when(combatService.attack(eq(monster), eq(hero))).thenReturn(damageReceived);
         hero.decreaseCurrentStaminaBy(damageReceived);
+
+        when(combatService.fight(eq(hero), eq(monster), anyInt()))
+                .thenReturn(new CombatRound(1, 2, 12, DEATH));
 
         this.mvc.perform(get("/combat/attack/1")
                 .session(session)

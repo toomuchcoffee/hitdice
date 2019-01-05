@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.controller;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
+import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.DEATH;
+import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.VICTORY;
 
 @Controller
 @RequestMapping("combat")
@@ -28,26 +32,23 @@ public class CombatController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 
-        if (round > 0) {
-            Integer damageCaused = combatService.attack(hero, monster);
-            model.addAttribute("damageCaused", damageCaused);
+        CombatRound combatRound = combatService.fight(hero, monster, round);
 
-            Integer damageReceived = combatService.attack(monster, hero);
-            model.addAttribute("damageReceived", damageReceived);
+        if (combatRound.getRound() > 0) {
+            model.addAttribute("damageCaused", combatRound.getDamageCaused());
+            model.addAttribute("damageReceived", combatRound.getDamageReceived());
         }
 
-        if (!hero.isAlive()) {
+        if (combatRound.getResult() == DEATH) {
             return "dungeon/dead";
-        }
-
-        boolean won = combatService.won(hero, monster);
-        model.addAttribute("won", won);
-        if (won) {
+        } else if (combatRound.getResult() == VICTORY) {
+            model.addAttribute("won", true);
             request.getSession().removeAttribute("monster");
         }
 
         model.addAttribute("monster", monster);
         model.addAttribute("round", round);
+
         return "dungeon/combat";
     }
 

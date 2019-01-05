@@ -39,11 +39,9 @@ public class HeroController {
     public String save(HttpServletRequest request, HeroUpdate heroUpdate) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
-
-        // TODO
         hero.setWeapon(TreasureFactory.DAGGER);
 
-        // TODO save into DB?
+        // TODO save into DB
         return "hero/create/step-3";
     }
 
