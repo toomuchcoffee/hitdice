@@ -27,10 +27,6 @@ public class Hero extends Combatant {
         this.experience += experience;
     }
 
-    public int damage() {
-        return getWeapon().damage() + getStrength().getBonus();
-    }
-
     @Override
     public Weapon getWeapon() {
         return weapon == null ? FISTS : super.getWeapon();

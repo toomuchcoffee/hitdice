@@ -47,8 +47,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = new Hero(10, 11, 12);
         hero.setName("Alrik");
-
-        monster = new Monster("Orc", 6, 7, CLUB, 15);
+        monster = new Monster("Orc", 13, 6, 7, CLUB, 15);
     }
 
     @Test
@@ -159,9 +158,7 @@ public class CombatControllerTest {
     public void combatAttackKillsHero() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("dungeon", new Dungeon(1));
-        Hero hero = new Hero(10, 11, 12);
         session.setAttribute("hero", hero);
-        Monster monster = new Monster("Orc", 6, 7, CLUB, 15);
         session.setAttribute("monster", monster);
 
         int damageCaused = 2;

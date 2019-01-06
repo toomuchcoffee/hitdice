@@ -40,8 +40,6 @@ public abstract class Combatant {
         return inventory;
     }
 
-    public abstract int damage();
-
     public Optional<String> specialAttack(Combatant defender) {
         if (getWeapon() != null) {
             return getWeapon().specialDamage(defender);

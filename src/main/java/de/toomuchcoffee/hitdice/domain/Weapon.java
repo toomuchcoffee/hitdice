@@ -1,11 +1,12 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.service.DiceService.Dice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import static de.toomuchcoffee.hitdice.domain.Dice.*;
+import static de.toomuchcoffee.hitdice.service.DiceService.Dice.*;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 
@@ -15,7 +16,7 @@ public class Weapon implements Treasure {
     public static final Weapon FISTS = new Weapon("fists", 1, D2, 0, true);
     public static final Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
     public static final Weapon SHORTSWORD = new Weapon("shortsword", 1, D6, 0, true);
-    public static final Weapon LONGSWORD = new Weapon("longsword", 1, Dice.D8, 0, true);
+    public static final Weapon LONGSWORD = new Weapon("longsword", 1, D8, 0, true);
     public static final Weapon CLUB = new Weapon("club", 1, D4, 0, false);
     public static final Weapon MACE = new Weapon("mace", 1, D6, 1, true);
     public static final Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
@@ -34,10 +35,6 @@ public class Weapon implements Treasure {
         }
         return format("%s (dmg: %dD%s)", name, diceNumber, dice.sides);
     }
-
-    public int damage() {
-        return dice.roll(diceNumber) + bonus;
-    };
 
     public Optional<String> specialDamage(Combatant defender) {
         return Optional.empty();

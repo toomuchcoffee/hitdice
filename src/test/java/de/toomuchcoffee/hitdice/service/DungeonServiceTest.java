@@ -5,11 +5,18 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Position;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static de.toomuchcoffee.hitdice.domain.Direction.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DungeonServiceTest {
+
+    @Mock
+    private DiceService diceService;
 
     private DungeonService dungeonService;
 
@@ -18,7 +25,7 @@ public class DungeonServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        dungeonService = new DungeonService();
+        dungeonService = new DungeonService(diceService);
         hero = new Hero(10, 11, 12);
         dungeon = new Dungeon(3);
         dungeon.setPosition(new Position(1, 1));

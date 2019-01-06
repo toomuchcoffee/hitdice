@@ -1,14 +1,18 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Dice;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static de.toomuchcoffee.hitdice.service.DiceService.Dice.D6;
+
 @Service
+@RequiredArgsConstructor
 public class HeroService {
+    private final DiceService diceService;
 
     public Hero create() {
-        return new Hero(Dice.D6.roll(3), Dice.D6.roll(3), Dice.D6.roll(3));
+        return new Hero(diceService.roll(D6, 3), diceService.roll(D6, 3), diceService.roll(D6, 3));
     }
 
     public void gainExperience(Hero hero, int experience) {
