@@ -52,7 +52,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[2]/@href").string("/hero/create/2"))
         ;
 
-        assertThat(session.getAttribute("hero")).isEqualToComparingFieldByField(new Hero(10, 11, 12));
+        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(new Hero(10, 11, 12), "combatActions");
     }
 
     @Test

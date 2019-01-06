@@ -11,9 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static de.toomuchcoffee.hitdice.service.DiceService.Dice.D20;
+import static java.lang.Math.max;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +37,8 @@ public class CombatService {
         CombatResult result = ONGOING;
         if (!hero.isAlive()) {
             result = DEATH;
-        } else if (won(hero, monster)) {
+        } else if (!monster.isAlive()) {
+            hero.increaseExperience(monster.getValue());
             result = VICTORY;
         }
 
@@ -40,30 +46,35 @@ public class CombatService {
     }
 
     private List<String> attack(Combatant attacker, Combatant defender) {
-        List<String> events = new ArrayList<>();
-        int attackScore = Math.max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
-        if (diceService.roll(D20) <= attackScore) {
-            int protection = defender.getArmor() != null ? defender.getArmor().getProtection() : 0;
-            int damage = Math.max(0, determineDamage(attacker) - protection);
-            defender.decreaseCurrentStaminaBy(damage);
-            events.add(String.format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
-            attacker.specialAttack(defender).ifPresent(events::add);
-            defender.specialDefense(attacker).ifPresent(events::add);
-        }
+        List<String> actions = attacker.getCombatActions().stream()
+                .map(a -> a.execute(defender, diceService))
+                .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+                .collect(toList());
+        List<String> events = new ArrayList<>(actions);
+
+        attacker.specialAttack(defender).ifPresent(events::add);
+        defender.specialDefense(attacker).ifPresent(events::add);
         return events;
     }
+    @RequiredArgsConstructor
+    public static class CombatAction {
 
-    private int determineDamage(Combatant combatant) {
-        Weapon weapon = combatant.getWeapon();
-        return diceService.roll(weapon.getDice(), weapon.getDiceNumber()) + weapon.getBonus() + combatant.getStrength().getBonus();
-    }
+        private final Combatant attacker;
 
-    private boolean won(Hero hero, Monster monster) {
-        if (!monster.isAlive()) {
-            hero.increaseExperience(monster.getValue());
-            return true;
+        public Optional<String> execute(Combatant defender, DiceService diceService) {
+            int attackScore = max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
+            if (diceService.roll(D20) <= attackScore) {
+                Weapon weapon = attacker.getWeapon();
+                int damage = max(0, diceService.roll(weapon.getDice(), weapon.getDiceNumber())
+                        + weapon.getBonus()
+                        + attacker.getStrength().getBonus()
+                        - defender.getArmor().getProtection());
+                defender.decreaseCurrentStaminaBy(damage);
+                return Optional.of(format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
+            }
+            return Optional.empty();
         }
-        return false;
+
     }
 
     @Getter

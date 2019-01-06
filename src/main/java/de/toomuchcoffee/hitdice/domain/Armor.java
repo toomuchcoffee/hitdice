@@ -8,6 +8,7 @@ import static java.lang.String.format;
 @Getter
 @RequiredArgsConstructor
 public class Armor implements Treasure {
+    public static final Armor NONE = new Armor("none", 0, false);
     public static final Armor LEATHER = new Armor("leather armor", 2, false);
     public static final Armor CHAIN = new Armor("chain mail", 3, true);
     public static final Armor PLATE = new Armor("plate armor", 4, true);

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
 import static de.toomuchcoffee.hitdice.domain.Weapon.FISTS;
 
 @Getter
@@ -30,6 +31,11 @@ public class Hero extends Combatant {
     @Override
     public Weapon getWeapon() {
         return weapon == null ? FISTS : super.getWeapon();
+    }
+
+    @Override
+    public Armor getArmor() {
+        return armor == null ? NONE : super.getArmor();
     }
 
     @Override

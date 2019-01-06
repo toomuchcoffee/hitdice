@@ -1,11 +1,13 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @Getter
 @Setter
@@ -21,23 +23,14 @@ public abstract class Combatant {
     protected Weapon weapon;
     protected Armor armor;
 
+    protected List<CombatAction> combatActions = newArrayList(new CombatAction(this));
+
     public boolean isAlive() {
         return getCurrentStamina() > 0;
     }
 
     public void decreaseCurrentStaminaBy(int decreasement) {
         this.currentStamina -= decreasement;
-    }
-
-    public List<Treasure> getInventory() {
-        List<Treasure> inventory = new ArrayList<Treasure>();
-        if (getWeapon()!=null) {
-            inventory.add(getWeapon());
-        }
-        if (getArmor()!=null) {
-            inventory.add(getArmor());
-        }
-        return inventory;
     }
 
     public Optional<String> specialAttack(Combatant defender) {
