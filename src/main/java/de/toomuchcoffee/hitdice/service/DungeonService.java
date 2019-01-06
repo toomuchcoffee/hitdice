@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,56 +97,84 @@ public class DungeonService {
         } else if (result < 75) {
             return new Monster("Orc", diceService.roll(D6, 3) + 1, diceService.roll(D6, 3) - 1, diceService.roll(D6, 3) + 1, LONGSWORD, 25);
         } else if (result < 90) {
-            return new Monster("Rust monster", diceService.roll(D6, 3), diceService.roll(D6, 3), diceService.roll(D6, 4), new Weapon("tail", 1, D4, 0, false), 50) {
-                @Override
-                public Optional<String> specialAttack(Combatant hero) {
-                    if (diceService.roll(D20) < 9) {
-                        if (hero.getWeapon() != null && hero.getWeapon().isMetallic()) {
-                            hero.setWeapon(null);
-                            return Optional.of("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
-                        } else if (hero.getArmor() != null && hero.getArmor().isMetallic()) {
-                            hero.setArmor(null);
-                            return Optional.of("Friggin rust monster! It hit your armor and it crumbles to rust.");
+            return new Monster(
+                    "Rust monster",
+                    diceService.roll(D6, 3),
+                    diceService.roll(D6, 3),
+                    diceService.roll(D6, 4),
+                    new Weapon("tail", 1, D4, 0, false),
+                    50,
+                    new CombatAction() {
+                        @Override
+                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+                            if (diceService.roll(D20) < 9) {
+                                if (defender.getWeapon() != null && defender.getWeapon().isMetallic()) {
+                                    defender.setWeapon(null);
+                                    return Optional.of("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
+                                } else if (defender.getArmor() != null && defender.getArmor().isMetallic()) {
+                                    defender.setArmor(null);
+                                    return Optional.of("Friggin rust monster! It hit your armor and it crumbles to rust.");
+                                }
+                            }
+                            return Optional.empty();
                         }
-                    }
-                    return Optional.empty();
-                }
-            };
+                    });
         } else if (result < 97) {
-            return new Monster("Troll", diceService.roll(D6, 4), diceService.roll(D6, 2), diceService.roll(D6, 4), new Weapon("claws", 1, D10, 0, false), 100) {
-                @Override
-                public Optional<String> specialDefense(Combatant hero) {
-                    if (this.getCurrentStamina() < this.getStamina().getValue()) {
-                        int regeneration = diceService.roll(D3);
-                        this.setCurrentStamina(this.getCurrentStamina() + regeneration);
-                        return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
-                    }
-                    return Optional.empty();
-                }
-            };
+            return new Monster(
+                    "Troll",
+                    diceService.roll(D6, 4),
+                    diceService.roll(D6, 2),
+                    diceService.roll(D6, 4),
+                    new Weapon("claws", 1, D10, 0, false),
+                    100,
+                    new CombatAction() {
+                        @Override
+                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+                            if (attacker.getCurrentStamina() < attacker.getStamina().getValue()) {
+                                int regeneration = diceService.roll(D3);
+                                attacker.setCurrentStamina(attacker.getCurrentStamina() + regeneration);
+                                return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
+                            }
+                            return Optional.empty();
+                        }
+                    });
         } else if (result < 100) {
-            return new Monster("Vampire", diceService.roll(D6, 4), diceService.roll(D6, 2) + 6, diceService.roll(D6, 4), new Weapon("bite", 2, D4, 0, false), 200) {
-                @Override
-                public Optional<String> specialDefense(Combatant hero) {
-                    if (diceService.roll(D20) < 6) {
-                        hero.getStrength().decrease();
-                        return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
-                    }
-                    return Optional.empty();
-                }
-            };
+            return new Monster(
+                    "Vampire",
+                    diceService.roll(D6, 4),
+                    diceService.roll(D6, 2) + 6,
+                    diceService.roll(D6, 4),
+                    new Weapon("bite", 2, D4, 0, false),
+                    200,
+                    new CombatAction() {
+                        @Override
+                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+                            if (diceService.roll(D20) < 6) {
+                                defender.getStrength().decrease();
+                                return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
+                            }
+                            return Optional.empty();
+                        }
+                    });
         } else {
-            return new Monster("Dragon", 50, 18, 100, new Weapon("claws", 2, D8, 0, false), 1000) {
-                @Override
-                public Optional<String> specialAttack(Combatant hero) {
-                    if (diceService.roll(D20) < 7) {
-                        int damage = diceService.roll(D8, 5);
-                        hero.decreaseCurrentStaminaBy(damage);
-                        return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
-                    }
-                    return Optional.empty();
-                }
-            };
+            return new Monster(
+                    "Dragon",
+                    50,
+                    18,
+                    100,
+                    new Weapon("claws", 2, D8, 0, false),
+                    1000,
+                    new CombatAction(){
+                        @Override
+                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+                            if (diceService.roll(D20) < 7) {
+                                int damage = diceService.roll(D8, 5);
+                                defender.decreaseCurrentStaminaBy(damage);
+                                return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
+                            }
+                            return Optional.empty();
+                        }
+                    });
         }
     }
 
@@ -170,17 +199,7 @@ public class DungeonService {
         } else if (result < 96) {
             return PLATE;
         } else {
-            return new Weapon("magic sword", 1, DiceService.Dice.D8, 1, true) {
-                @Override
-                public Optional<String> specialDamage(Combatant defender) {
-                    if (diceService.roll(D20) < 6) {
-                        int extraDamage = diceService.roll(D4);
-                        defender.decreaseCurrentStaminaBy(extraDamage);
-                        return Optional.of(format("Wohoo, the magic sword lit up like a torch: The fire caused %d extra points of damage on your enemy.", extraDamage));
-                    }
-                    return Optional.empty();
-                }
-            };
+            return new Weapon("magic sword", 1, DiceService.Dice.D8, 1, true);
         }
     }
 }

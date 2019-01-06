@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
 
 @Getter
 @Setter
@@ -21,9 +21,9 @@ public abstract class Combatant {
     protected int currentStamina;
 
     protected Weapon weapon;
-    protected Armor armor;
+    protected Armor armor = NONE;
 
-    protected List<CombatAction> combatActions = newArrayList(new CombatAction(this));
+    protected List<CombatAction> combatActions = newArrayList(new CombatAction());
 
     public boolean isAlive() {
         return getCurrentStamina() > 0;
@@ -33,14 +33,4 @@ public abstract class Combatant {
         this.currentStamina -= decreasement;
     }
 
-    public Optional<String> specialAttack(Combatant defender) {
-        if (getWeapon() != null) {
-            return getWeapon().specialDamage(defender);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<String> specialDefense(Combatant attacker) {
-        return Optional.empty();
-    }
 }

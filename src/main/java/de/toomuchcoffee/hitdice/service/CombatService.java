@@ -46,22 +46,14 @@ public class CombatService {
     }
 
     private List<String> attack(Combatant attacker, Combatant defender) {
-        List<String> actions = attacker.getCombatActions().stream()
-                .map(a -> a.execute(defender, diceService))
+        return attacker.getCombatActions().stream()
+                .map(a -> a.execute(attacker, defender, diceService))
                 .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
                 .collect(toList());
-        List<String> events = new ArrayList<>(actions);
-
-        attacker.specialAttack(defender).ifPresent(events::add);
-        defender.specialDefense(attacker).ifPresent(events::add);
-        return events;
     }
-    @RequiredArgsConstructor
+
     public static class CombatAction {
-
-        private final Combatant attacker;
-
-        public Optional<String> execute(Combatant defender, DiceService diceService) {
+        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
             int attackScore = max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
             if (diceService.roll(D20) <= attackScore) {
                 Weapon weapon = attacker.getWeapon();
