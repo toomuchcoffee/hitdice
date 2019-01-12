@@ -10,14 +10,15 @@ import static java.lang.String.format;
 
 @Getter
 @RequiredArgsConstructor
-public class Weapon implements Treasure {
-    public static final Weapon FISTS = new Weapon("fists", 1, D2, 0, false);
-    public static final Weapon DAGGER = new Weapon("dagger", 1, D4, 0, true);
-    public static final Weapon SHORTSWORD = new Weapon("shortsword", 1, D6, 0, true);
-    public static final Weapon LONGSWORD = new Weapon("longsword", 1, D8, 0, true);
-    public static final Weapon CLUB = new Weapon("club", 1, D4, 0, false);
-    public static final Weapon MACE = new Weapon("mace", 1, D6, 1, true);
-    public static final Weapon STAFF = new Weapon("staff", 1, D4, 1, false);
+public enum Weapon implements Treasure, Attack {
+    FISTS("fists", 1, D2, 0, false),
+    DAGGER("dagger", 1, D4, 0, true),
+    SHORTSWORD("shortsword", 1, D6, 0, true),
+    LONGSWORD("longsword", 1, D8, 0, true),
+    CLAYMORE("claymore", 1, D10, 0, true),
+    CLUB("club", 1, D4, 0, false),
+    MACE("mace", 1, D6, 1, true),
+    STAFF("staff", 1, D4, 1, false);
 
     private final String name;
     private final int diceNumber;

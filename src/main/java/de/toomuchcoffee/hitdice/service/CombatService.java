@@ -1,9 +1,9 @@
 package de.toomuchcoffee.hitdice.service;
 
+import de.toomuchcoffee.hitdice.domain.Attack;
 import de.toomuchcoffee.hitdice.domain.Combatant;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
-import de.toomuchcoffee.hitdice.domain.Weapon;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class CombatService {
             public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
                 int attackScore = max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
                 if (diceService.roll(D20) <= attackScore) {
-                    Weapon weapon = attacker.getWeapon();
+                    Attack weapon = attacker.getWeapon();
                     int damage = max(0, diceService.roll(weapon.getDice(), weapon.getDiceNumber())
                             + weapon.getBonus()
                             + attacker.getStrength().getBonus()

@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Monster.NaturalWeapon;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -91,7 +92,7 @@ public class DungeonService {
     private Monster createMonster() {
         int result = diceService.roll(D100);
         if (result < 30) {
-            return new Monster("Rat", 2, 14, 2, new Weapon("teeth", 1, D4, 0, false), 5);
+            return new Monster("Rat", 2, 14, 2, new NaturalWeapon("teeth", 1, D4, 0), 5);
         } else if (result < 55) {
             return new Monster("Goblin", diceService.roll(D6, 2), diceService.roll(D6, 2), diceService.roll(D6, 2), SHORTSWORD, 15);
         } else if (result < 75) {
@@ -102,13 +103,13 @@ public class DungeonService {
                     diceService.roll(D6, 3),
                     diceService.roll(D6, 3),
                     diceService.roll(D6, 4),
-                    new Weapon("tail", 1, D4, 0, false),
+                    new NaturalWeapon("tail", 1, D4, 0),
                     50,
                     new CombatAction() {
                         @Override
                         public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
                             if (diceService.roll(D20) < 9) {
-                                if (defender.getWeapon() != null && defender.getWeapon().isMetallic()) {
+                                if (defender.getWeapon() != null && defender.getWeapon() instanceof Weapon && ((Weapon) defender.getWeapon()).isMetallic()) {
                                     defender.setWeapon(null);
                                     return Optional.of("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
                                 } else if (defender.getArmor() != null && defender.getArmor().isMetallic()) {
@@ -125,7 +126,7 @@ public class DungeonService {
                     diceService.roll(D6, 4),
                     diceService.roll(D6, 2),
                     diceService.roll(D6, 4),
-                    new Weapon("claws", 1, D10, 0, false),
+                    new NaturalWeapon("claws", 1, D10, 0),
                     100,
                     new CombatAction() {
                         @Override
@@ -144,7 +145,7 @@ public class DungeonService {
                     diceService.roll(D6, 4),
                     diceService.roll(D6, 2) + 6,
                     diceService.roll(D6, 4),
-                    new Weapon("bite", 2, D4, 0, false),
+                    new NaturalWeapon("bite", 2, D4, 0),
                     200,
                     new CombatAction() {
                         @Override
@@ -162,7 +163,7 @@ public class DungeonService {
                     50,
                     18,
                     100,
-                    new Weapon("claws", 2, D8, 0, false),
+                    new NaturalWeapon("claws", 2, D8, 0),
                     1000,
                     new CombatAction(){
                         @Override
@@ -199,7 +200,7 @@ public class DungeonService {
         } else if (result < 96) {
             return PLATE;
         } else {
-            return new Weapon("magic sword", 1, DiceService.Dice.D8, 1, true);
+            return CLAYMORE;
         }
     }
 }

@@ -1,6 +1,9 @@
 package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
+import de.toomuchcoffee.hitdice.service.DiceService;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import static java.util.Arrays.asList;
 
@@ -8,7 +11,7 @@ public class Monster extends Combatant {
 
     private int value;
 
-    public Monster(String name, int strength, int dexterity, int stamina, Weapon weapon, int value, CombatAction... additionalActions) {
+    public Monster(String name, int strength, int dexterity, int stamina, Attack weapon, int value, CombatAction... additionalActions) {
         this.name = name;
         this.strength = new Attribute(strength);
         this.dexterity = new Attribute(dexterity);
@@ -23,4 +26,12 @@ public class Monster extends Combatant {
         return value;
     }
 
+    @Getter
+    @RequiredArgsConstructor
+    public static class NaturalWeapon implements Attack {
+        private final String name;
+        private final int diceNumber;
+        private final DiceService.Dice dice;
+        private final int bonus;
+    }
 }

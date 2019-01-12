@@ -21,7 +21,7 @@ public abstract class Combatant {
 
     protected int health;
 
-    protected Weapon weapon;
+    protected Attack weapon;
     protected Armor armor = NONE;
 
     protected List<CombatAction> combatActions = newArrayList(new WeaponAttack());

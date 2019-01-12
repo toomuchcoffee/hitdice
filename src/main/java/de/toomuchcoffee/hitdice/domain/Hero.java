@@ -25,7 +25,7 @@ public class Hero extends Combatant {
     }
 
     @Override
-    public Weapon getWeapon() {
+    public Attack getWeapon() {
         return weapon == null ? FISTS : super.getWeapon();
     }
 
