@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
+import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +24,7 @@ public abstract class Combatant {
     protected Weapon weapon;
     protected Armor armor = NONE;
 
-    protected List<CombatAction> combatActions = newArrayList(new CombatAction());
+    protected List<CombatAction> combatActions = newArrayList(new WeaponAttack());
 
     public boolean isAlive() {
         return getCurrentStamina() > 0;

@@ -52,21 +52,24 @@ public class CombatService {
                 .collect(toList());
     }
 
-    public static class CombatAction {
-        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-            int attackScore = max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
-            if (diceService.roll(D20) <= attackScore) {
-                Weapon weapon = attacker.getWeapon();
-                int damage = max(0, diceService.roll(weapon.getDice(), weapon.getDiceNumber())
-                        + weapon.getBonus()
-                        + attacker.getStrength().getBonus()
-                        - defender.getArmor().getProtection());
-                defender.decreaseCurrentStaminaBy(damage);
-                return Optional.of(format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
-            }
-            return Optional.empty();
-        }
+    public interface CombatAction {
+        Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService);
 
+        class WeaponAttack implements CombatAction {
+            public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+                int attackScore = max(1, attacker.getDexterity().getValue() - defender.getDexterity().getBonus());
+                if (diceService.roll(D20) <= attackScore) {
+                    Weapon weapon = attacker.getWeapon();
+                    int damage = max(0, diceService.roll(weapon.getDice(), weapon.getDiceNumber())
+                            + weapon.getBonus()
+                            + attacker.getStrength().getBonus()
+                            - defender.getArmor().getProtection());
+                    defender.decreaseCurrentStaminaBy(damage);
+                    return Optional.of(format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
+                }
+                return Optional.empty();
+            }
+        }
     }
 
     @Getter
