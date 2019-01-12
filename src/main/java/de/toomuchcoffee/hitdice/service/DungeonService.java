@@ -62,7 +62,7 @@ public class DungeonService {
     }
 
     public void drinkPotion(Hero hero, Potion potion) {
-        hero.setCurrentStamina(Math.min(hero.getCurrentStamina() + potion.getPower(), hero.getStamina().getValue()));
+        hero.setHealth(Math.min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
     }
 
     private void initPois(Dungeon dungeon) {
@@ -130,9 +130,9 @@ public class DungeonService {
                     new CombatAction() {
                         @Override
                         public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-                            if (attacker.getCurrentStamina() < attacker.getStamina().getValue()) {
+                            if (attacker.getHealth() < attacker.getStamina().getValue()) {
                                 int regeneration = diceService.roll(D3);
-                                attacker.setCurrentStamina(attacker.getCurrentStamina() + regeneration);
+                                attacker.setHealth(attacker.getHealth() + regeneration);
                                 return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
                             }
                             return Optional.empty();

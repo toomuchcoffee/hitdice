@@ -13,7 +13,7 @@ public class Monster extends Combatant {
         this.strength = new Attribute(strength);
         this.dexterity = new Attribute(dexterity);
         this.stamina = new Attribute(stamina);
-        this.currentStamina = stamina;
+        this.health = stamina;
         this.weapon = weapon;
         this.value = value;
         this.combatActions.addAll(asList(additionalActions));

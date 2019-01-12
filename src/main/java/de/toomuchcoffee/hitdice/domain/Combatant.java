@@ -19,7 +19,7 @@ public abstract class Combatant {
     protected Attribute dexterity;
     protected Attribute stamina;
 
-    protected int currentStamina;
+    protected int health;
 
     protected Weapon weapon;
     protected Armor armor = NONE;
@@ -27,11 +27,11 @@ public abstract class Combatant {
     protected List<CombatAction> combatActions = newArrayList(new WeaponAttack());
 
     public boolean isAlive() {
-        return getCurrentStamina() > 0;
+        return getHealth() > 0;
     }
 
     public void decreaseCurrentStaminaBy(int decreasement) {
-        this.currentStamina -= decreasement;
+        this.health -= decreasement;
     }
 
 }
