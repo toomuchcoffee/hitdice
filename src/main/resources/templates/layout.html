@@ -37,6 +37,9 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li th:if="${session.hero}" class="nav-item">
+                <a class="nav-link" href="/game/save">Save game</a>
+            </li>
+            <li th:if="${session.hero}" class="nav-item">
                 <a class="nav-link disabled" href="#" th:text="${session.hero.experience} + ' XP'"></a>
             </li>
         </ul>

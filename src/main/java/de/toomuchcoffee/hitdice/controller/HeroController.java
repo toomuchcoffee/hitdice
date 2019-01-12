@@ -41,8 +41,6 @@ public class HeroController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
         hero.setWeapon(DAGGER);
-
-        // TODO save into DB
         return "hero/create/step-3";
     }
 
