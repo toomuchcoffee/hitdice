@@ -12,6 +12,8 @@ import java.util.Random;
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
 import static de.toomuchcoffee.hitdice.domain.Event.*;
 import static de.toomuchcoffee.hitdice.domain.EventType.*;
+import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
+import static de.toomuchcoffee.hitdice.domain.Potion.Type.STRENGTH;
 import static de.toomuchcoffee.hitdice.domain.Weapon.*;
 import static de.toomuchcoffee.hitdice.service.DiceService.Dice.*;
 import static java.lang.String.format;
@@ -63,7 +65,14 @@ public class DungeonService {
     }
 
     public void drinkPotion(Hero hero, Potion potion) {
-        hero.setHealth(Math.min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
+        switch (potion.getType()) {
+            case HEALING:
+                hero.setHealth(Math.min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
+                break;
+            case STRENGTH:
+                hero.getStrength().increase(potion.getPower());
+                break;
+        }
     }
 
     private void initPois(Dungeon dungeon) {
@@ -78,8 +87,10 @@ public class DungeonService {
 
     private Event createEvent() {
         int d = diceService.roll(D20);
-        if (d > 17) {
-            return new Event(POTION, new Potion(diceService.roll(D6, 2)));
+        if (d > 18) {
+            return new Event(POTION, new Potion(diceService.roll(D4, 2), HEALING));
+        } if (d > 17) {
+            return new Event(POTION, new Potion(diceService.roll(D3), STRENGTH));
         } else if (d > 14) {
             return new Event(TREASURE, createTreasure());
         } else if (d > 11) {
@@ -170,7 +181,7 @@ public class DungeonService {
                         public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
                             if (diceService.roll(D20) < 7) {
                                 int damage = diceService.roll(D8, 5);
-                                defender.decreaseCurrentStaminaBy(damage);
+                                defender.reduceHealth(damage);
                                 return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
                             }
                             return Optional.empty();

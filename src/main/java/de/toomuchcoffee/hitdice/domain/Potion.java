@@ -7,4 +7,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class Potion {
     private final int power;
+    private final Type type;
+
+    public enum Type {
+        HEALING, STRENGTH
+    }
 }

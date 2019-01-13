@@ -64,7 +64,7 @@ public class CombatService {
                             + weapon.getBonus()
                             + attacker.getStrength().getBonus()
                             - defender.getArmor().getProtection());
-                    defender.decreaseCurrentStaminaBy(damage);
+                    defender.reduceHealth(damage);
                     return Optional.of(format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
                 }
                 return Optional.empty();

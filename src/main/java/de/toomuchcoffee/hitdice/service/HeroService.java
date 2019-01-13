@@ -14,19 +14,10 @@ public class HeroService {
     private final DiceService diceService;
 
     public Hero create() {
-        return new Hero(diceService.roll(D6, 3), diceService.roll(D6, 3), diceService.roll(D6, 3));
-    }
-
-    public void gainExperience(Hero hero, int experience) {
-        hero.increaseExperience(experience);
-        //Main.draw("You gained %d experience points.", experience);
-        if (hero.getExperience() >= experienceNeededForLevel(hero.getLevel())) {
-            hero.setLevel(hero.getLevel() + 1);
-            // Main.draw("Yohoo, you gained a new experience level!" + lineSeparator() +
-            //       "You can add one point to one of your attribute scores." + lineSeparator() +
-            //     "Strength and dexterity can be only increased to a maximum of 18.");
-            //increaseAttribute(hero);
-        }
+        int strength = diceService.roll(D6, 3);
+        int dexterity = diceService.roll(D6, 3);
+        int stamina = diceService.roll(D6, 3);
+        return new Hero(strength, dexterity, stamina, stamina);
     }
 
     public int experienceNeededForLevel(int level) {

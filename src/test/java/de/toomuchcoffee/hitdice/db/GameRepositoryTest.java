@@ -24,7 +24,7 @@ public class GameRepositoryTest {
 
         assertThat(save.getId()).isNotNull();
         assertThat(save.getCreated()).isNotNull();
-        assertThat(save.getModified()).isNull();
+        assertThat(save.getModified()).isNotNull();
     }
 
     @Test

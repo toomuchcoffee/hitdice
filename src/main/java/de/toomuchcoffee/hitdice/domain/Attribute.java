@@ -9,10 +9,12 @@ import static java.lang.String.format;
 @EqualsAndHashCode
 public class Attribute {
     private int value;
+    private int originalValue;
     private int bonus;
 
     public Attribute(int value) {
         this.value = value;
+        this.originalValue = value;
         calculateBonus();
     }
 
@@ -25,8 +27,10 @@ public class Attribute {
         return String.valueOf(value);
     }
 
-    public void increase() {
-        value++;
+    public void increase(int value) {
+        if (this.value < originalValue) {
+            this.value += value;
+        }
         calculateBonus();
     }
 

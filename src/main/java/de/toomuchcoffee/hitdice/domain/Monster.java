@@ -1,13 +1,36 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.domain.Combatant.AbstractCombatant;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import de.toomuchcoffee.hitdice.service.DiceService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
 import static java.util.Arrays.asList;
 
-public class Monster extends Combatant {
+@Getter
+public class Monster extends AbstractCombatant {
+    private String name;
+
+    private Attribute strength;
+    private Attribute dexterity;
+    private Attribute stamina;
+
+    @Setter
+    private int health;
+
+    @Setter
+    private Attack weapon;
+
+    @Setter
+    private Armor armor = NONE;
+
+    private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
 
     private int value;
 
@@ -20,10 +43,6 @@ public class Monster extends Combatant {
         this.weapon = weapon;
         this.value = value;
         this.combatActions.addAll(asList(additionalActions));
-    }
-
-    public int getValue() {
-        return value;
     }
 
     @Getter

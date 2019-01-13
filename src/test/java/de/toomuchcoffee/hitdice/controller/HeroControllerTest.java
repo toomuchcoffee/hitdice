@@ -35,7 +35,7 @@ public class HeroControllerTest {
 
     @Test
     public void heroCreateStart() throws Exception {
-        when(heroService.create()).thenReturn(new Hero(10, 11, 12));
+        when(heroService.create()).thenReturn(new Hero(10, 11, 12, 12));
 
         MockHttpSession session = new MockHttpSession();
 
@@ -52,13 +52,13 @@ public class HeroControllerTest {
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[2]/@href").string("/hero/create/2"))
         ;
 
-        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(new Hero(10, 11, 12), "combatActions");
+        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(new Hero(10, 11, 12, 12), "combatActions");
     }
 
     @Test
     public void heroCreateContinue() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12);
+        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
 
         this.mvc.perform(get("/hero/create/2")
@@ -79,7 +79,7 @@ public class HeroControllerTest {
     @Test
     public void heroCreateFinish() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12);
+        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
 
         HeroUpdate update = new HeroUpdate();

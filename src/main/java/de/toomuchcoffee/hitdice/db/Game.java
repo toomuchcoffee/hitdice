@@ -27,6 +27,8 @@ public class Game {
     private Integer strength;
     private Integer dexterity;
     private Integer stamina;
+    @Column(name = "max_health")
+    private Integer maxHealth;
     private Integer health;
 
     @Enumerated(STRING)

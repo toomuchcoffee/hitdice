@@ -45,7 +45,7 @@ public class CombatControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        hero = new Hero(10, 11, 12);
+        hero = new Hero(10, 11, 12, 12);
         hero.setName("Alrik");
         monster = new Monster("Orc", 13, 6, 7, CLUB, 15);
     }
@@ -82,10 +82,10 @@ public class CombatControllerTest {
         session.setAttribute("monster", monster);
 
         int damageCaused = 3;
-        monster.decreaseCurrentStaminaBy(damageCaused);
+        monster.reduceHealth(damageCaused);
 
         int damageReceived = 2;
-        hero.decreaseCurrentStaminaBy(damageReceived);
+        hero.reduceHealth(damageReceived);
 
         when(combatService.fight(eq(hero), eq(monster), anyInt()))
                 .thenReturn(new CombatRound(
@@ -120,10 +120,10 @@ public class CombatControllerTest {
         session.setAttribute("monster", monster);
 
         int damageCaused = 7;
-        monster.decreaseCurrentStaminaBy(damageCaused);
+        monster.reduceHealth(damageCaused);
 
         int damageReceived = 2;
-        hero.decreaseCurrentStaminaBy(damageReceived);
+        hero.reduceHealth(damageReceived);
 
         when(combatService.fight(eq(hero), eq(monster), anyInt()))
                 .thenReturn(new CombatRound(
@@ -162,10 +162,10 @@ public class CombatControllerTest {
         session.setAttribute("monster", monster);
 
         int damageCaused = 2;
-        monster.decreaseCurrentStaminaBy(damageCaused);
+        monster.reduceHealth(damageCaused);
 
         int damageReceived = 12;
-        hero.decreaseCurrentStaminaBy(damageReceived);
+        hero.reduceHealth(damageReceived);
 
         when(combatService.fight(eq(hero), eq(monster), anyInt()))
                 .thenReturn(new CombatRound(

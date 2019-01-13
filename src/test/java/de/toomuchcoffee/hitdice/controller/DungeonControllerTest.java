@@ -1,10 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Event;
-import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Position;
+import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
+import static de.toomuchcoffee.hitdice.domain.EventType.POTION;
 import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
+import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static de.toomuchcoffee.hitdice.domain.Weapon.SHORTSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -41,7 +40,7 @@ public class DungeonControllerTest {
         when(dungeonService.create(1)).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("hero", new Hero(10, 11, 12));
+        session.setAttribute("hero", new Hero(10, 11, 12, 12));
 
         this.mvc.perform(get("/dungeon/create/1")
                 .session(session)
@@ -61,7 +60,7 @@ public class DungeonControllerTest {
     @Test
     public void dungeonExploreSouth() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12);
+        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
         dungeon.setPosition(new Position(0, 0));
@@ -90,7 +89,7 @@ public class DungeonControllerTest {
     @Test
     public void dungeonTreasure() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12);
+        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
         dungeon.setPosition(new Position(0, 0));
@@ -104,10 +103,35 @@ public class DungeonControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/treasure"))
                 .andExpect(xpath("//div[@id='treasure-actions']/a[1]/@href").string("/dungeon/collect"))
-                .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon/continue"))
+                .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon/leave"))
         ;
 
         assertThat(session.getAttribute("treasure")).isEqualTo(SHORTSWORD);
+    }
+
+    @Test
+    public void dungeonPotion() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        Hero hero = new Hero(10, 11, 12, 12);
+        session.setAttribute("hero", hero);
+        Dungeon dungeon = new Dungeon(2);
+        dungeon.setPosition(new Position(0, 0));
+        session.setAttribute("dungeon", dungeon);
+
+        Potion potion = new Potion(5, HEALING);
+        when(dungeonService.explore(SOUTH, dungeon, hero)).thenReturn(new Event(POTION, potion));
+
+        this.mvc.perform(get("/dungeon/explore/SOUTH")
+                .session(session)
+                .accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(view().name("dungeon/potion"))
+                .andExpect(xpath("//h3").string("You found a healing potion!"))
+                .andExpect(xpath("//div[@id='potion-actions']/a[1]/@href").string("/dungeon/recover"))
+                .andExpect(xpath("//div[@id='potion-actions']/a[2]/@href").string("/dungeon/leave"))
+        ;
+
+        assertThat(session.getAttribute("potion")).isEqualTo(potion);
     }
 
     @Test
@@ -115,7 +139,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         Dungeon dungeon = new Dungeon(1);
         session.setAttribute("dungeon", dungeon);
-        session.setAttribute("hero", new Hero(10, 11, 12));
+        session.setAttribute("hero", new Hero(10, 11, 12, 12));
 
         this.mvc.perform(get("/dungeon/continue")
                 .session(session)

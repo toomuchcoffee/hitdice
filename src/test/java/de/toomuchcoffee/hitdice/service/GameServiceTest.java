@@ -54,7 +54,7 @@ public class GameServiceTest {
     }
 
     private Hero getHero() {
-        Hero hero = new Hero(11, 12, 13);
+        Hero hero = new Hero(11, 12, 13, 13);
         hero.setHealth(5);
         hero.setWeapon(LONGSWORD);
         hero.setArmor(LEATHER);
@@ -69,6 +69,7 @@ public class GameServiceTest {
         expected.setStamina(13);
         expected.setDexterity(12);
         expected.setStrength(11);
+        expected.setMaxHealth(13);
         expected.setHealth(5);
         expected.setWeapon(LONGSWORD);
         expected.setArmor(LEATHER);

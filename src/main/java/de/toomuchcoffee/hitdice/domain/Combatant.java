@@ -1,37 +1,41 @@
 package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
+import static java.lang.Math.min;
 
-@Getter
-@Setter
-public abstract class Combatant {
-    protected String name;
+public interface Combatant {
+    String getName();
 
-    protected Attribute strength;
-    protected Attribute dexterity;
-    protected Attribute stamina;
+    Attribute getStrength();
+    Attribute getDexterity();
+    Attribute getStamina();
 
-    protected int health;
+    int getHealth();
+    void setHealth(int health);
 
-    protected Attack weapon;
-    protected Armor armor = NONE;
+    Attack getWeapon();
+    void setWeapon(Attack weapon);
 
-    protected List<CombatAction> combatActions = newArrayList(new WeaponAttack());
+    Armor getArmor();
+    void setArmor(Armor armor);
 
-    public boolean isAlive() {
-        return getHealth() > 0;
-    }
+    List<CombatAction> getCombatActions();
 
-    public void decreaseCurrentStaminaBy(int decreasement) {
-        this.health -= decreasement;
+    void reduceHealth(int damage);
+
+    boolean isAlive();
+
+    abstract class AbstractCombatant implements Combatant {
+        public void reduceHealth(int damage) {
+            int effectiveDamage = min(damage, getHealth());
+            setHealth(getHealth() - effectiveDamage);
+        }
+        public boolean isAlive() {
+            return getHealth() > 0;
+        }
     }
 
 }

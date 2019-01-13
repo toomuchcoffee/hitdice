@@ -9,6 +9,7 @@ CREATE TABLE game (
     dexterity INTEGER,
     stamina INTEGER,
     health INTEGER,
+    max_health INTEGER,
     weapon VARCHAR(64),
     armor VARCHAR(64)
 );

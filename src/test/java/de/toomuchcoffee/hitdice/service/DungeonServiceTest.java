@@ -26,7 +26,7 @@ public class DungeonServiceTest {
     @Before
     public void setUp() throws Exception {
         dungeonService = new DungeonService(diceService);
-        hero = new Hero(10, 11, 12);
+        hero = new Hero(10, 11, 12, 12);
         dungeon = new Dungeon(3);
         dungeon.setPosition(new Position(1, 1));
     }
