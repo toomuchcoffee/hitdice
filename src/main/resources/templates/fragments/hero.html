@@ -6,21 +6,53 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<div th:fragment="hero" id="hero">
+<div th:fragment="hero" id="hero" th:with="hero=${session.hero}">
 
-    <fieldset id="hero-stats" th:with="hero=${session.hero}">
-        <legend th:unless="${hero.name}">Hero statistics</legend>
-        <legend th:if="${hero.name}" th:text="${hero.name}"></legend>
-
-        <ul class="list-group">
-            <li class="list-group-item"><span class="key">Strength</span>: <span class="value" th:text="${hero.strength.displayName}"></span></li>
-            <li class="list-group-item"><span class="key">Dexterity</span>: <span class="value" th:text="${hero.dexterity.displayName}"></span></li>
-            <li class="list-group-item"><span class="key">Stamina</span>: <span class="value" th:text="${hero.stamina.displayName}"></span></li>
-            <li class="list-group-item"><span class="key">Health</span>: <span class="value" th:text="${hero.health}"></span></li>
-            <li class="list-group-item"><span class="key">Weapon</span>: <span class="value" th:if="${hero.weapon}" th:text="${hero.weapon.displayName}"></span></li>
-            <li class="list-group-item"><span class="key">Armor</span>: <span class="value" th:if="${hero.armor}" th:text="${hero.armor.displayName}"></span></li>
-        </ul>
-    </fieldset>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card border-secondary mb-3">
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${#strings.isEmpty(hero.name)} ? 'Hero Statistics' : ${hero.name}"></h4>
+                    <dl class="card-text">
+                        <dt>Strength:</dt>
+                        <dd th:text="${hero.strength.displayName}"></dd>
+                        <dt>Dexterity:</dt>
+                        <dd th:text="${hero.dexterity.displayName}"></dd>
+                        <dt>Stamina:</dt>
+                        <dd th:text="${hero.stamina.displayName}"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-secondary mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Combat Stats</h4>
+                    <dl class="card-text">
+                        <dt>Weapon:</dt>
+                        <dd th:text="${hero.weapon?.displayName}"></dd>
+                        <dt>Armor:</dt>
+                        <dd th:text="${hero.armor?.displayName}"></dd>
+                        <dt>Health:</dt>
+                        <dd th:text="${hero.health} + '/' + ${hero.maxHealth}"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-secondary mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Experience</h4>
+                    <dl class="card-text">
+                        <dt>XP:</dt>
+                        <dd th:text="${hero.experience}"></dd>
+                        <dt>Level:</dt>
+                        <dd th:text="${hero.level}"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 </body>

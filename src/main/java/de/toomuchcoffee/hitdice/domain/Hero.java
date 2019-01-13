@@ -20,7 +20,7 @@ public class Hero extends AbstractCombatant {
     private final Attribute dexterity;
     private final Attribute stamina;
 
-    private final int maxHealth;
+    private int maxHealth;
     private int health;
 
     private Weapon weapon;
@@ -38,10 +38,6 @@ public class Hero extends AbstractCombatant {
         this.stamina = new Attribute(stamina);
         this.maxHealth = health;
         this.health = health;
-    }
-
-    public void increaseExperience(int experience) {
-        this.experience += experience;
     }
 
     @Override

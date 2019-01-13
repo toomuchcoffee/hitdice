@@ -53,7 +53,7 @@ public class HeroServiceTest {
 
     @Test
     public void shouldRequire100MoreForEachLevel() {
-        int xp = heroService.experienceNeededForLevel(level);
+        int xp = heroService.xpForNextLevel(level);
         assertThat(xp).isEqualTo(expectedXp);
     }
 }

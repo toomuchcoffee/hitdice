@@ -26,6 +26,7 @@ public class CombatService {
     public static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
 
     private final DiceService diceService;
+    private final HeroService heroService;
 
     public CombatRound fight(Hero hero, Monster monster, int round) {
         List<String> events = new ArrayList<>();
@@ -38,7 +39,7 @@ public class CombatService {
         if (!hero.isAlive()) {
             result = DEATH;
         } else if (!monster.isAlive()) {
-            hero.increaseExperience(monster.getValue());
+            heroService.increaseExperience(hero, monster.getValue());
             result = VICTORY;
         }
 

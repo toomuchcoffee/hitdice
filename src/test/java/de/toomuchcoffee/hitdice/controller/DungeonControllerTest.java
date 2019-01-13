@@ -50,9 +50,6 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/explore"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
     }
 
@@ -72,9 +69,6 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/explore"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
 
         verify(dungeonService).explore(eq(SOUTH), eq(dungeon));
@@ -140,9 +134,6 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/explore"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[1]").string("Strength: 10"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[2]").string("Dexterity: 11"))
-                .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
 
         verify(dungeonService).markAsVisited(dungeon);
