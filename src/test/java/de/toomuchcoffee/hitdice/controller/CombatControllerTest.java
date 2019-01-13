@@ -47,7 +47,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = new Hero(10, 11, 12, 12);
         hero.setName("Alrik");
-        monster = new Monster("Orc", 13, 6, 7, CLUB, 1, 15);
+        monster = new Monster("Orc", 2, 7, 0, CLUB, 1, 15);
     }
 
     @Test

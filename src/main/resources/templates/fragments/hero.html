@@ -33,6 +33,8 @@
                         <dd th:text="${hero.weapon?.displayName}"></dd>
                         <dt>Armor:</dt>
                         <dd th:text="${hero.armor?.displayName}"></dd>
+                        <dt>Attack:</dt>
+                        <dd th:text="${hero.attack}"></dd>
                         <dt>Health:</dt>
                         <dd th:text="${hero.health} + '/' + ${hero.maxHealth}"></dd>
                     </dl>

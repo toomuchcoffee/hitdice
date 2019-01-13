@@ -22,12 +22,12 @@
 
     <div id="combat-stats" th:with="hero=${session.hero}">
         <div>
-            <span th:text="'Your health: ' + ${hero.health} + '/' + ${hero.stamina.value}"></span>
-            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.health}, max=${hero.stamina.value})"></div>
+            <span th:text="'Your health: ' + ${hero.health} + '/' + ${hero.maxHealth}"></span>
+            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.health}, max=${hero.maxHealth})"></div>
         </div>
         <div>
-            <span th:text="${monster.name} + '\'s health: ' + ${monster.health} + '/' + ${monster.stamina.value}"></span>
-            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.health}, max=${monster.stamina.value})"></div>
+            <span th:text="${monster.name} + '\'s health: ' + ${monster.health} + '/' + ${monster.maxHealth}"></span>
+            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.health}, max=${monster.maxHealth})"></div>
         </div>
     </div>
 

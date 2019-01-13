@@ -17,12 +17,12 @@ import static java.util.Arrays.asList;
 public class Monster extends AbstractCombatant implements Event {
     private String name;
 
-    private Attribute strength;
-    private Attribute dexterity;
-    private Attribute stamina;
+    private int level;
+    private int defense;
 
     @Setter
     private int health;
+    private final int maxHealth;
 
     private Weapon weapon;
 
@@ -32,12 +32,12 @@ public class Monster extends AbstractCombatant implements Event {
 
     private int value;
 
-    public Monster(String name, int strength, int dexterity, int stamina, Weapon weapon, int armorClass, int value, CombatAction... additionalActions) {
+    public Monster(String name, int level, int health, int defense, Weapon weapon, int armorClass, int value, CombatAction... additionalActions) {
         this.name = name;
-        this.strength = new Attribute(strength);
-        this.dexterity = new Attribute(dexterity);
-        this.stamina = new Attribute(stamina);
-        this.health = stamina;
+        this.level = level;
+        this.health = health;
+        this.maxHealth = health;
+        this.defense = defense;
         this.weapon = weapon;
         this.armorClass = armorClass;
         this.value = value;
@@ -47,6 +47,16 @@ public class Monster extends AbstractCombatant implements Event {
     @Override
     public EventType getEventType() {
         return MONSTER;
+    }
+
+    @Override
+    public int getAttack() {
+        return 10 + level;
+    }
+
+    @Override
+    public int getDamageBonus() {
+        return 0;
     }
 
     @Getter

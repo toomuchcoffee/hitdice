@@ -67,7 +67,7 @@ public class DungeonService {
     public void drinkPotion(Hero hero, Potion potion) {
         switch (potion.getType()) {
             case HEALING:
-                hero.setHealth(min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
+                hero.setHealth(min(hero.getHealth() + potion.getPower(), hero.getMaxHealth()));
                 break;
             case STRENGTH:
                 hero.getStrength().increase(potion.getPower());
@@ -103,17 +103,17 @@ public class DungeonService {
     private Monster createMonster() {
         int result = diceService.roll(D100);
         if (result < 30) {
-            return new Monster("Rat", 2, 14, 2, new NaturalWeapon("teeth", 1, D4, 0), 0, 5);
+            return new Monster("Rat", 0, 2, 4, new NaturalWeapon("teeth", 1, D3, 0), 0, 5);
         } else if (result < 55) {
-            return new Monster("Goblin", diceService.roll(D6, 2), diceService.roll(D6, 2), diceService.roll(D6, 2), SHORTSWORD, 1, 15);
+            return new Monster("Goblin", 1, diceService.roll(D6, 2), 0, SHORTSWORD, 1, 15);
         } else if (result < 75) {
-            return new Monster("Orc", diceService.roll(D6, 3) + 1, diceService.roll(D6, 3) - 1, diceService.roll(D6, 3) + 1, LONGSWORD, 2, 25);
+            return new Monster("Orc", 2, diceService.roll(D6, 3), 0, LONGSWORD, 2, 25);
         } else if (result < 90) {
             return new Monster(
                     "Rust monster",
+                    2,
                     diceService.roll(D6, 3),
-                    diceService.roll(D6, 3),
-                    diceService.roll(D6, 4),
+                    0,
                     new NaturalWeapon("tail", 1, D4, 0),
                     2,
                     50,
@@ -135,16 +135,16 @@ public class DungeonService {
         } else if (result < 97) {
             return new Monster(
                     "Troll",
+                    3,
                     diceService.roll(D6, 4),
-                    diceService.roll(D6, 2),
-                    diceService.roll(D6, 4),
+                    -1,
                     new NaturalWeapon("claws", 1, D10, 0),
                     3,
                     100,
                     (CombatAction) (attacker, defender, diceService) -> {
-                        if (attacker.getHealth() < attacker.getStamina().getValue()) {
+                        if (attacker.getHealth() < attacker.getMaxHealth()) {
                             int regeneration = diceService.roll(D3);
-                            attacker.setHealth(min(attacker.getHealth() + regeneration, attacker.getStamina().getValue()));
+                            attacker.setHealth(min(attacker.getHealth() + regeneration, attacker.getMaxHealth()));
                             return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
                         }
                         return Optional.empty();
@@ -152,25 +152,28 @@ public class DungeonService {
         } else if (result < 100) {
             return new Monster(
                     "Vampire",
-                    diceService.roll(D6, 4),
-                    diceService.roll(D6, 2) + 6,
-                    diceService.roll(D6, 4),
+                    5,
+                    diceService.roll(D6, 6),
+                    2,
                     new NaturalWeapon("bite", 2, D4, 0),
-                    1,
+                    0,
                     200,
                     (CombatAction) (attacker, defender, diceService) -> {
                         if (diceService.roll(D20) < 5) {
-                            defender.getStrength().decrease();
-                            return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
+                            if (defender instanceof Hero) {
+                                Hero hero = (Hero) defender;
+                                hero.getStrength().decrease();
+                                return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
+                            }
                         }
                         return Optional.empty();
                     });
         } else {
             return new Monster(
                     "Dragon",
-                    50,
-                    18,
+                    20,
                     100,
+                    0,
                     new NaturalWeapon("claws", 2, D8, 0),
                     5,
                     1000,

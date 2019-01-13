@@ -41,6 +41,21 @@ public class Hero extends AbstractCombatant {
     }
 
     @Override
+    public int getAttack() {
+        return 10 + level + dexterity.getBonus();
+    }
+
+    @Override
+    public int getDefense() {
+        return dexterity.getBonus();
+    }
+
+    @Override
+    public int getDamageBonus() {
+        return strength.getBonus();
+    }
+
+    @Override
     public Weapon getWeapon() {
         return weapon == null ? FISTS : weapon;
     }

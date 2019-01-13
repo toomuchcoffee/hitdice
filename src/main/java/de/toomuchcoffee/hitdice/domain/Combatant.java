@@ -9,12 +9,15 @@ import static java.lang.Math.min;
 public interface Combatant {
     String getName();
 
-    Attribute getStrength();
-    Attribute getDexterity();
-    Attribute getStamina();
+    int getLevel();
+    int getAttack();
+    int getDefense();
+    int getDamageBonus();
 
     int getHealth();
     void setHealth(int health);
+
+    int getMaxHealth();
 
     Weapon getWeapon();
 
