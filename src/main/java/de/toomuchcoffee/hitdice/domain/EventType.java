@@ -9,7 +9,6 @@ public enum EventType {
     MONSTER("pastafarianism"),
     POTION("flask"),
     TREASURE("ring"),
-    EXPLORED(null),
     MAGIC_DOOR("dungeon");
 
     private final String symbol;

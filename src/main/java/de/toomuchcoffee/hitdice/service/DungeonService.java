@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
-import static de.toomuchcoffee.hitdice.domain.Event.EXPLORED_EVENT;
 import static de.toomuchcoffee.hitdice.domain.Event.MAGIC_DOOR_EVENT;
 import static de.toomuchcoffee.hitdice.domain.EventType.*;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
@@ -54,7 +53,8 @@ public class DungeonService {
     }
 
     public void markAsVisited(Dungeon dungeon) {
-        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = EXPLORED_EVENT;
+        dungeon.getVisited()[dungeon.getPosX()][dungeon.getPosY()] = true;
+        dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = null;
     }
 
     public void collectTreasure(Hero hero, Treasure treasure) {

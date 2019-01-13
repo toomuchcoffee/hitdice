@@ -53,7 +53,6 @@ public class DungeonController {
                     int size = new Random().nextInt(hero.getLevel() + 4) + 5;
                     return String.format("redirect:/dungeon/create/%d", size);
                 }
-                case EXPLORED:
                 default: {
                     dungeonService.markAsVisited(dungeon);
                     return "dungeon/explore";
