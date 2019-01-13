@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
 import static java.lang.String.format;
 
 @Getter
@@ -19,5 +20,10 @@ public enum Armor implements Treasure {
 
     public String getDisplayName() {
         return format("%s (ac: %d)", name, protection);
+    }
+
+    @Override
+    public EventType getEventType() {
+        return TREASURE;
     }
 }

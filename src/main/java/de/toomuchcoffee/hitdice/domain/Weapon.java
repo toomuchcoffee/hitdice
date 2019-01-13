@@ -4,6 +4,7 @@ import de.toomuchcoffee.hitdice.service.DiceService.Dice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
 import static de.toomuchcoffee.hitdice.service.DiceService.Dice.*;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
@@ -33,5 +34,10 @@ public enum Weapon implements Treasure, Attack {
             return format("%s (dmg: %dD%s + %d)", name, diceNumber, dice.sides, bonus);
         }
         return format("%s (dmg: %dD%s)", name, diceNumber, dice.sides);
+    }
+
+    @Override
+    public EventType getEventType() {
+        return TREASURE;
     }
 }

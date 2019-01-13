@@ -10,8 +10,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
-import static de.toomuchcoffee.hitdice.domain.Event.MAGIC_DOOR_EVENT;
-import static de.toomuchcoffee.hitdice.domain.EventType.*;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.STRENGTH;
 import static de.toomuchcoffee.hitdice.domain.Weapon.*;
@@ -83,19 +81,19 @@ public class DungeonService {
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
-        dungeon.getEventMap()[door.getX()][door.getY()] = MAGIC_DOOR_EVENT;
+        dungeon.getEventMap()[door.getX()][door.getY()] = Event.MAGIC_DOOR_EVENT;
     }
 
     private Event createEvent() {
         int d = diceService.roll(D20);
         if (d > 18) {
-            return new Event(POTION, new Potion(diceService.roll(D4, 2), HEALING));
+            return new Potion(diceService.roll(D4, 2), HEALING);
         } if (d > 17) {
-            return new Event(POTION, new Potion(diceService.roll(D3), STRENGTH));
+            return new Potion(diceService.roll(D3), STRENGTH);
         } else if (d > 14) {
-            return new Event(TREASURE, createTreasure());
+            return createTreasure();
         } else if (d > 11) {
-            return new Event(MONSTER, createMonster());
+            return createMonster();
         } else {
             return null;
         }

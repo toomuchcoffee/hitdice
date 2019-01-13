@@ -11,10 +11,11 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
+import static de.toomuchcoffee.hitdice.domain.EventType.MONSTER;
 import static java.util.Arrays.asList;
 
 @Getter
-public class Monster extends AbstractCombatant {
+public class Monster extends AbstractCombatant implements Event {
     private String name;
 
     private Attribute strength;
@@ -43,6 +44,11 @@ public class Monster extends AbstractCombatant {
         this.weapon = weapon;
         this.value = value;
         this.combatActions.addAll(asList(additionalActions));
+    }
+
+    @Override
+    public EventType getEventType() {
+        return MONSTER;
     }
 
     @Getter

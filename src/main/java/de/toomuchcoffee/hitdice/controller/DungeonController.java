@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.Random;
 
+import static de.toomuchcoffee.hitdice.domain.EventType.MAGIC_DOOR;
+
 @Controller
 @RequestMapping("dungeon")
 @RequiredArgsConstructor
@@ -35,11 +37,11 @@ public class DungeonController {
         if (optEvent.isPresent()) {
             Event event = optEvent.get();
 
-            if (event.getObject() != null) {
-                request.getSession().setAttribute(event.getType().name().toLowerCase(), event.getObject());
+            if (event.getEventType() != MAGIC_DOOR) {
+                request.getSession().setAttribute(event.getEventType().name().toLowerCase(), event);
             }
 
-            switch (event.getType()) {
+            switch (event.getEventType()) {
                 case MONSTER: {
                     return "redirect:/combat/attack";
                 }

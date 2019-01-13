@@ -1,7 +1,10 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Dungeon;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.Position;
+import de.toomuchcoffee.hitdice.domain.Potion;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
-import static de.toomuchcoffee.hitdice.domain.EventType.POTION;
-import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static de.toomuchcoffee.hitdice.domain.Weapon.SHORTSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,7 +89,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(new Event(TREASURE, SHORTSWORD)));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(SHORTSWORD));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
@@ -112,7 +113,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = new Potion(5, HEALING);
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(new Event(POTION, potion)));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(potion));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)

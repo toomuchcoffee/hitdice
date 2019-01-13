@@ -61,7 +61,7 @@ public class Dungeon {
             for (int y = 0; y < size; y++) {
                 if (abs(x - posX) < 2 && abs(y - posY) < 2 || visited[x][y]) {
                     Event event = eventMap[x][y];
-                    view[x][y] = event == null ? null : event.getType().getSymbol();
+                    view[x][y] = event == null ? null : event.getEventType().getSymbol();
                 } else {
                     view[x][y] = "question-circle unexplored";
                 }
