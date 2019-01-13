@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.Random;
 
 @Controller
@@ -29,33 +30,39 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
-        Event event = dungeonService.explore(direction, dungeon);
+        Optional<Event> optEvent = dungeonService.explore(direction, dungeon);
 
-        if (event.getObject() != null) {
-            request.getSession().setAttribute(event.getType().name().toLowerCase(), event.getObject());
+        if (optEvent.isPresent()) {
+            Event event = optEvent.get();
+
+            if (event.getObject() != null) {
+                request.getSession().setAttribute(event.getType().name().toLowerCase(), event.getObject());
+            }
+
+            switch (event.getType()) {
+                case MONSTER: {
+                    return "redirect:/combat/attack";
+                }
+                case TREASURE: {
+                    return "dungeon/treasure";
+                }
+                case POTION: {
+                    return "dungeon/potion";
+                }
+                case MAGIC_DOOR: {
+                    int size = new Random().nextInt(hero.getLevel() + 4) + 5;
+                    return String.format("redirect:/dungeon/create/%d", size);
+                }
+                case EXPLORED:
+                default: {
+                    dungeonService.markAsVisited(dungeon);
+                    return "dungeon/explore";
+                }
+            }
         }
 
-        switch (event.getType()) {
-            case MONSTER: {
-                return "redirect:/combat/attack";
-            }
-            case TREASURE: {
-                return "dungeon/treasure";
-            }
-            case POTION: {
-                return "dungeon/potion";
-            }
-            case MAGIC_DOOR: {
-                int size = new Random().nextInt(hero.getLevel() + 4) + 5;
-                return String.format("redirect:/dungeon/create/%d", size);
-            }
-            case EMPTY:
-            case EXPLORED:
-            default: {
-                dungeonService.markAsVisited(dungeon);
-                return "dungeon/explore";
-            }
-        }
+        dungeonService.markAsVisited(dungeon);
+        return "dungeon/explore";
     }
 
     @GetMapping("flee")

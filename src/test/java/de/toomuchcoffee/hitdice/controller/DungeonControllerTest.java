@@ -13,6 +13,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.EventType.POTION;
 import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
@@ -86,7 +88,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(new Event(TREASURE, SHORTSWORD));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(new Event(TREASURE, SHORTSWORD)));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
@@ -110,7 +112,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = new Potion(5, HEALING);
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(new Event(POTION, potion));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(new Event(POTION, potion)));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)

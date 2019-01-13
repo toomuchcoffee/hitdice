@@ -10,7 +10,8 @@ import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
-import static de.toomuchcoffee.hitdice.domain.Event.*;
+import static de.toomuchcoffee.hitdice.domain.Event.EXPLORED_EVENT;
+import static de.toomuchcoffee.hitdice.domain.Event.MAGIC_DOOR_EVENT;
 import static de.toomuchcoffee.hitdice.domain.EventType.*;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.STRENGTH;
@@ -35,9 +36,9 @@ public class DungeonService {
         return dungeon;
     }
 
-    public Event explore(Direction direction, Dungeon dungeon) {
+    public Optional<Event> explore(Direction direction, Dungeon dungeon) {
         Position position = dungeon.explore(direction);
-        return dungeon.getPoi(position);
+        return Optional.ofNullable(dungeon.getEvent(position));
     }
 
     public Position getAnyUnoccupiedPosition(Dungeon dungeon) {
@@ -48,7 +49,7 @@ public class DungeonService {
         Position pos;
         do {
             pos = new Position(RANDOM.nextInt(dungeon.getSize()), RANDOM.nextInt(dungeon.getSize()));
-        } while (dungeon.getEventMap()[pos.getX()][pos.getY()].getType().isOccupied());
+        } while (dungeon.getEventMap()[pos.getX()][pos.getY()] != null);
         return pos;
     }
 
@@ -96,7 +97,7 @@ public class DungeonService {
         } else if (d > 11) {
             return new Event(MONSTER, createMonster());
         } else {
-            return EMPTY_EVENT;
+            return null;
         }
     }
 

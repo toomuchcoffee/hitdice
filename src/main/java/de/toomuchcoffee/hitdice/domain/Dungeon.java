@@ -3,7 +3,6 @@ package de.toomuchcoffee.hitdice.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import static de.toomuchcoffee.hitdice.domain.Event.EMPTY_EVENT;
 import static de.toomuchcoffee.hitdice.domain.EventType.EXPLORED;
 import static java.lang.Math.abs;
 
@@ -20,11 +19,6 @@ public class Dungeon {
     public Dungeon(int size) {
         this.size = size;
         eventMap = new Event[size][size];
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                eventMap[x][y] = EMPTY_EVENT;
-            }
-        }
     }
 
     public Position explore(Direction direction) {
@@ -64,8 +58,9 @@ public class Dungeon {
 
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                if (abs(x - posX) < 2 && abs(y - posY) < 2 || eventMap[x][y].getType().equals(EXPLORED)) {
-                    view[x][y] = eventMap[x][y].getType().getSymbol();
+                Event event = eventMap[x][y];
+                if (abs(x - posX) < 2 && abs(y - posY) < 2 || (event != null && event.getType().equals(EXPLORED))) {
+                    view[x][y] = event == null ? null : event.getType().getSymbol();
                 } else {
                     view[x][y] = "question-circle unexplored";
                 }
@@ -86,7 +81,7 @@ public class Dungeon {
         return new Position(this.posX, this.posY);
     }
 
-    public Event getPoi(Position position) {
+    public Event getEvent(Position position) {
         return eventMap[position.getX()][position.getY()];
     }
 }
