@@ -32,27 +32,27 @@ public class DungeonServiceTest {
     public void exploreNorth() {
         dungeonService.explore(NORTH, dungeon);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 0));
+        assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));
     }
 
     @Test
     public void exploreSouth() {
         dungeonService.explore(SOUTH, dungeon);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
+        assertThat(dungeon.getPosition()).isEqualTo(new Position(2, 1));
     }
 
     @Test
     public void exploreEast() {
         dungeonService.explore(EAST, dungeon);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(2, 1));
+        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
     }
 
     @Test
     public void exploreWest() {
         dungeonService.explore(WEST, dungeon);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));
+        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 0));
     }
 }

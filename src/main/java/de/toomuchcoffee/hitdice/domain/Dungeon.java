@@ -6,7 +6,6 @@ import lombok.Setter;
 import static de.toomuchcoffee.hitdice.domain.Event.EMPTY_EVENT;
 import static de.toomuchcoffee.hitdice.domain.EventType.EXPLORED;
 import static java.lang.Math.abs;
-import static java.lang.System.lineSeparator;
 
 @Getter
 @Setter
@@ -31,62 +30,51 @@ public class Dungeon {
     public Position explore(Direction direction) {
         switch (direction) {
             case NORTH: {
-                if (posY > 0) {
-                    posY--;
-                }
-                break;
-            }
-            case EAST: {
-                if (posX < size - 1) {
-                    posX++;
-                }
-                break;
-            }
-            case SOUTH: {
-                if (posY < size - 1) {
-                    posY++;
-                }
-                break;
-            }
-            case WEST: {
                 if (posX > 0) {
                     posX--;
                 }
                 break;
             }
-            default: throw new IllegalArgumentException("invalid direction: " + direction);
+            case EAST: {
+                if (posY < size - 1) {
+                    posY++;
+                }
+                break;
+            }
+            case SOUTH: {
+                if (posX < size - 1) {
+                    posX++;
+                }
+                break;
+            }
+            case WEST: {
+                if (posY > 0) {
+                    posY--;
+                }
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("invalid direction: " + direction);
         }
         return new Position(this.posX, this.posY);
     }
 
-    public String getMap() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("+");
-        for (int i = 0; i < size; i++) {
-            builder.append("---");
-        }
-        builder.append("+");
-        for (int y = 0; y < size; y++) {
-            builder.append(lineSeparator());
-            builder.append("|");
-            for (int x = 0; x < size; x++) {
-                if (x == posX && y == posY) {
-                    builder.append("(#)");
-                } else if (abs(x - posX) < 2 && abs(y - posY) < 2 || eventMap[x][y].getType().equals(EXPLORED)) {
-                    builder.append(" ").append(eventMap[x][y].getType().getSymbol()).append(" ");
+    public String[][] getMap() {
+        String[][] view = new String[size][size];
+
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (abs(x - posX) < 2 && abs(y - posY) < 2 || eventMap[x][y].getType().equals(EXPLORED)) {
+                    view[x][y] = eventMap[x][y].getType().getSymbol();
                 } else {
-                    builder.append(" ? ");
+                    view[x][y] = "question-circle unexplored";
                 }
             }
-            builder.append("|");
         }
-        builder.append(lineSeparator());
-        builder.append("+");
-        for (int i = 0; i < size; i++) {
-            builder.append("---");
-        }
-        builder.append("+");
-        return builder.toString();
+
+        view[posX][posY] = "user-circle hero";
+
+        return view;
     }
 
     public void setPosition(Position pos) {

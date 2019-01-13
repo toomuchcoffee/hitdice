@@ -1,0 +1,31 @@
+.dungeon-box {
+	margin: 0 auto;
+	text-align: center;
+}
+
+div.btn-group {
+    margin: 0 auto;
+    text-align: center;
+    width: inherit;
+    display: inline-block;
+}
+
+.dungeon-map {
+	margin: 0 auto;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+.dungeon-cell {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.hero {
+    color: #06f
+}
+
+.unexplored {
+    color: #ccc
+}

@@ -4,7 +4,6 @@ import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ public class DungeonController {
     }
 
     @GetMapping("explore/{direction}")
-    public String explore(@PathVariable Direction direction, Model model, HttpServletRequest request) {
+    public String explore(@PathVariable Direction direction, HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 

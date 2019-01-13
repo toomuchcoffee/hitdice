@@ -5,27 +5,33 @@
       layout:decorate="~{layout}">
 <head>
     <title>Exploring the dungeon</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <div layout:fragment="page_content" id="page_content">
     <h3>Explore dungeon</h3>
 
-    <pre id="dungeon-map" th:text="${session.dungeon.map}"></pre>
+    <div class="jumbotron dungeon-box">
 
-    <div class="btn-group">
-        <a class="btn btn-outline-primary" href="/dungeon/explore/WEST">
-            <i class="fas fa-arrow-circle-left"></i>
-        </a>
-        <a class="btn btn-outline-primary" href="/dungeon/explore/NORTH">
-            <i class="fas fa-arrow-circle-up"></i>
-        </a>
-        <a class="btn btn-outline-primary" href="/dungeon/explore/SOUTH">
-            <i class="fas fa-arrow-circle-down"></i>
-        </a>
-        <a class="btn btn-outline-primary" href="/dungeon/explore/EAST">
-            <i class="fas fa-arrow-circle-right"></i>
-        </a>
+        <table id="dungeon" class="dungeon-map">
+            <tr th:each="row : ${session.dungeon.map}">
+                <td class="dungeon-cell" th:each="col, iter : ${row}" th:with="symbol=${row[iter.index]}"><i th:class="'fas fa-' + ${symbol}"></i></td>
+            </tr>
+        </table>
+
+        <div class="btn-group">
+            <a class="btn btn-outline-primary" href="/dungeon/explore/WEST">
+                <i class="fas fa-arrow-circle-left"></i>
+            </a>
+            <a class="btn btn-outline-primary" href="/dungeon/explore/NORTH">
+                <i class="fas fa-arrow-circle-up"></i>
+            </a>
+            <a class="btn btn-outline-primary" href="/dungeon/explore/SOUTH">
+                <i class="fas fa-arrow-circle-down"></i>
+            </a>
+            <a class="btn btn-outline-primary" href="/dungeon/explore/EAST">
+                <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
     </div>
 
     <div th:replace="fragments/hero :: hero"></div>

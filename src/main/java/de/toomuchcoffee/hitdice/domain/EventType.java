@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum EventType {
-    EMPTY(" ", false),
-    MONSTER("¥", true),
-    POTION("†", true),
-    TREASURE("$", true),
-    EXPLORED(" ", false),
-    MAGIC_DOOR("§", true);
+    EMPTY(null, false),
+    MONSTER("pastafarianism", true),
+    POTION("flask", true),
+    TREASURE("ring", true),
+    EXPLORED(null, false),
+    MAGIC_DOOR("dungeon", true);
 
     private final String symbol;
     private final boolean occupied;
