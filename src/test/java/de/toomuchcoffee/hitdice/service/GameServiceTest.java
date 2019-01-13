@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.LEATHER;
-import static de.toomuchcoffee.hitdice.domain.Weapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

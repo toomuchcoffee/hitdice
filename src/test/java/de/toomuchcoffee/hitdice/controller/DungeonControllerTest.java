@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
-import static de.toomuchcoffee.hitdice.domain.Weapon.SHORTSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;

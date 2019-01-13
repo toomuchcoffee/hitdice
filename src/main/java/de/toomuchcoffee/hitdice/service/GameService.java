@@ -2,8 +2,8 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.db.GameRepository;
+import de.toomuchcoffee.hitdice.domain.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class GameService {
         game.setLevel(hero.getLevel());
         game.setExperience(hero.getExperience());
         game.setArmor(hero.getArmor());
-        game.setWeapon((Weapon) hero.getWeapon());
+        game.setWeapon((HandWeapon) hero.getWeapon());
         game.setHealth(hero.getHealth());
         game.setMaxHealth(hero.getMaxHealth());
         game.setStrength(hero.getStrength().getValue());

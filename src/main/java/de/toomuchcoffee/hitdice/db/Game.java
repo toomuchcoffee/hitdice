@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.db;
 
 import de.toomuchcoffee.hitdice.domain.Armor;
-import de.toomuchcoffee.hitdice.domain.Weapon;
+import de.toomuchcoffee.hitdice.domain.HandWeapon;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,7 +32,7 @@ public class Game {
     private Integer health;
 
     @Enumerated(STRING)
-    private Weapon weapon;
+    private HandWeapon weapon;
 
     @Enumerated(STRING)
     private Armor armor;

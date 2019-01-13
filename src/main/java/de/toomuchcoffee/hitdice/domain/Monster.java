@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
 import static de.toomuchcoffee.hitdice.domain.EventType.MONSTER;
 import static java.util.Arrays.asList;
 
@@ -25,23 +24,22 @@ public class Monster extends AbstractCombatant implements Event {
     @Setter
     private int health;
 
-    @Setter
-    private Attack weapon;
+    private Weapon weapon;
 
-    @Setter
-    private Armor armor = NONE;
+    private int armorClass;
 
     private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
 
     private int value;
 
-    public Monster(String name, int strength, int dexterity, int stamina, Attack weapon, int value, CombatAction... additionalActions) {
+    public Monster(String name, int strength, int dexterity, int stamina, Weapon weapon, int armorClass, int value, CombatAction... additionalActions) {
         this.name = name;
         this.strength = new Attribute(strength);
         this.dexterity = new Attribute(dexterity);
         this.stamina = new Attribute(stamina);
         this.health = stamina;
         this.weapon = weapon;
+        this.armorClass = armorClass;
         this.value = value;
         this.combatActions.addAll(asList(additionalActions));
     }
@@ -53,7 +51,7 @@ public class Monster extends AbstractCombatant implements Event {
 
     @Getter
     @RequiredArgsConstructor
-    public static class NaturalWeapon implements Attack {
+    public static class NaturalWeapon implements Weapon {
         private final String name;
         private final int diceNumber;
         private final DiceService.Dice dice;

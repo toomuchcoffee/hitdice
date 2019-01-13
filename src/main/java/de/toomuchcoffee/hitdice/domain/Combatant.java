@@ -16,13 +16,11 @@ public interface Combatant {
     int getHealth();
     void setHealth(int health);
 
-    Attack getWeapon();
-    void setWeapon(Attack weapon);
-
-    Armor getArmor();
-    void setArmor(Armor armor);
+    Weapon getWeapon();
 
     List<CombatAction> getCombatActions();
+
+    int getArmorClass();
 
     void reduceHealth(int damage);
 

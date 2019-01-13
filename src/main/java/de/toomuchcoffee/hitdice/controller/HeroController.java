@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static de.toomuchcoffee.hitdice.domain.Weapon.DAGGER;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.DAGGER;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @Controller

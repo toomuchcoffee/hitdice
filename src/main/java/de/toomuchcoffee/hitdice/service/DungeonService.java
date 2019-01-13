@@ -10,10 +10,11 @@ import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.*;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.STRENGTH;
-import static de.toomuchcoffee.hitdice.domain.Weapon.*;
 import static de.toomuchcoffee.hitdice.service.DiceService.Dice.*;
+import static java.lang.Math.min;
 import static java.lang.String.format;
 
 @Service
@@ -58,15 +59,15 @@ public class DungeonService {
     public void collectTreasure(Hero hero, Treasure treasure) {
         if (treasure instanceof Armor) {
             hero.setArmor((Armor) treasure);
-        } else if (treasure instanceof Weapon) {
-            hero.setWeapon((Weapon) treasure);
+        } else if (treasure instanceof HandWeapon) {
+            hero.setWeapon((HandWeapon) treasure);
         }
     }
 
     public void drinkPotion(Hero hero, Potion potion) {
         switch (potion.getType()) {
             case HEALING:
-                hero.setHealth(Math.min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
+                hero.setHealth(min(hero.getHealth() + potion.getPower(), hero.getStamina().getValue()));
                 break;
             case STRENGTH:
                 hero.getStrength().increase(potion.getPower());
@@ -85,14 +86,14 @@ public class DungeonService {
     }
 
     private Event createEvent() {
-        int d = diceService.roll(D20);
-        if (d > 18) {
-            return new Potion(diceService.roll(D4, 2), HEALING);
-        } if (d > 17) {
+        int d = diceService.roll(D100);
+        if (d < 1) {
             return new Potion(diceService.roll(D3), STRENGTH);
-        } else if (d > 14) {
+        } if (d < 5) {
+            return new Potion(diceService.roll(D4, 2), HEALING);
+        } else if (d < 9) {
             return createTreasure();
-        } else if (d > 11) {
+        } else if (d < 20) {
             return createMonster();
         } else {
             return null;
@@ -102,11 +103,11 @@ public class DungeonService {
     private Monster createMonster() {
         int result = diceService.roll(D100);
         if (result < 30) {
-            return new Monster("Rat", 2, 14, 2, new NaturalWeapon("teeth", 1, D4, 0), 5);
+            return new Monster("Rat", 2, 14, 2, new NaturalWeapon("teeth", 1, D4, 0), 0, 5);
         } else if (result < 55) {
-            return new Monster("Goblin", diceService.roll(D6, 2), diceService.roll(D6, 2), diceService.roll(D6, 2), SHORTSWORD, 15);
+            return new Monster("Goblin", diceService.roll(D6, 2), diceService.roll(D6, 2), diceService.roll(D6, 2), SHORTSWORD, 1, 15);
         } else if (result < 75) {
-            return new Monster("Orc", diceService.roll(D6, 3) + 1, diceService.roll(D6, 3) - 1, diceService.roll(D6, 3) + 1, LONGSWORD, 25);
+            return new Monster("Orc", diceService.roll(D6, 3) + 1, diceService.roll(D6, 3) - 1, diceService.roll(D6, 3) + 1, LONGSWORD, 2, 25);
         } else if (result < 90) {
             return new Monster(
                     "Rust monster",
@@ -114,21 +115,22 @@ public class DungeonService {
                     diceService.roll(D6, 3),
                     diceService.roll(D6, 4),
                     new NaturalWeapon("tail", 1, D4, 0),
+                    2,
                     50,
-                    new CombatAction() {
-                        @Override
-                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-                            if (diceService.roll(D20) < 9) {
-                                if (defender.getWeapon() != null && defender.getWeapon() instanceof Weapon && ((Weapon) defender.getWeapon()).isMetallic()) {
-                                    defender.setWeapon(null);
+                    (CombatAction) (attacker, defender, diceService) -> {
+                        if (defender instanceof Hero) {
+                            Hero hero = (Hero) defender;
+                            if (diceService.roll(D20) < 7) {
+                                if (hero.getWeapon() != null && hero.getWeapon() instanceof HandWeapon && ((HandWeapon) hero.getWeapon()).isMetallic()) {
+                                    hero.setWeapon(null);
                                     return Optional.of("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
-                                } else if (defender.getArmor() != null && defender.getArmor().isMetallic()) {
-                                    defender.setArmor(null);
+                                } else if (hero.getArmor() != null && hero.getArmor().isMetallic()) {
+                                    hero.setArmor(null);
                                     return Optional.of("Friggin rust monster! It hit your armor and it crumbles to rust.");
                                 }
                             }
-                            return Optional.empty();
                         }
+                        return Optional.empty();
                     });
         } else if (result < 97) {
             return new Monster(
@@ -137,17 +139,15 @@ public class DungeonService {
                     diceService.roll(D6, 2),
                     diceService.roll(D6, 4),
                     new NaturalWeapon("claws", 1, D10, 0),
+                    3,
                     100,
-                    new CombatAction() {
-                        @Override
-                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-                            if (attacker.getHealth() < attacker.getStamina().getValue()) {
-                                int regeneration = diceService.roll(D3);
-                                attacker.setHealth(attacker.getHealth() + regeneration);
-                                return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
-                            }
-                            return Optional.empty();
+                    (CombatAction) (attacker, defender, diceService) -> {
+                        if (attacker.getHealth() < attacker.getStamina().getValue()) {
+                            int regeneration = diceService.roll(D3);
+                            attacker.setHealth(min(attacker.getHealth() + regeneration, attacker.getStamina().getValue()));
+                            return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
                         }
+                        return Optional.empty();
                     });
         } else if (result < 100) {
             return new Monster(
@@ -156,16 +156,14 @@ public class DungeonService {
                     diceService.roll(D6, 2) + 6,
                     diceService.roll(D6, 4),
                     new NaturalWeapon("bite", 2, D4, 0),
+                    1,
                     200,
-                    new CombatAction() {
-                        @Override
-                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-                            if (diceService.roll(D20) < 6) {
-                                defender.getStrength().decrease();
-                                return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
-                            }
-                            return Optional.empty();
+                    (CombatAction) (attacker, defender, diceService) -> {
+                        if (diceService.roll(D20) < 5) {
+                            defender.getStrength().decrease();
+                            return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
                         }
+                        return Optional.empty();
                     });
         } else {
             return new Monster(
@@ -174,17 +172,15 @@ public class DungeonService {
                     18,
                     100,
                     new NaturalWeapon("claws", 2, D8, 0),
+                    5,
                     1000,
-                    new CombatAction(){
-                        @Override
-                        public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
-                            if (diceService.roll(D20) < 7) {
-                                int damage = diceService.roll(D8, 5);
-                                defender.reduceHealth(damage);
-                                return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
-                            }
-                            return Optional.empty();
+                    (CombatAction) (attacker, defender, diceService) -> {
+                        if (diceService.roll(D20) < 7) {
+                            int damage = diceService.roll(D8, 5);
+                            defender.reduceHealth(damage);
+                            return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
                         }
+                        return Optional.empty();
                     });
         }
     }

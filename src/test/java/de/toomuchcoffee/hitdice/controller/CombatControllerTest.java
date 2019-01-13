@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.domain.Weapon.CLUB;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.CLUB;
 import static de.toomuchcoffee.hitdice.service.CombatService.CAUSED_DAMAGE_MESSAGE;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
@@ -47,7 +47,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = new Hero(10, 11, 12, 12);
         hero.setName("Alrik");
-        monster = new Monster("Orc", 13, 6, 7, CLUB, 15);
+        monster = new Monster("Orc", 13, 6, 7, CLUB, 1, 15);
     }
 
     @Test

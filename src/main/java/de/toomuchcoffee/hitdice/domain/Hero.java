@@ -9,8 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.Armor.NONE;
-import static de.toomuchcoffee.hitdice.domain.Weapon.FISTS;
+import static de.toomuchcoffee.hitdice.domain.HandWeapon.FISTS;
 
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class Hero extends AbstractCombatant {
     private final int maxHealth;
     private int health;
 
-    private Attack weapon;
+    private Weapon weapon;
     private Armor armor;
 
     private List<CombatAction> combatActions = newArrayList(new WeaponAttack());
@@ -46,13 +45,13 @@ public class Hero extends AbstractCombatant {
     }
 
     @Override
-    public Attack getWeapon() {
+    public Weapon getWeapon() {
         return weapon == null ? FISTS : weapon;
     }
 
     @Override
-    public Armor getArmor() {
-        return armor == null ? NONE : armor;
+    public int getArmorClass() {
+        return armor == null ? 0 : armor.getProtection();
     }
 
     @Override
