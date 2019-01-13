@@ -26,14 +26,14 @@ public class HeroController {
     public String create(HttpServletRequest request) {
         Hero hero = heroService.create();
         request.getSession().setAttribute("hero", hero);
-        return "hero/create/step-1";
+        return "hero/create-1";
     }
 
     @GetMapping("create/2")
     public String edit(Model model, HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         model.addAttribute("hero", hero);
-        return "hero/create/step-2";
+        return "hero/create-2";
     }
 
     @PostMapping(value = "create/3", consumes = APPLICATION_FORM_URLENCODED_VALUE)
@@ -41,7 +41,7 @@ public class HeroController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
         hero.setWeapon(DAGGER);
-        return "hero/create/step-3";
+        return "hero/create-3";
     }
 
 }
