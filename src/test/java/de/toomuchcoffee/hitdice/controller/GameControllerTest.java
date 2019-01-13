@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.assertj.core.util.Lists.newArrayList;
@@ -32,7 +33,8 @@ public class GameControllerTest {
 
     @Test
     public void listsGames() throws Exception {
-        Date created = new Date();
+        String dateString = "13-01-2019 20:52";
+        Date created = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateString);
         Game game = new Game();
         game.setId(123);
         game.setCreated(created);
@@ -45,7 +47,7 @@ public class GameControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("game"))
-                .andExpect(xpath("//div[@id='games']//ul/li[1]").string("123"))
+                .andExpect(xpath("//div[@id='games']//ul/li[1]").string(dateString))
         ;
     }
 }

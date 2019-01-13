@@ -13,7 +13,7 @@
 
     <div id="games">
         <ul>
-            <li th:each="game : ${session.games}"><a th:href="@{'/game/' + ${game.id}}" th:text="${game.id}"> game </a></li>
+            <li th:each="game : ${session.games}"><a th:href="@{'/game/' + ${game.id}}" th:text="${#dates.format(game.created, 'dd-MM-yyyy HH:mm')}"> game </a></li>
         </ul>
     </div>
 

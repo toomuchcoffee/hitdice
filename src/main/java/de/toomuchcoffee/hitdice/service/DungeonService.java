@@ -87,11 +87,11 @@ public class DungeonService {
 
     private Event createEvent() {
         int d = diceService.roll(D100);
-        if (d < 1) {
+        if (d < 2) {
             return new Potion(diceService.roll(D3), STRENGTH);
-        } if (d < 5) {
+        } if (d < 9) {
             return new Potion(diceService.roll(D4, 2), HEALING);
-        } else if (d < 9) {
+        } else if (d < 14) {
             return createTreasure();
         } else if (d < 20) {
             return createMonster();
