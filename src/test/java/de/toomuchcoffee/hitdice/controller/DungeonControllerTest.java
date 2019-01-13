@@ -66,7 +66,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon, hero)).thenCallRealMethod();
+        when(dungeonService.explore(SOUTH, dungeon)).thenCallRealMethod();
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
@@ -83,7 +83,7 @@ public class DungeonControllerTest {
                 .andExpect(xpath("//fieldset[@id='hero-stats']/ul/li[3]").string("Stamina: 12"))
         ;
 
-        verify(dungeonService).explore(eq(SOUTH), eq(dungeon), eq(hero));
+        verify(dungeonService).explore(eq(SOUTH), eq(dungeon));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon, hero)).thenReturn(new Event(TREASURE, SHORTSWORD));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(new Event(TREASURE, SHORTSWORD));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)
@@ -119,7 +119,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = new Potion(5, HEALING);
-        when(dungeonService.explore(SOUTH, dungeon, hero)).thenReturn(new Event(POTION, potion));
+        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(new Event(POTION, potion));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
                 .session(session)

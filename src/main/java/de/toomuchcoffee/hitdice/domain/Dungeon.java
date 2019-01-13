@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static de.toomuchcoffee.hitdice.domain.Event.EMPTY_EVENT;
+import static de.toomuchcoffee.hitdice.domain.EventType.EXPLORED;
+import static java.lang.Math.abs;
+import static java.lang.System.lineSeparator;
 
 @Getter
 @Setter
@@ -64,12 +67,12 @@ public class Dungeon {
         }
         builder.append("+");
         for (int y = 0; y < size; y++) {
-            builder.append(System.lineSeparator());
+            builder.append(lineSeparator());
             builder.append("|");
             for (int x = 0; x < size; x++) {
                 if (x == posX && y == posY) {
                     builder.append("(#)");
-                } else if (Math.abs(x - posX) < 2 && Math.abs(y - posY) < 2 || eventMap[x][y].getType().equals(EventType.EXPLORED)) {
+                } else if (abs(x - posX) < 2 && abs(y - posY) < 2 || eventMap[x][y].getType().equals(EXPLORED)) {
                     builder.append(" ").append(eventMap[x][y].getType().getSymbol()).append(" ");
                 } else {
                     builder.append(" ? ");
@@ -77,7 +80,7 @@ public class Dungeon {
             }
             builder.append("|");
         }
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator());
         builder.append("+");
         for (int i = 0; i < size; i++) {
             builder.append("---");

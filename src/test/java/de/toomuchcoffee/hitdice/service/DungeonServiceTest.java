@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,41 +19,39 @@ public class DungeonServiceTest {
 
     private DungeonService dungeonService;
 
-    private Hero hero;
     private Dungeon dungeon;
 
     @Before
     public void setUp() throws Exception {
         dungeonService = new DungeonService(diceService);
-        hero = new Hero(10, 11, 12, 12);
         dungeon = new Dungeon(3);
         dungeon.setPosition(new Position(1, 1));
     }
 
     @Test
     public void exploreNorth() {
-        dungeonService.explore(NORTH, dungeon, hero);
+        dungeonService.explore(NORTH, dungeon);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 0));
     }
 
     @Test
     public void exploreSouth() {
-        dungeonService.explore(SOUTH, dungeon, hero);
+        dungeonService.explore(SOUTH, dungeon);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
     }
 
     @Test
     public void exploreEast() {
-        dungeonService.explore(EAST, dungeon, hero);
+        dungeonService.explore(EAST, dungeon);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(2, 1));
     }
 
     @Test
     public void exploreWest() {
-        dungeonService.explore(WEST, dungeon, hero);
+        dungeonService.explore(WEST, dungeon);
 
         assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));
     }

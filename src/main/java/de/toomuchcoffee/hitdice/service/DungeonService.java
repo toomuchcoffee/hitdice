@@ -35,7 +35,7 @@ public class DungeonService {
         return dungeon;
     }
 
-    public Event explore(Direction direction, Dungeon dungeon, Hero hero) {
+    public Event explore(Direction direction, Dungeon dungeon) {
         Position position = dungeon.explore(direction);
         return dungeon.getPoi(position);
     }

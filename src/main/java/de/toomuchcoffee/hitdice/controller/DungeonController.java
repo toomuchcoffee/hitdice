@@ -30,7 +30,7 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Hero hero = (Hero) request.getSession().getAttribute("hero");
 
-        Event event = dungeonService.explore(direction, dungeon, hero);
+        Event event = dungeonService.explore(direction, dungeon);
 
         if (event.getObject() != null) {
             request.getSession().setAttribute(event.getType().name().toLowerCase(), event.getObject());
@@ -77,7 +77,6 @@ public class DungeonController {
     @GetMapping("leave")
     public String leave(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        // TODO cleanup session in a better way
         request.getSession().removeAttribute("treasure");
         request.getSession().removeAttribute("potion");
         return "dungeon/explore";
