@@ -58,7 +58,7 @@ public class CombatService {
         class WeaponAttack implements CombatAction {
             public Optional<String> execute(Combatant attacker, Combatant defender) {
                 int attackScore = max(1, attacker.getAttack() - defender.getDefense());
-                if (D20.roll() <= attackScore) {
+                if (D20.check(attackScore)) {
                     Weapon weapon = attacker.getWeapon();
                     int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
                             + weapon.getBonus()

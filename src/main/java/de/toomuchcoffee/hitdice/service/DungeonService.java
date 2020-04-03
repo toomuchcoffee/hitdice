@@ -61,17 +61,7 @@ public class DungeonService {
     }
 
     public void drinkPotion(Hero hero, Potion potion) {
-        switch (potion.getType()) {
-            case HEALING:
-                hero.setHealth(min(hero.getHealth() + potion.getPower(), hero.getMaxHealth()));
-                break;
-            case STRENGTH:
-                hero.getStrength().increase(potion.getPower());
-                break;
-            case STAMINA:
-                hero.getStamina().increase(potion.getPower());
-                break;
-        }
+        potion.applyOn(hero);
     }
 
     private void initPois(Dungeon dungeon) {
@@ -118,7 +108,7 @@ public class DungeonService {
                     0,
                     40,
                     (attacker, defender) -> {
-                        if (D20.roll() < 5) {
+                        if (D20.check(5)) {
                             if (defender instanceof Hero) {
                                 Hero hero = (Hero) defender;
                                 hero.getStamina().decrease();
@@ -138,7 +128,7 @@ public class DungeonService {
                     (attacker, defender) -> {
                         if (defender instanceof Hero) {
                             Hero hero = (Hero) defender;
-                            if (D20.roll() < 7) {
+                            if (D20.check(7)) {
                                 if (hero.getWeapon() != null && hero.getWeapon() instanceof HandWeapon && ((HandWeapon) hero.getWeapon()).isMetallic()) {
                                     hero.setWeapon(null);
                                     return Optional.of("Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.");
@@ -175,7 +165,7 @@ public class DungeonService {
                     0,
                     200,
                     (attacker, defender) -> {
-                        if (D20.roll() < 5) {
+                        if (D20.check(5)) {
                             if (defender instanceof Hero) {
                                 Hero hero = (Hero) defender;
                                 hero.getStrength().decrease();
@@ -193,7 +183,7 @@ public class DungeonService {
                     5,
                     1000,
                     (attacker, defender) -> {
-                        if (D20.roll() < 7) {
+                        if (D20.check(7)) {
                             int damage = D8.roll(5);
                             defender.reduceHealth(damage);
                             return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));

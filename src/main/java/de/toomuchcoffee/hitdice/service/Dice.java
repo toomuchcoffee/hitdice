@@ -21,4 +21,8 @@ public enum Dice {
     public int roll(int n) {
         return IntStream.range(0, n).map(a -> roll()).sum();
     }
+
+    public boolean check(int p) {
+        return random.nextInt(getSides()) < p;
+    }
 }
