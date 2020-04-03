@@ -28,9 +28,7 @@ public class Attribute {
     }
 
     public void increase(int value) {
-        if (this.value < originalValue) {
-            this.value += value;
-        }
+        this.value = Math.min(this.value + value, originalValue);
         calculateBonus();
     }
 

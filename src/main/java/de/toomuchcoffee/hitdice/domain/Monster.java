@@ -32,7 +32,7 @@ public class Monster extends AbstractCombatant implements Event {
 
     private int value;
 
-    public Monster(String name, int level, int health, int defense, Weapon weapon, int armorClass, int value, CombatAction... additionalActions) {
+    public Monster(String name, int level, int health, int defense, Weapon weapon, int armorClass, int value, CombatAction... combatActions) {
         this.name = name;
         this.level = level;
         this.health = health;
@@ -41,7 +41,7 @@ public class Monster extends AbstractCombatant implements Event {
         this.weapon = weapon;
         this.armorClass = armorClass;
         this.value = value;
-        this.combatActions.addAll(asList(additionalActions));
+        this.combatActions.addAll(asList(combatActions));
     }
 
     @Override

@@ -142,7 +142,7 @@ public class DungeonService {
                     3,
                     100,
                     (CombatAction) (attacker, defender, diceService) -> {
-                        if (attacker.getHealth() < attacker.getMaxHealth()) {
+                        if (attacker.getHealth() > 0 && attacker.getHealth() < attacker.getMaxHealth()) {
                             int regeneration = diceService.roll(D3);
                             attacker.setHealth(min(attacker.getHealth() + regeneration, attacker.getMaxHealth()));
                             return Optional.of(format("Oh no! The troll regenerated %d points of stamina!", regeneration));
