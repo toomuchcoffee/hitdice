@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -47,7 +48,9 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = new Hero(10, 11, 12, 12);
         hero.setName("Alrik");
-        monster = new Monster("Orc", 2, 7, 0, CLUB, 1, 15);
+        monster = new Monster("Orc", 2, 0, CLUB, 1, 15);
+        monster.setHealth(7);
+        ReflectionTestUtils.setField(monster, "maxHealth", 7);
     }
 
     @Test

@@ -11,6 +11,8 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.EventType.MONSTER;
+import static de.toomuchcoffee.hitdice.service.Dice.D4;
+import static de.toomuchcoffee.hitdice.service.Dice.D8;
 import static java.util.Arrays.asList;
 
 @Getter
@@ -32,11 +34,11 @@ public class Monster extends AbstractCombatant implements Event {
 
     private int value;
 
-    public Monster(String name, int level, int health, int defense, Weapon weapon, int armorClass, int value, CombatAction... combatActions) {
+    public Monster(String name, int level, int defense, Weapon weapon, int armorClass, int value, CombatAction... combatActions) {
         this.name = name;
         this.level = level;
-        this.health = health;
-        this.maxHealth = health;
+        this.health = level == 0 ? D4.roll() : level * D8.roll();
+        this.maxHealth = this.health;
         this.defense = defense;
         this.weapon = weapon;
         this.armorClass = armorClass;

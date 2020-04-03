@@ -101,16 +101,15 @@ public class DungeonService {
     private Monster createMonster() {
         int result = D100.roll();
         if (result < 30) {
-            return new Monster("Rat", 0, 2, 4, new NaturalWeapon("teeth", 1, D3, 0), 0, 5);
+            return new Monster("Rat", 0, 4, new NaturalWeapon("teeth", 1, D3, 0), 0, 5);
         } else if (result < 55) {
-            return new Monster("Goblin", 1, 2 * D6.roll(), 0, SHORTSWORD, 1, 15);
+            return new Monster("Goblin", 1, 0, SHORTSWORD, 1, 15);
         } else if (result < 75) {
-            return new Monster("Orc", 2, 3 * D6.roll(), 0, LONGSWORD, 2, 25);
+            return new Monster("Orc", 2, 0, LONGSWORD, 2, 25);
         } else if (result < 90) {
             return new Monster(
                     "Rust monster",
                     2,
-                    3 * D6.roll(),
                     0,
                     new NaturalWeapon("tail", 1, D4, 0),
                     2,
@@ -134,7 +133,6 @@ public class DungeonService {
             return new Monster(
                     "Troll",
                     3,
-                    4 * D6.roll(),
                     -1,
                     new NaturalWeapon("claws", 1, D10, 0),
                     3,
@@ -151,7 +149,6 @@ public class DungeonService {
             return new Monster(
                     "Vampire",
                     5,
-                    6 * D6.roll(),
                     2,
                     new NaturalWeapon("bite", 2, D4, 0),
                     0,
@@ -170,7 +167,6 @@ public class DungeonService {
             return new Monster(
                     "Dragon",
                     20,
-                    100,
                     0,
                     new NaturalWeapon("claws", 2, D8, 0),
                     5,
