@@ -13,13 +13,13 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public enum HandWeapon implements Treasure, Weapon {
     FISTS("fists", 1, D2, 0, false),
+    CLUB("club", 1, D3, 0, false),
+    STAFF("staff", 1, D4, 1, false),
     DAGGER("dagger", 1, D4, 0, true),
     SHORTSWORD("shortsword", 1, D6, 0, true),
-    LONGSWORD("longsword", 1, D8, 0, true),
-    CLAYMORE("claymore", 1, D10, 0, true),
-    CLUB("club", 1, D4, 0, false),
     MACE("mace", 1, D6, 1, true),
-    STAFF("staff", 1, D4, 1, false);
+    LONGSWORD("longsword", 1, D8, 0, true),
+    CLAYMORE("claymore", 1, D10, 0, true);
 
     private final String name;
     private final int diceNumber;

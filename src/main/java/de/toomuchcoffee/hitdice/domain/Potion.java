@@ -12,7 +12,7 @@ public class Potion implements Event {
     private final Type type;
 
     public enum Type {
-        HEALING, STRENGTH
+        HEALING, STRENGTH, STAMINA
     }
 
     public EventType getEventType() {

@@ -53,7 +53,7 @@ public class Monster extends AbstractCombatant implements Event {
 
     @Override
     public int getAttack() {
-        return 10 + level;
+        return 8 + level;
     }
 
     @Override

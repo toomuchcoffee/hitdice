@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.domain.Monster.NaturalWeapon;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +10,7 @@ import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.*;
 import static de.toomuchcoffee.hitdice.domain.HandWeapon.*;
-import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
-import static de.toomuchcoffee.hitdice.domain.Potion.Type.STRENGTH;
+import static de.toomuchcoffee.hitdice.domain.Potion.Type.*;
 import static de.toomuchcoffee.hitdice.service.Dice.*;
 import static java.lang.Math.min;
 import static java.lang.String.format;
@@ -70,6 +68,9 @@ public class DungeonService {
             case STRENGTH:
                 hero.getStrength().increase(potion.getPower());
                 break;
+            case STAMINA:
+                hero.getStamina().increase(potion.getPower());
+                break;
         }
     }
 
@@ -87,7 +88,9 @@ public class DungeonService {
         int d = D100.roll();
         if (d < 2) {
             return new Potion(D3.roll(), STRENGTH);
-        } if (d < 9) {
+        }if (d < 4) {
+            return new Potion(D3.roll(), STAMINA);
+        } if (d < 10) {
             return new Potion(D4.roll(2), HEALING);
         } else if (d < 14) {
             return createTreasure();
@@ -100,21 +103,39 @@ public class DungeonService {
 
     private Monster createMonster() {
         int result = D100.roll();
-        if (result < 30) {
-            return new Monster("Rat", 0, 4, new NaturalWeapon("teeth", 1, D3, 0), 0, 5);
-        } else if (result < 55) {
+        if (result < 20) {
+            return new Monster("Giant Rat", 0, 4, new NaturalWeapon("teeth", 1, D3, 0), 0, 5);
+        } else if (result < 45) {
             return new Monster("Goblin", 1, 0, SHORTSWORD, 1, 15);
-        } else if (result < 75) {
+        } else if (result < 65) {
             return new Monster("Orc", 2, 0, LONGSWORD, 2, 25);
+        } if (result < 75) {
+            return new Monster(
+                    "Ghoul",
+                    2,
+                    -1,
+                    new NaturalWeapon("claws", 1, D4, 0),
+                    0,
+                    40,
+                    (attacker, defender) -> {
+                        if (D20.roll() < 5) {
+                            if (defender instanceof Hero) {
+                                Hero hero = (Hero) defender;
+                                hero.getStamina().decrease();
+                                return Optional.of("Oh my, the foulness of the Ghoul has drained your stamina by one point!");
+                            }
+                        }
+                        return Optional.empty();
+                    });
         } else if (result < 90) {
             return new Monster(
                     "Rust monster",
                     2,
                     0,
-                    new NaturalWeapon("tail", 1, D4, 0),
+                    new NaturalWeapon("tail", 1, D6, 0),
                     2,
                     50,
-                    (CombatAction) (attacker, defender) -> {
+                    (attacker, defender) -> {
                         if (defender instanceof Hero) {
                             Hero hero = (Hero) defender;
                             if (D20.roll() < 7) {
@@ -137,7 +158,7 @@ public class DungeonService {
                     new NaturalWeapon("claws", 1, D10, 0),
                     3,
                     100,
-                    (CombatAction) (attacker, defender) -> {
+                    (attacker, defender) -> {
                         if (attacker.getHealth() > 0 && attacker.getHealth() < attacker.getMaxHealth()) {
                             int regeneration = D3.roll();
                             attacker.setHealth(min(attacker.getHealth() + regeneration, attacker.getMaxHealth()));
