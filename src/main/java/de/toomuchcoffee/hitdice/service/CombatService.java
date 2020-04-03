@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
-import static de.toomuchcoffee.hitdice.service.DiceService.Dice.D20;
+import static de.toomuchcoffee.hitdice.service.Dice.D20;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.toList;
 public class CombatService {
     public static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
 
-    private final DiceService diceService;
     private final HeroService heroService;
 
     public CombatRound fight(Hero hero, Monster monster, int round) {
@@ -48,20 +47,20 @@ public class CombatService {
 
     private List<String> attack(Combatant attacker, Combatant defender) {
         return attacker.getCombatActions().stream()
-                .map(a -> a.execute(attacker, defender, diceService))
+                .map(a -> a.execute(attacker, defender))
                 .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
                 .collect(toList());
     }
 
     public interface CombatAction {
-        Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService);
+        Optional<String> execute(Combatant attacker, Combatant defender);
 
         class WeaponAttack implements CombatAction {
-            public Optional<String> execute(Combatant attacker, Combatant defender, DiceService diceService) {
+            public Optional<String> execute(Combatant attacker, Combatant defender) {
                 int attackScore = max(1, attacker.getAttack() - defender.getDefense());
-                if (diceService.roll(D20) <= attackScore) {
+                if (D20.roll() <= attackScore) {
                     Weapon weapon = attacker.getWeapon();
-                    int damage = max(1, diceService.roll(weapon.getDice(), weapon.getDiceNumber())
+                    int damage = max(1, weapon.getDiceNumber() * weapon.getDice().roll()
                             + weapon.getBonus()
                             + attacker.getDamageBonus()
                             - defender.getArmorClass());

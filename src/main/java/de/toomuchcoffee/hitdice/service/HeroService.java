@@ -7,18 +7,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.IntStream;
 
-import static de.toomuchcoffee.hitdice.service.DiceService.Dice.D6;
+import static de.toomuchcoffee.hitdice.service.Dice.D6;
 import static java.lang.Math.max;
 
 @Service
 @RequiredArgsConstructor
 public class HeroService {
-    private final DiceService diceService;
 
     public Hero create() {
-        int strength = diceService.roll(D6, 3);
-        int dexterity = diceService.roll(D6, 3);
-        int stamina = diceService.roll(D6, 3);
+        int strength = 3 * D6.roll();
+        int dexterity = 3 * D6.roll();
+        int stamina = 3 * D6.roll();
         return new Hero(strength, dexterity, stamina, stamina);
     }
 
@@ -28,7 +27,7 @@ public class HeroService {
 
         while (hero.getExperience() > xpForNextLevel(hero.getLevel())) {
             hero.setLevel(hero.getLevel() + 1);
-            int healthIncrease = max(1, diceService.roll(D6) + hero.getStamina().getBonus());
+            int healthIncrease = max(1, D6.roll() + hero.getStamina().getBonus());
             hero.setMaxHealth(hero.getMaxHealth() + healthIncrease);
             hero.setHealth(hero.getHealth() + healthIncrease);
         }

@@ -2,7 +2,7 @@ package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.domain.Combatant.AbstractCombatant;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
-import de.toomuchcoffee.hitdice.service.DiceService;
+import de.toomuchcoffee.hitdice.service.Dice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -64,7 +64,7 @@ public class Monster extends AbstractCombatant implements Event {
     public static class NaturalWeapon implements Weapon {
         private final String name;
         private final int diceNumber;
-        private final DiceService.Dice dice;
+        private final Dice dice;
         private final int bonus;
     }
 }

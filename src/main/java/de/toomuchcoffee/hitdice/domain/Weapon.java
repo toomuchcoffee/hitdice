@@ -1,6 +1,6 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hitdice.service.DiceService.Dice;
+import de.toomuchcoffee.hitdice.service.Dice;
 
 public interface Weapon {
     String getName();

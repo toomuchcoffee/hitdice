@@ -1,11 +1,11 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hitdice.service.DiceService.Dice;
+import de.toomuchcoffee.hitdice.service.Dice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.EventType.TREASURE;
-import static de.toomuchcoffee.hitdice.service.DiceService.Dice.*;
+import static de.toomuchcoffee.hitdice.service.Dice.*;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 

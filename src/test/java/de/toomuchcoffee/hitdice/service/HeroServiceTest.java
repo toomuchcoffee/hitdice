@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.mockito.Mock;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor
 public class HeroServiceTest {
 
-    @Mock
-    private DiceService diceService;
-
     private HeroService heroService;
 
     private final int level;
@@ -27,7 +23,7 @@ public class HeroServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        heroService = new HeroService(diceService);
+        heroService = new HeroService();
     }
 
     @Parameters
