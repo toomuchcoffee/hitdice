@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 @Getter
 @RequiredArgsConstructor
@@ -15,5 +16,9 @@ public enum Dice {
 
     public int roll() {
         return random.nextInt(getSides()) + 1;
+    }
+
+    public int roll(int n) {
+        return IntStream.range(0, n).map(a -> roll()).sum();
     }
 }

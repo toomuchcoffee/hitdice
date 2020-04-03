@@ -15,9 +15,9 @@ import static java.lang.Math.max;
 public class HeroService {
 
     public Hero create() {
-        int strength = 3 * D6.roll();
-        int dexterity = 3 * D6.roll();
-        int stamina = 3 * D6.roll();
+        int strength = D6.roll(3);
+        int dexterity = D6.roll(3);
+        int stamina = D6.roll(3);
         return new Hero(strength, dexterity, stamina, stamina);
     }
 

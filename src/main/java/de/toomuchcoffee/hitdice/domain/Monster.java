@@ -37,7 +37,7 @@ public class Monster extends AbstractCombatant implements Event {
     public Monster(String name, int level, int defense, Weapon weapon, int armorClass, int value, CombatAction... combatActions) {
         this.name = name;
         this.level = level;
-        this.health = level == 0 ? D4.roll() : level * D8.roll();
+        this.health = level == 0 ? D4.roll() : D8.roll(level);
         this.maxHealth = this.health;
         this.defense = defense;
         this.weapon = weapon;

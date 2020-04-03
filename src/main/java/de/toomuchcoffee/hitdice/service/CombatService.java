@@ -60,7 +60,7 @@ public class CombatService {
                 int attackScore = max(1, attacker.getAttack() - defender.getDefense());
                 if (D20.roll() <= attackScore) {
                     Weapon weapon = attacker.getWeapon();
-                    int damage = max(1, weapon.getDiceNumber() * weapon.getDice().roll()
+                    int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
                             + weapon.getBonus()
                             + attacker.getDamageBonus()
                             - defender.getArmorClass());

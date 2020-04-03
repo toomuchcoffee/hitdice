@@ -88,7 +88,7 @@ public class DungeonService {
         if (d < 2) {
             return new Potion(D3.roll(), STRENGTH);
         } if (d < 9) {
-            return new Potion(2 * D4.roll(), HEALING);
+            return new Potion(D4.roll(2), HEALING);
         } else if (d < 14) {
             return createTreasure();
         } else if (d < 20) {
@@ -173,7 +173,7 @@ public class DungeonService {
                     1000,
                     (attacker, defender) -> {
                         if (D20.roll() < 7) {
-                            int damage = 5 * D8.roll();
+                            int damage = D8.roll(5);
                             defender.reduceHealth(damage);
                             return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
                         }
