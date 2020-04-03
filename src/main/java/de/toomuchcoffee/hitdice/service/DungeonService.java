@@ -76,13 +76,13 @@ public class DungeonService {
 
     private Event createEvent() {
         int d = D100.roll();
-        if (d < 2) {
-            return new Potion(D3.roll(), STRENGTH);
-        }if (d < 4) {
-            return new Potion(D3.roll(), STAMINA);
-        } if (d < 10) {
+        if (d < 1) {
+            return new Potion(1, STRENGTH);
+        }if (d < 2) {
+            return new Potion(1, STAMINA);
+        } if (d < 8) {
             return new Potion(D4.roll(2), HEALING);
-        } else if (d < 14) {
+        } else if (d < 12) {
             return createTreasure();
         } else if (d < 20) {
             return createMonster();
@@ -177,14 +177,14 @@ public class DungeonService {
         } else {
             return new Monster(
                     "Dragon",
-                    20,
+                    8,
                     0,
-                    new NaturalWeapon("claws", 2, D8, 0),
+                    new NaturalWeapon("claws", 1, D8, 0),
                     5,
-                    1000,
+                    400,
                     (attacker, defender) -> {
-                        if (D20.check(7)) {
-                            int damage = D8.roll(5);
+                        if (D20.check(5)) {
+                            int damage = D8.roll(2);
                             defender.reduceHealth(damage);
                             return Optional.of(format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
                         }

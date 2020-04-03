@@ -67,6 +67,6 @@ public class Hero extends AbstractCombatant {
 
     @Override
     public boolean isAlive() {
-        return getStrength().getValue() > 0 && health > 0;
+        return getStrength().getValue() > 0 && getStamina().getValue() > 0 && health > 0;
     }
 }
