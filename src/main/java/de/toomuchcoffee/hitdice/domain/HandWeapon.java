@@ -26,6 +26,7 @@ public enum HandWeapon implements Treasure, Weapon {
     private final Dice dice;
     private final int bonus;
     private final boolean metallic;
+    private final EventType eventType = TREASURE;
 
     public String getDisplayName() {
         if (bonus < 0) {
@@ -34,10 +35,5 @@ public enum HandWeapon implements Treasure, Weapon {
             return format("%s (dmg: %dD%s + %d)", name, diceNumber, dice.sides, bonus);
         }
         return format("%s (dmg: %dD%s)", name, diceNumber, dice.sides);
-    }
-
-    @Override
-    public EventType getEventType() {
-        return TREASURE;
     }
 }

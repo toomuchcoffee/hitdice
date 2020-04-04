@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,17 @@ public class HeroService {
         return new Hero(strength, dexterity, stamina, stamina);
     }
 
+    public void collectTreasure(Hero hero, Treasure treasure) {
+        if (treasure instanceof Armor) {
+            hero.setArmor((Armor) treasure);
+        } else if (treasure instanceof HandWeapon) {
+            hero.setWeapon((HandWeapon) treasure);
+        }
+    }
+
+    public void drinkPotion(Hero hero, Potion potion) {
+        hero.drink(potion);
+    }
 
     public void increaseExperience(Hero hero, int gainedXp) {
         hero.setExperience(hero.getExperience() + gainedXp);

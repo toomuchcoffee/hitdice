@@ -17,6 +17,8 @@ import static java.util.Arrays.asList;
 
 @Getter
 public class Monster extends AbstractCombatant implements Event {
+    private final EventType eventType = MONSTER;
+
     private String name;
 
     private int level;
@@ -44,11 +46,6 @@ public class Monster extends AbstractCombatant implements Event {
         this.armorClass = armorClass;
         this.value = value;
         this.combatActions.addAll(asList(combatActions));
-    }
-
-    @Override
-    public EventType getEventType() {
-        return MONSTER;
     }
 
     @Override

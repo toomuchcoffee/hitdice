@@ -1,6 +1,9 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Direction;
+import de.toomuchcoffee.hitdice.domain.Dungeon;
+import de.toomuchcoffee.hitdice.domain.Event;
+import de.toomuchcoffee.hitdice.domain.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +50,6 @@ public class DungeonService {
     public void markAsVisited(Dungeon dungeon) {
         dungeon.getVisited()[dungeon.getPosX()][dungeon.getPosY()] = true;
         dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = null;
-    }
-
-    public void collectTreasure(Hero hero, Treasure treasure) {
-        if (treasure instanceof Armor) {
-            hero.setArmor((Armor) treasure);
-        } else if (treasure instanceof HandWeapon) {
-            hero.setWeapon((HandWeapon) treasure);
-        }
-    }
-
-    public void drinkPotion(Hero hero, Potion potion) {
-        potion.applyOn(hero);
     }
 
     private void initPois(Dungeon dungeon) {

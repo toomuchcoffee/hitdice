@@ -10,6 +10,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.HandWeapon.FISTS;
+import static java.lang.Math.min;
 
 @Getter
 @Setter
@@ -68,5 +69,19 @@ public class Hero extends AbstractCombatant {
     @Override
     public boolean isAlive() {
         return getStrength().getValue() > 0 && getStamina().getValue() > 0 && health > 0;
+    }
+
+    public void drink(Potion potion) {
+        switch (potion.getType()) {
+            case HEALING:
+                setHealth(min(getHealth() + potion.getPower(), getMaxHealth()));
+                break;
+            case STRENGTH:
+                getStrength().increase(potion.getPower());
+                break;
+            case STAMINA:
+                getStamina().increase(potion.getPower());
+                break;
+        }
     }
 }

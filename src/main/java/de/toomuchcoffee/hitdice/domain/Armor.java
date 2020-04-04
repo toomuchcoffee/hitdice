@@ -16,13 +16,9 @@ public enum Armor implements Treasure {
     private final String name;
     private final int protection;
     private final boolean metallic;
+    private final EventType eventType = TREASURE;
 
     public String getDisplayName() {
         return format("%s (ac: %d)", name, protection);
-    }
-
-    @Override
-    public EventType getEventType() {
-        return TREASURE;
     }
 }

@@ -2,6 +2,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.DungeonService;
+import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import static de.toomuchcoffee.hitdice.domain.EventType.MAGIC_DOOR;
 @RequiredArgsConstructor
 public class DungeonController {
     private final DungeonService dungeonService;
+    private final HeroService heroService;
 
     @GetMapping("create/{size}")
     public String create(@PathVariable int size, HttpServletRequest request) {
@@ -83,7 +85,6 @@ public class DungeonController {
 
     @GetMapping("leave")
     public String leave(HttpServletRequest request) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         request.getSession().removeAttribute("treasure");
         request.getSession().removeAttribute("potion");
         return "dungeon/explore";
@@ -94,7 +95,7 @@ public class DungeonController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Treasure treasure = (Treasure) request.getSession().getAttribute("treasure");
-        dungeonService.collectTreasure(hero, treasure);
+        heroService.collectTreasure(hero, treasure);
         request.getSession().removeAttribute("treasure");
         dungeonService.markAsVisited(dungeon);
         return "dungeon/explore";
@@ -105,7 +106,7 @@ public class DungeonController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Potion potion = (Potion) request.getSession().getAttribute("potion");
-        dungeonService.drinkPotion(hero, potion);
+        heroService.drinkPotion(hero, potion);
         request.getSession().removeAttribute("potion");
         dungeonService.markAsVisited(dungeon);
         return "dungeon/explore";
