@@ -49,7 +49,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = TestData.getHero();
         hero.setName("Alrik");
-        monster = new Monster("Orc", 2, 0, CLUB, 1, 15);
+        monster = new Monster("Orc", 2, 0, CLUB, 1);
         monster.setHealth(7);
         ReflectionTestUtils.setField(monster, "maxHealth", 7);
     }
@@ -151,7 +151,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 0/7"))
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
                 .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
-                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 15 experience points!"))
+                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 45 experience points!"))
                 .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/continue"))
         ;
 

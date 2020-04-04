@@ -66,8 +66,8 @@ public class Monster extends AbstractCombatant implements Event {
     }
 
     public int getValue() {
-        int value = IntStream.range(0, level+1).map(l -> (l + 1) * 5).sum();
-        double factor = Math.pow(1.5, (double) combatActions.size());
+        int value = IntStream.range(0, level + 1).map(l -> (l + 1) * 5).sum();
+        double factor = Math.pow(1.5, combatActions.size() - 1);
         return (int) (value * factor);
     }
 }
