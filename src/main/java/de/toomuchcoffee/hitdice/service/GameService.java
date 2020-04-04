@@ -35,13 +35,6 @@ public class GameService {
 
     public Hero restore(Integer gameId) {
         Game game = gameRepository.getOne(gameId);
-        Hero hero = new Hero(game.getStrength(), game.getDexterity(), game.getStamina(), game.getMaxHealth());
-        hero.setName(game.getName());
-        hero.setHealth(game.getHealth());
-        hero.setExperience(game.getExperience());
-        hero.setLevel(game.getLevel());
-        hero.setArmor(game.getArmor());
-        hero.setWeapon(game.getWeapon());
-        return hero;
+        return new Hero(game);
     }
 }

@@ -2,6 +2,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,9 +34,11 @@ public class HeroControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private Hero hero = TestData.getHero();
+
     @Test
     public void heroCreateStart() throws Exception {
-        when(heroService.create()).thenReturn(new Hero(10, 11, 12, 12));
+        when(heroService.create()).thenReturn(hero);
 
         MockHttpSession session = new MockHttpSession();
 
@@ -55,13 +58,12 @@ public class HeroControllerTest {
                 .andExpect(xpath("//div[@id='hero-create-actions']/a[2]/@href").string("/hero/create/2"))
         ;
 
-        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(new Hero(10, 11, 12, 12), "combatActions");
+        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(hero, "combatActions");
     }
 
     @Test
     public void heroCreateContinue() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
 
         this.mvc.perform(get("/hero/create/2")
@@ -85,7 +87,6 @@ public class HeroControllerTest {
     @Test
     public void heroCreateFinish() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
 
         HeroUpdate update = new HeroUpdate();

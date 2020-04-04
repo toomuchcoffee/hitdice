@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.service;
 import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.db.GameRepository;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +55,7 @@ public class GameServiceTest {
     }
 
     private Hero getHero() {
-        Hero hero = new Hero(11, 12, 13, 13);
+        Hero hero = TestData.getHero();
         hero.setHealth(5);
         hero.setWeapon(LONGSWORD);
         hero.setArmor(LEATHER);
@@ -66,10 +67,10 @@ public class GameServiceTest {
 
     private Game getGame() {
         Game expected = new Game();
-        expected.setStamina(13);
-        expected.setDexterity(12);
-        expected.setStrength(11);
-        expected.setMaxHealth(13);
+        expected.setStamina(12);
+        expected.setDexterity(11);
+        expected.setStrength(10);
+        expected.setMaxHealth(12);
         expected.setHealth(5);
         expected.setWeapon(LONGSWORD);
         expected.setArmor(LEATHER);

@@ -1,12 +1,10 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Position;
-import de.toomuchcoffee.hitdice.domain.Potion;
+import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +40,19 @@ public class DungeonControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private Hero hero;
+
+    @Before
+    public void setUp() throws Exception {
+        hero = TestData.getHero();
+    }
+
     @Test
     public void dungeonCreate() throws Exception {
         when(dungeonService.create(1)).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("hero", new Hero(10, 11, 12, 12));
+        session.setAttribute("hero", hero);
 
         this.mvc.perform(get("/dungeon/create/1")
                 .session(session)
@@ -60,7 +65,6 @@ public class DungeonControllerTest {
     @Test
     public void dungeonExploreSouth() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
         dungeon.setPosition(new Position(0, 0));
@@ -81,7 +85,6 @@ public class DungeonControllerTest {
     @Test
     public void dungeonTreasure() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
         dungeon.setPosition(new Position(0, 0));
@@ -104,7 +107,6 @@ public class DungeonControllerTest {
     @Test
     public void dungeonPotion() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        Hero hero = new Hero(10, 11, 12, 12);
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
         dungeon.setPosition(new Position(0, 0));
@@ -131,7 +133,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         Dungeon dungeon = new Dungeon(1);
         session.setAttribute("dungeon", dungeon);
-        session.setAttribute("hero", new Hero(10, 11, 12, 12));
+        session.setAttribute("hero", hero);
 
         this.mvc.perform(get("/dungeon/continue")
                 .session(session)

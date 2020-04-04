@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.controller;
 import de.toomuchcoffee.hitdice.domain.Dungeon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
+import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import org.junit.Before;
@@ -46,7 +47,7 @@ public class CombatControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        hero = new Hero(10, 11, 12, 12);
+        hero = TestData.getHero();
         hero.setName("Alrik");
         monster = new Monster("Orc", 2, 0, CLUB, 1, 15);
         monster.setHealth(7);

@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.domain.Combatant.AbstractCombatant;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
@@ -10,6 +11,9 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.HandWeapon.FISTS;
+import static de.toomuchcoffee.hitdice.service.Dice.D6;
+import static de.toomuchcoffee.hitdice.service.Dice.D8;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 @Getter
@@ -31,14 +35,33 @@ public class Hero extends AbstractCombatant {
 
     private int experience;
 
-    private int level = 1;
+    private int level;
 
-    public Hero(int strength, int dexterity, int stamina, int health) {
-        this.strength = new Attribute(strength);
-        this.dexterity = new Attribute(dexterity);
-        this.stamina = new Attribute(stamina);
-        this.maxHealth = health;
-        this.health = health;
+    public Hero() {
+        this.strength = new Attribute(D6.roll(3));
+        this.dexterity = new Attribute(D6.roll(3));
+        this.stamina = new Attribute(D6.roll(3));
+        levelUp();
+    }
+
+    public Hero(Game game) {
+        this.strength = new Attribute(game.getStrength());
+        this.dexterity = new Attribute(game.getDexterity());
+        this.stamina = new Attribute(game.getStamina());
+        this.maxHealth = game.getMaxHealth();
+        this.health = game.getHealth();
+        this.name = game.getName();
+        this.experience = game.getExperience();
+        this.level = game.getLevel();
+        this.armor = game.getArmor();
+        this.weapon = game.getWeapon();
+    }
+
+    public void levelUp() {
+        level++;
+        int healthIncrease = max(1, D8.roll() + stamina.getBonus());
+        maxHealth += healthIncrease;
+        health += healthIncrease;
     }
 
     @Override
