@@ -97,6 +97,9 @@ public class Hero extends AbstractCombatant {
             case STRENGTH:
                 getStrength().increase(potion.getPower());
                 break;
+            case DEXTERITY:
+                getDexterity().increase(potion.getPower());
+                break;
             case STAMINA:
                 getStamina().increase(potion.getPower());
                 break;

@@ -7,6 +7,6 @@ import static de.toomuchcoffee.hitdice.service.Dice.D6;
 
 public class Ettin extends Monster {
     public Ettin() {
-        super("Ettin", 4, -1, new CustomWeapon("big club", 1, D6, 2), 3, new WeaponAttack());
+        super("Ettin", 4, -1, new CustomWeapon("big club", 2, D6, 2), 3, new WeaponAttack());
     }
 }
