@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.EventType.MONSTER;
@@ -34,9 +35,7 @@ public class Monster extends AbstractCombatant implements Event {
 
     private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
 
-    private int value;
-
-    public Monster(String name, int level, int defense, Weapon weapon, int armorClass, int value, CombatAction... combatActions) {
+    public Monster(String name, int level, int defense, Weapon weapon, int armorClass, CombatAction... combatActions) {
         this.name = name;
         this.level = level;
         this.health = level == 0 ? D4.roll() : D8.roll(level);
@@ -44,7 +43,6 @@ public class Monster extends AbstractCombatant implements Event {
         this.defense = defense;
         this.weapon = weapon;
         this.armorClass = armorClass;
-        this.value = value;
         this.combatActions.addAll(asList(combatActions));
     }
 
@@ -60,10 +58,16 @@ public class Monster extends AbstractCombatant implements Event {
 
     @Getter
     @RequiredArgsConstructor
-    public static class NaturalWeapon implements Weapon {
+    public static class CustomWeapon implements Weapon {
         private final String name;
         private final int diceNumber;
         private final Dice dice;
         private final int bonus;
+    }
+
+    public int getValue() {
+        int value = IntStream.range(0, level+1).map(l -> (l + 1) * 5).sum();
+        double factor = Math.pow(1.5, (double) combatActions.size());
+        return (int) (value * factor);
     }
 }

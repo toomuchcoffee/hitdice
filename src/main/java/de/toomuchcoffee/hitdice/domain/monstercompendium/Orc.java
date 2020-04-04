@@ -6,6 +6,6 @@ import static de.toomuchcoffee.hitdice.domain.HandWeapon.MACE;
 
 public class Orc extends Monster {
     public Orc() {
-        super("Orc", 2, 0, MACE, 2, 25);
+        super("Orc", 2, 0, MACE, 2);
     }
 }

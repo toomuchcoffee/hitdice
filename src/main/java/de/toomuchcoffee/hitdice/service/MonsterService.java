@@ -25,16 +25,17 @@ public class MonsterService {
             case 12:
             case 13:
             case 14:
+                return new GiantRat(); // level 0
             case 15:
             case 16:
             case 17:
             case 18:
             case 19:
-                return new GiantRat();
             case 20:
             case 21:
             case 22:
             case 23:
+                return new Goblin(); // level 1
             case 24:
             case 25:
             case 26:
@@ -44,6 +45,7 @@ public class MonsterService {
             case 30:
             case 31:
             case 32:
+                return new Skeleton(); // level 1
             case 33:
             case 34:
             case 35:
@@ -52,15 +54,16 @@ public class MonsterService {
             case 38:
             case 39:
             case 40:
+                return new Orc(); // level 2
             case 41:
             case 42:
             case 43:
             case 44:
-                return new Goblin();
             case 45:
             case 46:
             case 47:
             case 48:
+                return new Ghoul(); // level 2
             case 49:
             case 50:
             case 51:
@@ -68,6 +71,7 @@ public class MonsterService {
             case 53:
             case 54:
             case 55:
+                return new RustMonster(); // level 3
             case 56:
             case 57:
             case 58:
@@ -75,50 +79,54 @@ public class MonsterService {
             case 60:
             case 61:
             case 62:
+                return new Ogre(); // level 3
             case 63:
             case 64:
-                return new Orc();
             case 65:
             case 66:
             case 67:
             case 68:
+                return new Troll(); // level 4
             case 69:
             case 70:
             case 71:
             case 72:
             case 73:
             case 74:
-                return new Ghoul();
+                return new Ettin(); // level 4
             case 75:
             case 76:
             case 77:
             case 78:
             case 79:
+                return new Ooze(); // level 5
             case 80:
             case 81:
             case 82:
             case 83:
             case 84:
+                return new Vampire(); // level 5
             case 85:
             case 86:
             case 87:
             case 88:
+                return new Beholder(); // level 6
             case 89:
-                return new RustMonster();
             case 90:
             case 91:
             case 92:
+                return new MindFlayer(); // level 6
             case 93:
             case 94:
-                return new Troll();
             case 95:
+                return new Demogorgon(); // level 7
             case 96:
             case 97:
             case 98:
-                return new Vampire();
+                return new Lich();// level 7
             case 99:
             case 100:
-                return new Dragon();
+                return new Dragon(); // level 8
             default:
                 return null;
         }

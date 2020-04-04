@@ -15,8 +15,9 @@ public class PotionService {
             case 1:
                 return new Potion(1, STRENGTH);
             case 2:
-                return new Potion(1, STAMINA);
+                return new Potion(1, DEXTERITY);
             case 3:
+                return new Potion(1, STAMINA);
             case 4:
             case 5:
             case 6:

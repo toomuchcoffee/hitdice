@@ -13,6 +13,6 @@ public class Potion implements Event {
     private final EventType eventType = POTION;
 
     public enum Type {
-        HEALING, STRENGTH, STAMINA
+        HEALING, STRENGTH, DEXTERITY, STAMINA
     }
 }

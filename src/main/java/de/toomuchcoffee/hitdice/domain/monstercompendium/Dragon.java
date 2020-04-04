@@ -12,9 +12,8 @@ public class Dragon extends Monster {
         super("Dragon",
                 8,
                 0,
-                new Monster.NaturalWeapon("claws", 1, D8, 0),
+                new CustomWeapon("claws", 1, D8, 0),
                 5,
-                400,
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

@@ -6,26 +6,28 @@ import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 
 import static de.toomuchcoffee.hitdice.service.Dice.D20;
-import static de.toomuchcoffee.hitdice.service.Dice.D4;
+import static de.toomuchcoffee.hitdice.service.Dice.D6;
 
-public class Vampire extends Monster {
-    public Vampire() {
-        super("Vampire",
-                5,
-                2,
-                new CustomWeapon("bite", 2, D4, 0),
+public class Lich extends Monster {
+    public Lich() {
+        super("Lich",
+                7,
+                0,
+                new CustomWeapon("touch", 1, D6, 0),
                 0,
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
-                        return defender instanceof Hero && D20.check(5);
+                        return defender instanceof Hero && D20.check(4);
                     }
 
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
                         hero.getStrength().decrease();
-                        return "Don't you just hate vampires? This fella just sucked away one point of strength from you!";
+                        hero.getDexterity().decrease();
+                        hero.getStamina().decrease();
+                        return "The eternal coldness of the Lich's touch weakens you. You lose 1 point on each attribute score!";
                     }
                 });
     }

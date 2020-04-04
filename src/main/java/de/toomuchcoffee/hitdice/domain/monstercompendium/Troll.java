@@ -10,11 +10,10 @@ import static de.toomuchcoffee.hitdice.service.Dice.D3;
 public class Troll extends Monster {
     public Troll() {
         super("Troll",
-                3,
+                4,
                 -1,
-                new Monster.NaturalWeapon("claws", 1, D10, 0),
+                new CustomWeapon("claws", 1, D10, 0),
                 3,
-                100,
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

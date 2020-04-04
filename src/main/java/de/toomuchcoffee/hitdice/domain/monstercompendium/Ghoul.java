@@ -13,9 +13,8 @@ public class Ghoul extends Monster {
         super("Ghoul",
                 2,
                 -1,
-                new Monster.NaturalWeapon("claws", 1, D4, 0),
+                new CustomWeapon("claws", 1, D4, 0),
                 0,
-                40,
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
@@ -25,8 +24,8 @@ public class Ghoul extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        hero.getStamina().decrease();
-                        return "Oh my, the foulness of the Ghoul has drained your stamina by one point!";
+                        hero.getDexterity().decrease();
+                        return "The ghoul's paralyzing touch makes you lose one point of dexterity!";
                     }
                 });
     }

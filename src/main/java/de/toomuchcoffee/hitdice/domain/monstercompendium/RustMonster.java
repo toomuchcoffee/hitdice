@@ -12,11 +12,10 @@ import static de.toomuchcoffee.hitdice.service.Dice.D6;
 public class RustMonster extends Monster {
     public RustMonster() {
         super("Rust monster",
-                2,
+                3,
                 0,
-                new Monster.NaturalWeapon("tail", 1, D6, 0),
+                new CustomWeapon("tail", 1, D6, 0),
                 2,
-                50,
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
