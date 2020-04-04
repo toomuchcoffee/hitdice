@@ -26,7 +26,7 @@ public class Beholder extends Monster {
                         Hero hero = (Hero) defender;
                         int eyes = D10.roll();
                         hero.reduceHealth(eyes);
-                        return String.format("%d of the Beholder's eyes beam right into your soul and reduce your health by %d points!", eyes);
+                        return String.format("%d of the Beholder's eyes beam right into your soul and reduce your health by %d points!", eyes, eyes);
                     }
                 });
     }
