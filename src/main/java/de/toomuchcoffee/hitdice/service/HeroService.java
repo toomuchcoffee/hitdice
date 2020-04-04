@@ -12,7 +12,9 @@ import java.util.stream.IntStream;
 public class HeroService {
 
     public Hero create() {
-        return new Hero();
+        Hero hero = new Hero();
+        hero.initialize();
+        return hero;
     }
 
     public void collectTreasure(Hero hero, Treasure treasure) {

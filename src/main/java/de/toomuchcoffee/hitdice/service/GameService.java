@@ -5,6 +5,7 @@ import de.toomuchcoffee.hitdice.db.GameRepository;
 import de.toomuchcoffee.hitdice.domain.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class GameService {
 
     public Hero restore(Integer gameId) {
         Game game = gameRepository.getOne(gameId);
-        return new Hero(game);
+        Hero hero = new Hero();
+        hero.initializeWithPresets(game.getStrength(), game.getDexterity(), game.getStamina());
+        BeanUtils.copyProperties(game, hero);
+        return hero;
     }
 }
