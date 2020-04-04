@@ -53,21 +53,31 @@ public class CombatService {
     }
 
     public interface CombatAction {
-        Optional<String> execute(Combatant attacker, Combatant defender);
+        boolean condition(Combatant attacker, Combatant defender);
+        String onSuccess(Combatant attacker, Combatant defender);
+
+        default Optional<String> execute(Combatant attacker, Combatant defender) {
+            if (condition(attacker, defender)) {
+                return Optional.of(onSuccess(attacker, defender));
+            }
+            return Optional.empty();
+        }
 
         class WeaponAttack implements CombatAction {
-            public Optional<String> execute(Combatant attacker, Combatant defender) {
+            public boolean condition(Combatant attacker, Combatant defender) {
                 int attackScore = max(1, attacker.getAttack() - defender.getDefense());
-                if (D20.check(attackScore)) {
-                    Weapon weapon = attacker.getWeapon();
-                    int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
-                            + weapon.getBonus()
-                            + attacker.getDamageBonus()
-                            - defender.getArmorClass());
-                    defender.reduceHealth(damage);
-                    return Optional.of(format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage));
-                }
-                return Optional.empty();
+                return D20.check(attackScore);
+            }
+
+            @Override
+            public String onSuccess(Combatant attacker, Combatant defender) {
+                Weapon weapon = attacker.getWeapon();
+                int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
+                        + weapon.getBonus()
+                        + attacker.getDamageBonus()
+                        - defender.getArmorClass());
+                defender.reduceHealth(damage);
+                return format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage);
             }
         }
     }
