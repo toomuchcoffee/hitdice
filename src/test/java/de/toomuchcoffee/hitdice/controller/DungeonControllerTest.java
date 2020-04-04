@@ -6,6 +6,7 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Position;
 import de.toomuchcoffee.hitdice.domain.Potion;
 import de.toomuchcoffee.hitdice.service.DungeonService;
+import de.toomuchcoffee.hitdice.service.HeroService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class DungeonControllerTest {
 
     @MockBean
     private DungeonService dungeonService;
+
+    @MockBean
+    private HeroService heroService;
 
     @Autowired
     private MockMvc mvc;

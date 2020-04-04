@@ -1,11 +1,13 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.Potion;
+import org.springframework.stereotype.Service;
 
 import static de.toomuchcoffee.hitdice.domain.Potion.Type.*;
 import static de.toomuchcoffee.hitdice.service.Dice.D12;
 import static de.toomuchcoffee.hitdice.service.Dice.D4;
 
+@Service
 public class PotionService {
 
     public Potion createPotion() {
