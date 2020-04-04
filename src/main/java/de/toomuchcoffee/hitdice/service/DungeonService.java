@@ -65,12 +65,11 @@ public class DungeonService {
     private Event createEvent() {
         switch (D20.roll()) {
             case 1:
-            case 2:
                 return potionService.createPotion();
-            case 3:
+            case 2:
                 return treasureService.createTreasure();
+            case 3:
             case 4:
-            case 5:
                 return monsterService.createMonster();
             default:
                 return null;
