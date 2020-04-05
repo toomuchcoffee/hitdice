@@ -23,20 +23,22 @@ import static java.util.Arrays.asList;
 public class AbstractMonster implements Combatant, Event {
     private final EventType eventType = MONSTER;
 
-    private String name;
-
-    private int level;
-    private int defense;
-
-    private Health health;
-
-    private Weapon weapon;
-
-    private int armorClass;
+    private final String name;
+    private final int level;
+    private final int defense;
+    private final Health health;
+    private final Weapon weapon;
+    private final int armorClass;
 
     private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
 
-    public AbstractMonster(String name, int level, int defense, Weapon weapon, int armorClass, CombatAction... combatActions) {
+    public AbstractMonster(
+            String name,
+            int level,
+            int defense,
+            Weapon weapon,
+            int armorClass,
+            CombatAction... combatActions) {
         this.name = name;
         this.level = level;
         this.health = new Health(level == 0 ? D4.roll() : D8.roll(level));

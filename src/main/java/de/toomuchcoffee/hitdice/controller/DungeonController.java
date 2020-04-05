@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
-import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.world.EventType.MAGIC_DOOR;
 
@@ -29,8 +28,9 @@ public class DungeonController {
     private final HeroService heroService;
 
     @GetMapping("create/{size}")
-    public String create(@PathVariable int size, HttpServletRequest request) {
-        Dungeon dungeon = dungeonService.create(size);
+    public String create(HttpServletRequest request) {
+        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        Dungeon dungeon = dungeonService.create(hero.getLevel());
         request.getSession().setAttribute("dungeon", dungeon);
         return "dungeon/explore";
     }
@@ -60,8 +60,7 @@ public class DungeonController {
                     return "dungeon/potion";
                 }
                 case MAGIC_DOOR: {
-                    int size = new Random().nextInt(hero.getLevel() + 4) + 5;
-                    return String.format("redirect:/dungeon/create/%d", size);
+                    return "redirect:/dungeon/create";
                 }
                 default: {
                     dungeonService.markAsVisited(dungeon);

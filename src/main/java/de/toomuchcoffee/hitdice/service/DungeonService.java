@@ -16,14 +16,15 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 @RequiredArgsConstructor
 public class DungeonService {
 
-    private static final Random RANDOM = new Random();
+    private final Random random;
     private final TreasureService treasureService;
     private final MonsterService monsterService;
     private final PotionService potionService;
 
-    public Dungeon create(int size) {
+    public Dungeon create(int heroLevel) {
+        int size = new Random().nextInt(heroLevel + 4) + 5;
         Dungeon dungeon = new Dungeon(size);
-        initPois(dungeon);
+        initPois(dungeon, heroLevel);
         Position start = getAnyUnoccupiedPosition(dungeon);
         dungeon.setPosition(start);
         markAsVisited(dungeon);
@@ -42,7 +43,7 @@ public class DungeonService {
 
         Position pos;
         do {
-            pos = new Position(RANDOM.nextInt(dungeon.getSize()), RANDOM.nextInt(dungeon.getSize()));
+            pos = new Position(random.nextInt(dungeon.getSize()), random.nextInt(dungeon.getSize()));
         } while (dungeon.getEventMap()[pos.getX()][pos.getY()] != null);
         return pos;
     }
@@ -52,7 +53,7 @@ public class DungeonService {
         dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = null;
     }
 
-    private void initPois(Dungeon dungeon) {
+    private void initPois(Dungeon dungeon, int heroLevel) {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
                 dungeon.getEventMap()[x][y] = createEvent();

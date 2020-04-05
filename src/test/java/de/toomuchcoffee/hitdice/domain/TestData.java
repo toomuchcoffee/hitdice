@@ -8,6 +8,7 @@ public class TestData {
         hero.initializeWithPresets(10, 11, 12);
         ReflectionTestUtils.setField(hero.getHealth(), "value", 12);
         ReflectionTestUtils.setField(hero.getHealth(), "maxValue", 12);
+        ReflectionTestUtils.setField(hero, "level", 1);
         return hero;
     }
 }

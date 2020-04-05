@@ -19,7 +19,7 @@ public class DungeonServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        dungeonService = new DungeonService(null, null, null);
+        dungeonService = new DungeonService(null, null, null, null);
         dungeon = new Dungeon(3);
         dungeon.setPosition(new Position(1, 1));
     }

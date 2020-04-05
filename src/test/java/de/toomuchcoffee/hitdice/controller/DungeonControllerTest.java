@@ -20,11 +20,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
+import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +43,9 @@ public class DungeonControllerTest {
     @MockBean
     private HeroService heroService;
 
+    @MockBean
+    private Random random;
+
     @Autowired
     private MockMvc mvc;
 
@@ -53,6 +58,7 @@ public class DungeonControllerTest {
 
     @Test
     public void dungeonCreate() throws Exception {
+        when(random.nextInt(anyInt())).thenReturn(-4);
         when(dungeonService.create(1)).thenReturn(new Dungeon(1));
 
         MockHttpSession session = new MockHttpSession();
