@@ -13,7 +13,7 @@ public class Dragon extends Monster {
                 8,
                 0,
                 5,
-                new WeaponAttack(new CustomWeapon("claws", 1, D8, 0)),
+                new WeaponAttack(new CustomWeapon("claws", () -> D8.roll(2))),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
@@ -22,7 +22,7 @@ public class Dragon extends Monster {
 
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
-                        int damage = D8.roll(2);
+                        int damage = D8.roll(4);
                         defender.reduceHealth(damage);
                         return String.format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage);
                     }

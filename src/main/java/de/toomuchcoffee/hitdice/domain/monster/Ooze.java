@@ -14,7 +14,7 @@ public class Ooze extends Monster {
                 5,
                 -1,
                 1,
-                new WeaponAttack(new CustomWeapon("acid", 1, D6, 0)),
+                new WeaponAttack(new CustomWeapon("acid", D6::roll)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

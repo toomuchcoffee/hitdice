@@ -29,7 +29,7 @@ public class GameController {
     public String loadGame(HttpServletRequest request, @PathVariable Integer gameId) {
         Hero hero = gameService.restore(gameId);
         request.getSession().setAttribute("hero", hero);
-        return "redirect:/dungeon/create/8";
+        return "redirect:/dungeon/create";
     }
 
     @GetMapping("save")

@@ -3,7 +3,6 @@ package de.toomuchcoffee.hitdice.service;
 import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.db.GameRepository;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class GameService {
         game.setLevel(hero.getLevel());
         game.setExperience(hero.getExperience());
         game.setArmor(hero.getArmor());
-        game.setWeapon((HandWeapon) hero.getWeapon());
+        game.setWeapon(hero.getWeapon());
         game.setHealth(hero.getHealth().getValue());
         game.setMaxHealth(hero.getHealth().getMaxValue());
         game.setStrength(hero.getStrength().getValue());
@@ -37,7 +36,7 @@ public class GameService {
     public Hero restore(Integer gameId) {
         Game game = gameRepository.getOne(gameId);
         Hero hero = new Hero();
-        hero.initializeWithPresets(game.getStrength(), game.getDexterity(), game.getStamina());
+        hero.initializeWithPresets(game.getStrength(), game.getDexterity(), game.getStamina(), game.getHealth(), game.getMaxHealth());
         BeanUtils.copyProperties(game, hero);
         return hero;
     }

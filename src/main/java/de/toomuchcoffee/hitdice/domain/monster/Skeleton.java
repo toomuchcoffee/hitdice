@@ -2,7 +2,8 @@ package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 
-import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.LONGSWORD;
+
 
 public class Skeleton extends Monster {
     public Skeleton() {

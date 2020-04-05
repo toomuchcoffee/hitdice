@@ -2,8 +2,8 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.combat.Weapon;
 import de.toomuchcoffee.hitdice.domain.item.Armor;
-import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class HeroService {
     public void collectTreasure(Hero hero, Treasure treasure) {
         if (treasure instanceof Armor) {
             hero.setArmor((Armor) treasure);
-        } else if (treasure instanceof HandWeapon) {
-            hero.setWeapon((HandWeapon) treasure);
+        } else if (treasure instanceof Weapon) {
+            hero.setWeapon((Weapon) treasure);
         }
     }
 

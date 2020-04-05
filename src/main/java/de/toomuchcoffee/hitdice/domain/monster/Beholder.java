@@ -14,7 +14,7 @@ public class Beholder extends Monster {
                 6,
                 0,
                 0,
-                new WeaponAttack(new CustomWeapon("bite", 3, D4, 0)),
+                new WeaponAttack(new CustomWeapon("bite", () -> D4.roll(3))),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

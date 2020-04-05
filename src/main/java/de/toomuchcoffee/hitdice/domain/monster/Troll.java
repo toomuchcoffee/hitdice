@@ -13,7 +13,7 @@ public class Troll extends Monster {
                 4,
                 -1,
                 3,
-                new WeaponAttack(new CustomWeapon("claws", 1, D10, 0)),
+                new WeaponAttack(new CustomWeapon("claws", D10::roll)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

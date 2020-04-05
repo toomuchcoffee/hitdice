@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
-import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.FISTS;
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.FISTS;
 import static java.lang.Math.max;
 
 @Getter
@@ -50,11 +50,11 @@ public class Hero implements Combatant {
         this.levelUp();
     }
 
-    public void initializeWithPresets(int strength, int dexterity, int stamina) {
+    public void initializeWithPresets(int strength, int dexterity, int stamina, int health, int maxHealth) {
         attributes.put(STRENGTH, new Attribute(strength));
         attributes.put(DEXTERITY, new Attribute(dexterity));
         attributes.put(STAMINA, new Attribute(stamina));
-        attributes.put(HEALTH, new Health(0));
+        attributes.put(HEALTH, new Health(health, maxHealth));
     }
 
     public void levelUp() {

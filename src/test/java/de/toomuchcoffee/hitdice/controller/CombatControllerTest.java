@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.CLUB;
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.CLUB;
 import static de.toomuchcoffee.hitdice.service.CombatService.CAUSED_DAMAGE_MESSAGE;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;

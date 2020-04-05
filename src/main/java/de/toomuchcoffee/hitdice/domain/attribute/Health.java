@@ -12,6 +12,11 @@ public class Health extends AbstractAttribute {
         this.maxValue = value;
     }
 
+    public Health(int value, int maxValue) {
+        super(value);
+        this.maxValue = maxValue;
+    }
+
     public void raiseMaxValue(int value) {
         this.maxValue += value;
         this.value += value;

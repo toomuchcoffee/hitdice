@@ -10,7 +10,7 @@ public class Ogre extends Monster {
                 3,
                 -1,
                 2,
-                new WeaponAttack(new CustomWeapon("big club", 2, D6, 0))
+                new WeaponAttack(new CustomWeapon("big club", () -> D6.roll(2)))
                 );
     }
 }

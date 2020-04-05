@@ -1,16 +1,16 @@
 package de.toomuchcoffee.hitdice.domain.monster;
 
-import de.toomuchcoffee.hitdice.domain.Dice;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.combat.GenericWeapon;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -57,11 +57,9 @@ public class Monster implements Combatant, Event {
 
     @Getter
     @RequiredArgsConstructor
-    public static class CustomWeapon implements Weapon {
+    public static class CustomWeapon implements GenericWeapon {
         private final String name;
-        private final int diceNumber;
-        private final Dice dice;
-        private final int bonus;
+        private final Supplier<Integer> damage;
     }
 
     public int getValue() {

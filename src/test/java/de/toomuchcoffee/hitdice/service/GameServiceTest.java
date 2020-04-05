@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.LONGSWORD;
 import static de.toomuchcoffee.hitdice.domain.item.Armor.LEATHER;
-import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,6 +53,8 @@ public class GameServiceTest {
         Hero expected = getHero();
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions");
+        assertThat(hero.getHealth().getValue()).isEqualTo(5);
+        assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
 
     private Hero getHero() {

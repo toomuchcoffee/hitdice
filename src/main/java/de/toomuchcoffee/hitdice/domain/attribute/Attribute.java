@@ -49,9 +49,9 @@ public class Attribute extends AbstractAttribute {
                 break;
             case 17:
             case 16:
-            case 15:
                 bonus = 2;
                 break;
+            case 15:
             case 14:
             case 13:
                 bonus = 1;

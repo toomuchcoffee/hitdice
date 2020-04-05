@@ -10,7 +10,7 @@ public class GiantRat extends Monster {
                 0,
                 4,
                 0,
-                new WeaponAttack(new CustomWeapon("teeth", 1, D3, 0))
+                new WeaponAttack(new CustomWeapon("teeth", D3::roll))
         );
     }
 }

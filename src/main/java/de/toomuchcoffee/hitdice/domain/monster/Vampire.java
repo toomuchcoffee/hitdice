@@ -14,7 +14,7 @@ public class Vampire extends Monster {
                 5,
                 2,
                 0,
-                new WeaponAttack(new CustomWeapon("bite", 2, D4, 0)),
+                new WeaponAttack(new CustomWeapon("bite", () -> D4.roll(2))),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

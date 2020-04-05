@@ -3,7 +3,7 @@ package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 
-import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.MACE;
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.MACE;
 
 public class Orc extends Monster {
     public Orc() {

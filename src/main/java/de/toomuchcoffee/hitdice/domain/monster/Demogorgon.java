@@ -13,7 +13,7 @@ public class Demogorgon extends Monster {
                 7,
                 2,
                 0,
-                new WeaponAttack(new CustomWeapon("bite", 2, D8, 0)),
+                new WeaponAttack(new CustomWeapon("bite", () -> D8.roll(2))),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

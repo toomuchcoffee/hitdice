@@ -14,7 +14,7 @@ public class Lich extends Monster {
                 7,
                 0,
                 0,
-                new WeaponAttack(new CustomWeapon("touch", 1, D6, 0)),
+                new WeaponAttack(new CustomWeapon("touch", D6::roll)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

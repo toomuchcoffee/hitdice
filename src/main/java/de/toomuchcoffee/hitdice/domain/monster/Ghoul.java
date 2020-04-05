@@ -14,7 +14,7 @@ public class Ghoul extends Monster {
                 2,
                 -1,
                 0,
-                new WeaponAttack(new CustomWeapon("claws", 1, D4, 0)),
+                new WeaponAttack(new CustomWeapon("claws", D4::roll)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

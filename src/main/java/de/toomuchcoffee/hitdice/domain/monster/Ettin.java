@@ -11,8 +11,8 @@ public class Ettin extends Monster {
                 4,
                 -1,
                 3,
-                new WeaponAttack(new CustomWeapon("big club", 2, D6, 2)),
-                new WeaponAttack(new CustomWeapon("big club", 2, D6, 2))
+                new WeaponAttack(new CustomWeapon("big club", () -> D6.roll(2))),
+                new WeaponAttack(new CustomWeapon("other big club", () -> D6.roll(2)))
         );
     }
 }

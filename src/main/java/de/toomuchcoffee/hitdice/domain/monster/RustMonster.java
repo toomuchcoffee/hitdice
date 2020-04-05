@@ -4,7 +4,6 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
-import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
@@ -15,7 +14,7 @@ public class RustMonster extends Monster {
                 3,
                 0,
                 2,
-                new WeaponAttack(new CustomWeapon("tail", 1, D6, 0)),
+                new WeaponAttack(new CustomWeapon("tail", D6::roll)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
@@ -25,7 +24,7 @@ public class RustMonster extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        if (hero.getWeapon() != null && hero.getWeapon() instanceof HandWeapon && ((HandWeapon) hero.getWeapon()).isMetallic()) {
+                        if (hero.getWeapon() != null && hero.getWeapon().isMetallic()) {
                             hero.setWeapon(null);
                             return "Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.";
                         } else if (hero.getArmor() != null && hero.getArmor().isMetallic()) {

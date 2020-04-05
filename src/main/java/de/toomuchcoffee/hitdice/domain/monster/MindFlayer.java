@@ -25,8 +25,7 @@ public class MindFlayer extends Monster {
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
                         Weapon weapon = hero.getWeapon();
-                        int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
-                                + weapon.getBonus()
+                        int damage = max(1, weapon.getDamage().get()
                                 + defender.getDamageBonus()
                                 - defender.getArmorClass());
                         defender.reduceHealth(damage);

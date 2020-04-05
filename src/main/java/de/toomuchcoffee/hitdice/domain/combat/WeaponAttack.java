@@ -8,7 +8,7 @@ import static java.lang.Math.max;
 
 @RequiredArgsConstructor
 public class WeaponAttack implements CombatAction {
-    private final Weapon weapon;
+    private final GenericWeapon weapon;
 
     public boolean condition(Combatant attacker, Combatant defender) {
         int attackScore = max(1, attacker.getAttack() - defender.getDefense());
@@ -17,8 +17,7 @@ public class WeaponAttack implements CombatAction {
 
     @Override
     public String onSuccess(Combatant attacker, Combatant defender) {
-        int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
-                + weapon.getBonus()
+        int damage = max(1, weapon.getDamage().get()
                 + attacker.getDamageBonus()
                 - defender.getArmorClass());
         defender.reduceHealth(damage);
