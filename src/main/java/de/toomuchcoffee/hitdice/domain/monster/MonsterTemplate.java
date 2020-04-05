@@ -2,7 +2,10 @@ package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.*;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import lombok.Getter;
+
+import java.util.Iterator;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
 import static de.toomuchcoffee.hitdice.domain.combat.Weapon.*;
@@ -23,15 +26,15 @@ public enum MonsterTemplate {
         @Override
         public String onSuccess(Combatant attacker, Combatant defender) {
             Hero hero = (Hero) defender;
-            if (hero.getWeapon() != null && hero.getWeapon().isMetallic()) {
-                hero.setWeapon(null);
-                return "Oh no! The $%&§ rust monster hit your weapon and it crumbles to rust.";
-            } else if (hero.getArmor() != null && hero.getArmor().isMetallic()) {
-                hero.setArmor(null);
-                return "Friggin rust monster! It hit your armor and it crumbles to rust.";
-            } else {
-                return "The rust monster has destroyed all your metal, so no harm done this time!";
+            Iterator<Treasure> it = hero.getEquipment().iterator();
+            while (it.hasNext()) {
+                Treasure item = it.next();
+                if (item.isMetallic()) {
+                    it.remove();
+                    return String.format("Oh no! The rust monster hit your %s and it crumbles to rust.", item.getName());
+                }
             }
+            return "The rust monster has destroyed all your metal, so no harm done this time!";
         }
     }),
     GHOUL("Ghoul", 2, UNCOMMON, -1, 0, new WeaponAttack(new CustomWeapon("claws", D4::roll)), new CombatAction() {

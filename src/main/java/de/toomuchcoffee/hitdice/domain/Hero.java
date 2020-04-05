@@ -10,12 +10,11 @@ import de.toomuchcoffee.hitdice.domain.combat.Weapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.item.Armor;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
@@ -31,15 +30,11 @@ public class Hero implements Combatant {
 
     private SortedMap<AttributeName, AbstractAttribute> attributes = new TreeMap<>();
 
-    private Weapon weapon;
-    private Armor armor;
+    private List<Treasure> equipment = new ArrayList<>();
 
     private int experience;
 
     private int level;
-
-    public Hero() {
-    }
 
     public void initialize() {
         attributes = new TreeMap<>();
@@ -84,12 +79,30 @@ public class Hero implements Combatant {
     }
 
     public Weapon getWeapon() {
-        return weapon == null ? FISTS : weapon;
+        return equipment.stream()
+                .filter(i -> i instanceof Weapon)
+                .map(i -> (Weapon) i)
+                .findFirst()
+                .orElse(FISTS);
+    }
+
+    public Armor getArmor() {
+        return equipment.stream()
+                .filter(i -> i instanceof Armor)
+                .map(i -> (Armor) i)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public int getArmorClass() {
-        return armor == null ? 0 : armor.getProtection();
+        return Optional.ofNullable(getArmor())
+                .map(Armor::getProtection)
+                .orElse(0);
+    }
+
+    public void addEquipment(Treasure item) {
+        equipment.add(0, item);
     }
 
     @Override

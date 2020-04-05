@@ -60,8 +60,8 @@ public class GameServiceTest {
     private Hero getHero() {
         Hero hero = TestData.getHero();
         ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
-        hero.setWeapon(LONGSWORD);
-        hero.setArmor(LEATHER);
+        hero.addEquipment(LONGSWORD);
+        hero.addEquipment(LEATHER);
         hero.setLevel(2);
         hero.setExperience(251);
         hero.setName("Alrik");

@@ -37,6 +37,8 @@ public class GameService {
         Game game = gameRepository.getOne(gameId);
         Hero hero = new Hero();
         hero.initializeWithPresets(game.getStrength(), game.getDexterity(), game.getStamina(), game.getHealth(), game.getMaxHealth());
+        hero.addEquipment(game.getWeapon());
+        hero.addEquipment(game.getArmor());
         BeanUtils.copyProperties(game, hero);
         return hero;
     }

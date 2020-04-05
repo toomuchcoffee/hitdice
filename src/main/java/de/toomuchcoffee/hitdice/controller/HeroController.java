@@ -40,7 +40,7 @@ public class HeroController {
     public String save(HttpServletRequest request, HeroUpdate heroUpdate) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.setName(heroUpdate.getName());
-        hero.setWeapon(DAGGER);
+        hero.addEquipment(DAGGER);
         return "hero/create-3";
     }
 
