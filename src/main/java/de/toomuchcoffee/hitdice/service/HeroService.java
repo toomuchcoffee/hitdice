@@ -1,7 +1,11 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.item.Armor;
+import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

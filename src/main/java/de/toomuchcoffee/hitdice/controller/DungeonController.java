@@ -1,6 +1,12 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.world.Direction;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.Event;
+import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.EventType.MAGIC_DOOR;
+import static de.toomuchcoffee.hitdice.domain.world.EventType.MAGIC_DOOR;
 
 @Controller
 @RequestMapping("dungeon")

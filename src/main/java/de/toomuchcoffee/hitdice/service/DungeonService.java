@@ -1,16 +1,16 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Direction;
-import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Event;
-import de.toomuchcoffee.hitdice.domain.Position;
+import de.toomuchcoffee.hitdice.domain.world.Direction;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.Event;
+import de.toomuchcoffee.hitdice.domain.world.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.service.Dice.D20;
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 
 @Service
 @RequiredArgsConstructor

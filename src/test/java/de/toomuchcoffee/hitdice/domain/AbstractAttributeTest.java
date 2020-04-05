@@ -1,5 +1,7 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.domain.attribute.Attribute;
+import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

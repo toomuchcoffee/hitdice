@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.db;
 
-import de.toomuchcoffee.hitdice.domain.Armor;
-import de.toomuchcoffee.hitdice.domain.HandWeapon;
+import de.toomuchcoffee.hitdice.domain.item.Armor;
+import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

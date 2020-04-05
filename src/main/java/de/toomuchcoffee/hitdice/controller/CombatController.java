@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Monster;
+import de.toomuchcoffee.hitdice.domain.monster.AbstractMonster;
 import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class CombatController {
     @GetMapping("attack/{round}")
     public String attack(@PathVariable int round, Model model, HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
-        Monster monster = (Monster) request.getSession().getAttribute("monster");
+        AbstractMonster monster = (AbstractMonster) request.getSession().getAttribute("monster");
 
         CombatRound combatRound = combatService.fight(hero, monster, round);
 

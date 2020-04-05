@@ -1,6 +1,10 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.TestData;
+import de.toomuchcoffee.hitdice.domain.attribute.Health;
+import de.toomuchcoffee.hitdice.domain.monster.AbstractMonster;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import org.junit.Before;
@@ -17,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.domain.HandWeapon.CLUB;
+import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.CLUB;
 import static de.toomuchcoffee.hitdice.service.CombatService.CAUSED_DAMAGE_MESSAGE;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
@@ -40,13 +44,13 @@ public class CombatControllerTest {
     private MockMvc mvc;
 
     private Hero hero;
-    private Monster monster;
+    private AbstractMonster monster;
 
     @Before
     public void setUp() throws Exception {
         hero = TestData.getHero();
         hero.setName("Alrik");
-        monster = new Monster("Orc", 2, 0, CLUB, 1);
+        monster = new AbstractMonster("Orc", 2, 0, CLUB, 1);
         ReflectionTestUtils.setField(monster, "health", new Health(7));
     }
 

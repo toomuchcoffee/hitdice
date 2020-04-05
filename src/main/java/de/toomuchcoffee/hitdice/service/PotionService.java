@@ -1,11 +1,11 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Potion;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.domain.AttributeName.*;
-import static de.toomuchcoffee.hitdice.service.Dice.D12;
-import static de.toomuchcoffee.hitdice.service.Dice.D4;
+import static de.toomuchcoffee.hitdice.domain.Dice.D12;
+import static de.toomuchcoffee.hitdice.domain.Dice.D4;
+import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
 
 @Service
 public class PotionService {

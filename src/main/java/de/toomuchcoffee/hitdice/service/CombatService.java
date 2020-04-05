@@ -1,9 +1,9 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Combatant;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Monster;
-import de.toomuchcoffee.hitdice.domain.Weapon;
+import de.toomuchcoffee.hitdice.domain.combat.Combatant;
+import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.monster.AbstractMonster;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
-import static de.toomuchcoffee.hitdice.service.Dice.D20;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -27,7 +27,7 @@ public class CombatService {
 
     private final HeroService heroService;
 
-    public CombatRound fight(Hero hero, Monster monster, int round) {
+    public CombatRound fight(Hero hero, AbstractMonster monster, int round) {
         List<String> events = new ArrayList<>();
         if (round > 0) {
             events.addAll(attack(hero, monster));

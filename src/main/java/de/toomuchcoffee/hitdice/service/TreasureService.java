@@ -1,11 +1,11 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Treasure;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.domain.Armor.*;
-import static de.toomuchcoffee.hitdice.domain.HandWeapon.*;
-import static de.toomuchcoffee.hitdice.service.Dice.D100;
+import static de.toomuchcoffee.hitdice.domain.Dice.D100;
+import static de.toomuchcoffee.hitdice.domain.item.Armor.*;
+import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.*;
 
 @Service
 public class TreasureService {

@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static de.toomuchcoffee.hitdice.domain.Armor.LEATHER;
-import static de.toomuchcoffee.hitdice.domain.HandWeapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.item.Armor.LEATHER;
+import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

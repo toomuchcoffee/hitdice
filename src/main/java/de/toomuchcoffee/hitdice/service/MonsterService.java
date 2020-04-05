@@ -1,15 +1,14 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.Monster;
-import de.toomuchcoffee.hitdice.domain.monstercompendium.*;
+import de.toomuchcoffee.hitdice.domain.monster.*;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.service.Dice.D100;
+import static de.toomuchcoffee.hitdice.domain.Dice.D100;
 
 @Service
 public class MonsterService {
 
-    public Monster createMonster() {
+    public AbstractMonster createMonster() {
         switch (D100.roll()) {
             case 1:
             case 2:

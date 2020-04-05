@@ -1,5 +1,13 @@
 package de.toomuchcoffee.hitdice.domain;
 
+import de.toomuchcoffee.hitdice.domain.attribute.AbstractAttribute;
+import de.toomuchcoffee.hitdice.domain.attribute.Attribute;
+import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
+import de.toomuchcoffee.hitdice.domain.attribute.Health;
+import de.toomuchcoffee.hitdice.domain.combat.Combatant;
+import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.item.Armor;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
 import lombok.Getter;
@@ -10,10 +18,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.AttributeName.*;
-import static de.toomuchcoffee.hitdice.domain.HandWeapon.FISTS;
-import static de.toomuchcoffee.hitdice.service.Dice.D6;
-import static de.toomuchcoffee.hitdice.service.Dice.D8;
+import static de.toomuchcoffee.hitdice.domain.Dice.D6;
+import static de.toomuchcoffee.hitdice.domain.Dice.D8;
+import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
+import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.FISTS;
 import static java.lang.Math.max;
 
 @Getter

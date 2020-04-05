@@ -1,7 +1,11 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.domain.*;
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.TestData;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import org.junit.Before;
@@ -17,9 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static de.toomuchcoffee.hitdice.domain.AttributeName.HEALTH;
-import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
-import static de.toomuchcoffee.hitdice.domain.HandWeapon.SHORTSWORD;
+import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.HEALTH;
+import static de.toomuchcoffee.hitdice.domain.item.HandWeapon.SHORTSWORD;
+import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;

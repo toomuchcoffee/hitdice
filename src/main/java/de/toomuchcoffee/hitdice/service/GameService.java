@@ -2,8 +2,8 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.db.GameRepository;
-import de.toomuchcoffee.hitdice.domain.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
