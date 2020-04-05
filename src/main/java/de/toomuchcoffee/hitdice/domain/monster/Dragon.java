@@ -6,7 +6,7 @@ import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 
-public class Dragon extends AbstractMonster {
+public class Dragon extends Monster {
     public Dragon() {
         super("Dragon",
                 8,

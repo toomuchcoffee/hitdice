@@ -7,7 +7,7 @@ import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 
-public class Lich extends AbstractMonster {
+public class Lich extends Monster {
     public Lich() {
         super("Lich",
                 7,

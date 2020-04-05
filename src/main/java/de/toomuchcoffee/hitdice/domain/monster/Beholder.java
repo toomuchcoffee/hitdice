@@ -7,7 +7,7 @@ import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import static de.toomuchcoffee.hitdice.domain.Dice.D10;
 import static de.toomuchcoffee.hitdice.domain.Dice.D4;
 
-public class Beholder extends AbstractMonster {
+public class Beholder extends Monster {
     public Beholder() {
         super("Beholder",
                 6,

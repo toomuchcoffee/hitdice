@@ -20,7 +20,7 @@ import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
 import static java.util.Arrays.asList;
 
 @Getter
-public class AbstractMonster implements Combatant, Event {
+public class Monster implements Combatant, Event {
     private final EventType eventType = MONSTER;
 
     private final String name;
@@ -32,7 +32,7 @@ public class AbstractMonster implements Combatant, Event {
 
     private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
 
-    public AbstractMonster(
+    public Monster(
             String name,
             int level,
             int defense,

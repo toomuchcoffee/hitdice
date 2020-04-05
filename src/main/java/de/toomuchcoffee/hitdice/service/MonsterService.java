@@ -8,7 +8,7 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D100;
 @Service
 public class MonsterService {
 
-    public AbstractMonster createMonster() {
+    public Monster createMonster() {
         switch (D100.roll()) {
             case 1:
             case 2:

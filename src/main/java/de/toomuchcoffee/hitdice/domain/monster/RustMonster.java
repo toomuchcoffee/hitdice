@@ -8,7 +8,7 @@ import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 
-public class RustMonster extends AbstractMonster {
+public class RustMonster extends Monster {
     public RustMonster() {
         super("Rust monster",
                 3,

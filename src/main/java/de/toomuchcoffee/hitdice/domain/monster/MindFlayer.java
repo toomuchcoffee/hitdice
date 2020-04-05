@@ -5,7 +5,7 @@ import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D4;
 
-public class MindFlayer extends AbstractMonster {
+public class MindFlayer extends Monster {
     public MindFlayer() {
         super("Mind Flayer",
                 6,
