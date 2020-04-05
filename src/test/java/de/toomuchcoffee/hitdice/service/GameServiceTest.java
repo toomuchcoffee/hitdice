@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static de.toomuchcoffee.hitdice.domain.Armor.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.HandWeapon.LONGSWORD;
@@ -56,7 +57,7 @@ public class GameServiceTest {
 
     private Hero getHero() {
         Hero hero = TestData.getHero();
-        hero.setHealth(5);
+        ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
         hero.setWeapon(LONGSWORD);
         hero.setArmor(LEATHER);
         hero.setLevel(2);

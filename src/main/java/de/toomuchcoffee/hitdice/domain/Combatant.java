@@ -14,10 +14,7 @@ public interface Combatant {
     int getDefense();
     int getDamageBonus();
 
-    int getHealth();
-    void setHealth(int health);
-
-    int getMaxHealth();
+    Health getHealth();
 
     Weapon getWeapon();
 
@@ -25,18 +22,12 @@ public interface Combatant {
 
     int getArmorClass();
 
-    void reduceHealth(int damage);
-
-    boolean isAlive();
-
-    abstract class AbstractCombatant implements Combatant {
-        public void reduceHealth(int damage) {
-            int effectiveDamage = min(damage, getHealth());
-            setHealth(getHealth() - effectiveDamage);
-        }
-        public boolean isAlive() {
-            return getHealth() > 0;
-        }
+    default void reduceHealth(int damage) {
+        int effectiveDamage = min(damage, getHealth().getValue());
+        getHealth().decrease(effectiveDamage);
     }
 
+    default boolean isDefeated() {
+        return getHealth().getValue() <= 0;
+    }
 }

@@ -35,9 +35,9 @@ public class CombatService {
         }
 
         CombatResult result = ONGOING;
-        if (!hero.isAlive()) {
+        if (hero.isDefeated()) {
             result = DEATH;
-        } else if (!monster.isAlive()) {
+        } else if (monster.isDefeated()) {
             heroService.increaseExperience(hero, monster.getValue());
             result = VICTORY;
         }

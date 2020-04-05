@@ -26,8 +26,8 @@ public class GameService {
         game.setExperience(hero.getExperience());
         game.setArmor(hero.getArmor());
         game.setWeapon((HandWeapon) hero.getWeapon());
-        game.setHealth(hero.getHealth());
-        game.setMaxHealth(hero.getMaxHealth());
+        game.setHealth(hero.getHealth().getValue());
+        game.setMaxHealth(hero.getHealth().getMaxValue());
         game.setStrength(hero.getStrength().getValue());
         game.setDexterity(hero.getDexterity().getValue());
         game.setStamina(hero.getStamina().getValue());

@@ -24,9 +24,9 @@ public class Lich extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        hero.getStrength().decrease();
-                        hero.getDexterity().decrease();
-                        hero.getStamina().decrease();
+                        hero.getStrength().decrease(1);
+                        hero.getDexterity().decrease(1);
+                        hero.getStamina().decrease(1);
                         return "The eternal coldness of the Lich's touch weakens you. You lose 1 point on each attribute score!";
                     }
                 });

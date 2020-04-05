@@ -24,7 +24,7 @@ public class Ooze extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        hero.getStamina().decrease();
+                        hero.getStamina().decrease(1);
                         return "The ooze's acid harms you in such a bad way, that you lose one point of stamina!";
                     }
                 });

@@ -1,11 +1,9 @@
 package de.toomuchcoffee.hitdice.domain;
 
-import de.toomuchcoffee.hitdice.domain.Combatant.AbstractCombatant;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import de.toomuchcoffee.hitdice.service.Dice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -17,7 +15,7 @@ import static de.toomuchcoffee.hitdice.service.Dice.D8;
 import static java.util.Arrays.asList;
 
 @Getter
-public class Monster extends AbstractCombatant implements Event {
+public class Monster implements Combatant, Event {
     private final EventType eventType = MONSTER;
 
     private String name;
@@ -25,9 +23,7 @@ public class Monster extends AbstractCombatant implements Event {
     private int level;
     private int defense;
 
-    @Setter
-    private int health;
-    private final int maxHealth;
+    private Health health;
 
     private Weapon weapon;
 
@@ -38,8 +34,7 @@ public class Monster extends AbstractCombatant implements Event {
     public Monster(String name, int level, int defense, Weapon weapon, int armorClass, CombatAction... combatActions) {
         this.name = name;
         this.level = level;
-        this.health = level == 0 ? D4.roll() : D8.roll(level);
-        this.maxHealth = this.health;
+        this.health = new Health(level == 0 ? D4.roll() : D8.roll(level));
         this.defense = defense;
         this.weapon = weapon;
         this.armorClass = armorClass;

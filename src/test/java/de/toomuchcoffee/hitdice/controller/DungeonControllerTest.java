@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static de.toomuchcoffee.hitdice.domain.AttributeName.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.HandWeapon.SHORTSWORD;
-import static de.toomuchcoffee.hitdice.domain.Potion.Type.HEALING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -112,7 +112,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        Potion potion = new Potion(5, HEALING);
+        Potion potion = new Potion(5, HEALTH);
         when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(potion));
 
         this.mvc.perform(get("/dungeon/explore/SOUTH")
@@ -120,7 +120,7 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/potion"))
-                .andExpect(xpath("//h3").string("You found a healing potion!"))
+                .andExpect(xpath("//h3").string("You found a health potion!"))
                 .andExpect(xpath("//div[@id='potion-actions']/a[1]/@href").string("/dungeon/recover"))
                 .andExpect(xpath("//div[@id='potion-actions']/a[2]/@href").string("/dungeon/leave"))
         ;

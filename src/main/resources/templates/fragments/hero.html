@@ -36,7 +36,7 @@
                         <dt>Attack:</dt>
                         <dd th:text="${hero.attack}"></dd>
                         <dt>Health:</dt>
-                        <dd th:text="${hero.health} + '/' + ${hero.maxHealth}"></dd>
+                        <dd th:text="${hero.health.displayName}"></dd>
                     </dl>
                 </div>
             </div>

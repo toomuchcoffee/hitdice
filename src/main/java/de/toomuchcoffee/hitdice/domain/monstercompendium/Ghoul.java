@@ -24,7 +24,7 @@ public class Ghoul extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        hero.getDexterity().decrease();
+                        hero.getDexterity().decrease(1);
                         return "The ghoul's paralyzing touch makes you lose one point of dexterity!";
                     }
                 });

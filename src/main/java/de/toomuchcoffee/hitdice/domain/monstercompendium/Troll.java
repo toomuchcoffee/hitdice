@@ -17,13 +17,13 @@ public class Troll extends Monster {
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {
-                        return attacker.getHealth() > 0 && attacker.getHealth() < attacker.getMaxHealth();
+                        return attacker.getHealth().isInjured();
                     }
 
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         int regeneration = D3.roll();
-                        attacker.setHealth(Math.min(attacker.getHealth() + regeneration, attacker.getMaxHealth()));
+                        attacker.getHealth().increase(regeneration);
                         return String.format("Oh no! The troll regenerated %d points of stamina!", regeneration);
                     }
                 });

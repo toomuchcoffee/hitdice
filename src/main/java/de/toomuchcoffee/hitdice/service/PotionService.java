@@ -3,7 +3,7 @@ package de.toomuchcoffee.hitdice.service;
 import de.toomuchcoffee.hitdice.domain.Potion;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.domain.Potion.Type.*;
+import static de.toomuchcoffee.hitdice.domain.AttributeName.*;
 import static de.toomuchcoffee.hitdice.service.Dice.D12;
 import static de.toomuchcoffee.hitdice.service.Dice.D4;
 
@@ -28,7 +28,7 @@ public class PotionService {
             case 11:
             case 12:
             default:
-                return new Potion(D4.roll(2), HEALING);
+                return new Potion(D4.roll(2), HEALTH);
         }
     }
 }

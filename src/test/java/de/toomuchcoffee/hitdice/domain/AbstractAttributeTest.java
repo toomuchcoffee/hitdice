@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class AttributeTest {
+public class AbstractAttributeTest {
 
     @Test
     public void shouldHavePositiveDisplayName() {
@@ -19,5 +19,12 @@ public class AttributeTest {
         Attribute attribute = new Attribute(6);
 
         assertThat(attribute.getDisplayName()).isEqualTo("6 (-1)");
+    }
+
+    @Test
+    public void shouldDisplayHealthAndMaxHealth() {
+        Health health = new Health(12);
+
+        assertThat(health.getDisplayName()).isEqualTo("12/12");
     }
 }

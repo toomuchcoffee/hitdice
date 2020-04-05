@@ -1,9 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import de.toomuchcoffee.hitdice.domain.Dungeon;
-import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.Monster;
-import de.toomuchcoffee.hitdice.domain.TestData;
+import de.toomuchcoffee.hitdice.domain.*;
 import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import org.junit.Before;
@@ -50,8 +47,7 @@ public class CombatControllerTest {
         hero = TestData.getHero();
         hero.setName("Alrik");
         monster = new Monster("Orc", 2, 0, CLUB, 1);
-        monster.setHealth(7);
-        ReflectionTestUtils.setField(monster, "maxHealth", 7);
+        ReflectionTestUtils.setField(monster, "health", new Health(7));
     }
 
     @Test
@@ -151,7 +147,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 0/7"))
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
                 .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
-                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 45 experience points!"))
+                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 30 experience points!"))
                 .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/continue"))
         ;
 

@@ -9,10 +9,6 @@ import static de.toomuchcoffee.hitdice.domain.EventType.POTION;
 @Getter
 public class Potion implements Event {
     private final int power;
-    private final Type type;
+    private final AttributeName type;
     private final EventType eventType = POTION;
-
-    public enum Type {
-        HEALING, STRENGTH, DEXTERITY, STAMINA
-    }
 }

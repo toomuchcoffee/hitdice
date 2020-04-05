@@ -6,16 +6,16 @@ import lombok.Getter;
 import static java.lang.String.format;
 
 @Getter
-@EqualsAndHashCode
-public class Attribute {
-    private int value;
+@EqualsAndHashCode(callSuper = false)
+public class Attribute extends AbstractAttribute {
     private int bonus;
 
     public Attribute(int value) {
-        this.value = value;
+        super(value);
         calculateBonus();
     }
 
+    @Override
     public String getDisplayName() {
         if (bonus < 0) {
             return format("%s (%d)", value, bonus);
@@ -26,12 +26,12 @@ public class Attribute {
     }
 
     public void increase(int value) {
-        this.value = Math.min(this.value + value, 20);
+        super.increase(value);
         calculateBonus();
     }
 
-    public void decrease() {
-        value--;
+    public void decrease(int value) {
+        super.decrease(value);
         calculateBonus();
     }
 

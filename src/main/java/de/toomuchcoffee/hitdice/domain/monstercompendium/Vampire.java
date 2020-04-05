@@ -24,7 +24,7 @@ public class Vampire extends Monster {
                     @Override
                     public String onSuccess(Combatant attacker, Combatant defender) {
                         Hero hero = (Hero) defender;
-                        hero.getStrength().decrease();
+                        hero.getStrength().decrease(1);
                         return "Don't you just hate vampires? This fella just sucked away one point of strength from you!";
                     }
                 });
