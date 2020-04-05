@@ -4,12 +4,12 @@ import de.toomuchcoffee.hitdice.domain.attribute.AbstractAttribute;
 import de.toomuchcoffee.hitdice.domain.attribute.Attribute;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
+import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.item.Armor;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction.WeaponAttack;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,8 +33,6 @@ public class Hero implements Combatant {
 
     private Weapon weapon;
     private Armor armor;
-
-    private List<CombatAction> combatActions = newArrayList(new WeaponAttack());
 
     private int experience;
 
@@ -75,12 +73,16 @@ public class Hero implements Combatant {
         return getDexterity().getBonus();
     }
 
+    public List<CombatAction> getCombatActions() {
+        return newArrayList(new WeaponAttack(getWeapon()));
+    }
+
+
     @Override
     public int getDamageBonus() {
         return getStrength().getBonus();
     }
 
-    @Override
     public Weapon getWeapon() {
         return weapon == null ? FISTS : weapon;
     }
@@ -102,9 +104,11 @@ public class Hero implements Combatant {
     public Attribute getStrength() {
         return (Attribute) attributes.get(STRENGTH);
     }
+
     public Attribute getDexterity() {
         return (Attribute) attributes.get(DEXTERITY);
     }
+
     public Attribute getStamina() {
         return (Attribute) attributes.get(STAMINA);
     }

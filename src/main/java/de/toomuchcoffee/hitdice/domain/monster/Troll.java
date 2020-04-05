@@ -1,7 +1,8 @@
 package de.toomuchcoffee.hitdice.domain.monster;
 
+import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
+import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D10;
 import static de.toomuchcoffee.hitdice.domain.Dice.D3;
@@ -11,8 +12,8 @@ public class Troll extends Monster {
         super("Troll",
                 4,
                 -1,
-                new CustomWeapon("claws", 1, D10, 0),
                 3,
+                new WeaponAttack(new CustomWeapon("claws", 1, D10, 0)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

@@ -108,7 +108,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//dl/dd[2]").string("11"))
                 .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
                 .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/dungeon/create/8"))
+                .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/dungeon/create"))
         ;
 
         assertThat(hero.getName()).isEqualTo("Alrik");

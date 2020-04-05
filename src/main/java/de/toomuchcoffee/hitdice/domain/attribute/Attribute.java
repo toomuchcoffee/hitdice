@@ -12,6 +12,7 @@ public class Attribute extends AbstractAttribute {
 
     public Attribute(int value) {
         super(value);
+        this.maxValue = 20;
         calculateBonus();
     }
 

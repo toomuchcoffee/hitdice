@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.Weapon;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,13 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
-import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
-import static java.lang.Math.max;
-import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -52,36 +47,6 @@ public class CombatService {
                 .collect(toList());
     }
 
-    public interface CombatAction {
-        boolean condition(Combatant attacker, Combatant defender);
-        String onSuccess(Combatant attacker, Combatant defender);
-
-        default Optional<String> execute(Combatant attacker, Combatant defender) {
-            if (condition(attacker, defender)) {
-                return Optional.of(onSuccess(attacker, defender));
-            }
-            return Optional.empty();
-        }
-
-        class WeaponAttack implements CombatAction {
-            public boolean condition(Combatant attacker, Combatant defender) {
-                int attackScore = max(1, attacker.getAttack() - defender.getDefense());
-                return D20.check(attackScore);
-            }
-
-            @Override
-            public String onSuccess(Combatant attacker, Combatant defender) {
-                Weapon weapon = attacker.getWeapon();
-                int damage = max(1, weapon.getDice().roll(weapon.getDiceNumber())
-                        + weapon.getBonus()
-                        + attacker.getDamageBonus()
-                        - defender.getArmorClass());
-                defender.reduceHealth(damage);
-                return format(CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage);
-            }
-        }
-    }
-
     @Getter
     @RequiredArgsConstructor
     @EqualsAndHashCode
@@ -94,4 +59,5 @@ public class CombatService {
     public enum CombatResult {
         ONGOING, VICTORY, DEATH
     }
+
 }

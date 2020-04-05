@@ -1,8 +1,9 @@
 package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
+import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
@@ -12,8 +13,8 @@ public class Ooze extends Monster {
         super("Ooze",
                 5,
                 -1,
-                new CustomWeapon("acid", 1, D6, 0),
                 1,
+                new WeaponAttack(new CustomWeapon("acid", 1, D6, 0)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

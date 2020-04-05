@@ -64,7 +64,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
 
-        this.mvc.perform(get("/dungeon/create/1")
+        this.mvc.perform(get("/dungeon/create")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())

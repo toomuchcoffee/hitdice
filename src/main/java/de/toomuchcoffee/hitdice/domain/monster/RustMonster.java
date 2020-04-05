@@ -1,9 +1,10 @@
 package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
+import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.item.HandWeapon;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
@@ -13,8 +14,8 @@ public class RustMonster extends Monster {
         super("Rust monster",
                 3,
                 0,
-                new CustomWeapon("tail", 1, D6, 0),
                 2,
+                new WeaponAttack(new CustomWeapon("tail", 1, D6, 0)),
                 new CombatAction() {
                     @Override
                     public boolean condition(Combatant attacker, Combatant defender) {

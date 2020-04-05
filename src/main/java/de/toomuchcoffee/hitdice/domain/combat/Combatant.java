@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.combat;
 
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public interface Combatant {
     int getDamageBonus();
 
     Health getHealth();
-
-    Weapon getWeapon();
 
     List<CombatAction> getCombatActions();
 

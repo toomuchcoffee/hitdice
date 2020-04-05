@@ -2,11 +2,11 @@ package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.Dice;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
+import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.combat.Weapon;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
-import de.toomuchcoffee.hitdice.service.CombatService.CombatAction;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -27,23 +27,20 @@ public class Monster implements Combatant, Event {
     private final int level;
     private final int defense;
     private final Health health;
-    private final Weapon weapon;
     private final int armorClass;
 
-    private List<CombatAction> combatActions = newArrayList(new CombatAction.WeaponAttack());
+    private List<CombatAction> combatActions = newArrayList();
 
     public Monster(
             String name,
             int level,
             int defense,
-            Weapon weapon,
             int armorClass,
             CombatAction... combatActions) {
         this.name = name;
         this.level = level;
         this.health = new Health(level == 0 ? D4.roll() : D8.roll(level));
         this.defense = defense;
-        this.weapon = weapon;
         this.armorClass = armorClass;
         this.combatActions.addAll(asList(combatActions));
     }

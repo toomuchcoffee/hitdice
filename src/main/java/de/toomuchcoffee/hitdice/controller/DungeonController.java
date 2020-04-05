@@ -27,7 +27,7 @@ public class DungeonController {
     private final DungeonService dungeonService;
     private final HeroService heroService;
 
-    @GetMapping("create/{size}")
+    @GetMapping("create")
     public String create(HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = dungeonService.create(hero.getLevel());
