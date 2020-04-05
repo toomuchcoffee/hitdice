@@ -18,8 +18,6 @@ import static java.util.stream.Collectors.toList;
 @Service
 @RequiredArgsConstructor
 public class CombatService {
-    public static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
-
     private final HeroService heroService;
 
     public CombatRound fight(Hero hero, Monster monster, int round) {

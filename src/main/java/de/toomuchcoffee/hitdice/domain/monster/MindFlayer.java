@@ -5,7 +5,6 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.combat.Weapon;
-import de.toomuchcoffee.hitdice.service.CombatService;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static java.lang.Math.max;
@@ -29,7 +28,7 @@ public class MindFlayer extends Monster {
                                 + defender.getDamageBonus()
                                 - defender.getArmorClass());
                         defender.reduceHealth(damage);
-                        return String.format(CombatService.CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage);
+                        return String.format("%s hit himself for %d points of damage.", defender.getName(), damage);
                     }
                 });
     }

@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 
 import static de.toomuchcoffee.hitdice.domain.combat.Weapon.CLUB;
-import static de.toomuchcoffee.hitdice.service.CombatService.CAUSED_DAMAGE_MESSAGE;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = CombatController.class, secure = false)
 @RunWith(SpringRunner.class)
 public class CombatControllerTest {
+    private static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
 
     @MockBean
     private CombatService combatService;

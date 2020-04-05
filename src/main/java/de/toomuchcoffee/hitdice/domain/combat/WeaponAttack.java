@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.domain.combat;
 
-import de.toomuchcoffee.hitdice.service.CombatService;
 import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
@@ -21,6 +20,6 @@ public class WeaponAttack implements CombatAction {
                 + attacker.getDamageBonus()
                 - defender.getArmorClass());
         defender.reduceHealth(damage);
-        return String.format(CombatService.CAUSED_DAMAGE_MESSAGE, attacker.getName(), defender.getName(), damage);
+        return String.format("%s hit %s for %d points of damage.", attacker.getName(), defender.getName(), damage);
     }
 }
