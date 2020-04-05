@@ -3,14 +3,11 @@ package de.toomuchcoffee.hitdice.domain.monster;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.GenericWeapon;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -28,21 +25,15 @@ public class Monster implements Combatant, Event {
     private final int defense;
     private final Health health;
     private final int armorClass;
-
     private List<CombatAction> combatActions = newArrayList();
 
-    public Monster(
-            String name,
-            int level,
-            int defense,
-            int armorClass,
-            CombatAction... combatActions) {
-        this.name = name;
-        this.level = level;
-        this.health = new Health(level == 0 ? D4.roll() : D8.roll(level));
-        this.defense = defense;
-        this.armorClass = armorClass;
-        this.combatActions.addAll(asList(combatActions));
+    public Monster(MonsterTemplate template) {
+        this.name = template.getName();
+        this.level = template.getLevel();
+        this.health = new Health(template.getLevel() == 0 ? D4.roll() : D8.roll(template.getLevel()));
+        this.defense = template.getDefense();
+        this.armorClass = template.getArmorClass();
+        this.combatActions.addAll(asList(template.getCombatActions()));
     }
 
     @Override
@@ -53,13 +44,6 @@ public class Monster implements Combatant, Event {
     @Override
     public int getDamageBonus() {
         return 0;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class CustomWeapon implements GenericWeapon {
-        private final String name;
-        private final Supplier<Integer> damage;
     }
 
     public int getValue() {

@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.service;
 
+import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Event;
@@ -7,6 +8,7 @@ import de.toomuchcoffee.hitdice.domain.world.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -54,16 +56,17 @@ public class DungeonService {
     }
 
     private void initPois(Dungeon dungeon, int heroLevel) {
+        List<MonsterTemplate> monsterTemplates = monsterService.findTemplates(heroLevel);
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getEventMap()[x][y] = createEvent();
+                dungeon.getEventMap()[x][y] = createEvent(monsterTemplates);
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
         dungeon.getEventMap()[door.getX()][door.getY()] = Event.MAGIC_DOOR_EVENT;
     }
 
-    private Event createEvent() {
+    private Event createEvent(List<MonsterTemplate> monsterTemplates) {
         switch (D20.roll()) {
             case 1:
                 return potionService.createPotion();
@@ -71,7 +74,7 @@ public class DungeonService {
                 return treasureService.createTreasure();
             case 3:
             case 4:
-                return monsterService.createMonster();
+                return monsterService.createMonster(monsterTemplates);
             default:
                 return null;
         }

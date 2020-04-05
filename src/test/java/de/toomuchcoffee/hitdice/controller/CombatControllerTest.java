@@ -3,7 +3,6 @@ package de.toomuchcoffee.hitdice.controller;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
-import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.service.CombatService;
@@ -22,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.CLUB;
+import static de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate.ORC;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,7 +50,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = TestData.getHero();
         hero.setName("Alrik");
-        monster = new Monster("Orc", 2, 0, 1, new WeaponAttack(CLUB));
+        monster = new Monster(ORC);
         ReflectionTestUtils.setField(monster, "health", new Health(7));
     }
 
