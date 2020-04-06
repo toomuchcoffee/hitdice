@@ -29,7 +29,7 @@ public class CombatService {
 
         CombatResult result = ONGOING;
         if (hero.isDefeated()) {
-            result = DEATH;
+            result = DEFEAT;
         } else if (monster.isDefeated()) {
             heroService.increaseExperience(hero, monster.getValue());
             result = VICTORY;
@@ -55,7 +55,7 @@ public class CombatService {
     }
 
     public enum CombatResult {
-        ONGOING, VICTORY, DEATH
+        ONGOING, VICTORY, DEFEAT
     }
 
 }

@@ -65,6 +65,7 @@ public class DungeonController {
     public String reenter(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         dungeonService.cleared(dungeon);
+        request.getSession().removeAttribute("monster");
         return "dungeon/map";
     }
 

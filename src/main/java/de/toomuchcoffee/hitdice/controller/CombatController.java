@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.DEATH;
-import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.VICTORY;
-
 @Controller
 @RequestMapping("combat")
 @RequiredArgsConstructor
@@ -35,13 +32,7 @@ public class CombatController {
         CombatRound combatRound = combatService.fight(hero, monster, round);
 
         model.addAttribute("events", combatRound.getEvents());
-
-        if (combatRound.getResult() == DEATH) {
-            return "dungeon/dead";
-        } else if (combatRound.getResult() == VICTORY) {
-            model.addAttribute("won", true);
-            request.getSession().removeAttribute("monster");
-        }
+        model.addAttribute("result", combatRound.getResult());
 
         model.addAttribute("monster", monster);
         model.addAttribute("round", round);

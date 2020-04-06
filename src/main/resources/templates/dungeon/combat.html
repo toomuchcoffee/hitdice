@@ -31,14 +31,18 @@
         </div>
     </div>
 
-    <div id="combat-actions" th:unless="${won}">
+    <div id="combat-actions" th:if="${result.name() == 'ONGOING'}">
         <a class="btn btn-success" th:href="@{/combat/{round}(round=${round} + 1)}">Attack</a>
         <a class="btn btn-warning" href="/dungeon/flee">Flee</a>
     </div>
-    <div id="combat-exit" th:if="${won}">
+    <div id="combat-victory" th:if="${result.name() == 'VICTORY'}">
         <p>The <span th:text="${monster.name}"></span> is dead!</p>
         <p>You earned <span th:text="${monster.value}"></span> experience points!</p>
         <a class="btn btn-primary btn-lg btn-block" href="/dungeon/reenter">Return to explore the dungeon</a>
+    </div>
+    <div id="combat-defeat" th:if="${result.name() == 'DEFEAT'}">
+        <p><strong>You are defeated!</strong></p>
+        <a class="btn btn-primary btn-lg btn-block" href="/">Start new game</a>
     </div>
 
     <div id="hero" th:replace="fragments/hero :: hero"></div>

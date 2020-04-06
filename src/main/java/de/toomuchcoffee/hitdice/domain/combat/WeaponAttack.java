@@ -20,6 +20,6 @@ public class WeaponAttack implements CombatAction {
                 + attacker.getDamageBonus()
                 - defender.getArmorClass());
         defender.reduceHealth(damage);
-        return String.format("%s hit %s for %d points of damage.", attacker.getName(), defender.getName(), damage);
+        return String.format("%s hit %s with their %s for %d points of damage.", attacker.getName(), defender.getName(), weapon.getName(), damage);
     }
 }

@@ -21,10 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
+import static de.toomuchcoffee.hitdice.domain.combat.Weapon.LONGSWORD;
 import static de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate.ORC;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = CombatController.class, secure = false)
 @RunWith(SpringRunner.class)
 public class CombatControllerTest {
-    private static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s for %d points of damage.";
+    private static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s with their %s for %d points of damage.";
 
     @MockBean
     private CombatService combatService;
@@ -50,6 +50,7 @@ public class CombatControllerTest {
     public void setUp() throws Exception {
         hero = TestData.getHero();
         hero.setName("Alrik");
+        hero.addEquipment(LONGSWORD);
         monster = new Monster(ORC);
         ReflectionTestUtils.setField(monster, "health", new Health(7));
     }
@@ -95,8 +96,8 @@ public class CombatControllerTest {
                 .thenReturn(new CombatRound(
                         1,
                         newArrayList(
-                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", 3),
-                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", 2)),
+                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", "longsword", 3),
+                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", "mace", 2)),
                         ONGOING
                 ));
 
@@ -106,8 +107,8 @@ public class CombatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/combat"))
                 .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
-                .andExpect(xpath("//div[@id='combat-round']/ul/li[1]").string("Alrik hit Orc for 3 points of damage."))
-                .andExpect(xpath("//div[@id='combat-round']/ul/li[2]").string("Orc hit Alrik for 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/ul/li[1]").string("Alrik hit Orc with their longsword for 3 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']/ul/li[2]").string("Orc hit Alrik with their mace for 2 points of damage."))
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 10/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 4/7"))
@@ -133,8 +134,8 @@ public class CombatControllerTest {
                 .thenReturn(new CombatRound(
                         1,
                         newArrayList(
-                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", 7),
-                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", 2)),
+                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", "longsword", 7),
+                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", "mace", 2)),
                         VICTORY
                 ));
 
@@ -144,18 +145,16 @@ public class CombatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/combat"))
                 .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
-                .andExpect(xpath("//div[@id='combat-round']//ul/li[1]").string("Alrik hit Orc for 7 points of damage."))
-                .andExpect(xpath("//div[@id='combat-round']//ul/li[2]").string("Orc hit Alrik for 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[1]").string("Alrik hit Orc with their longsword for 7 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[2]").string("Orc hit Alrik with their mace for 2 points of damage."))
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 10/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 0/7"))
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
-                .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
-                .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 30 experience points!"))
-                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/reenter"))
+                .andExpect(xpath("//div[@id='combat-victory']/p[1]").string("The Orc is dead!"))
+                .andExpect(xpath("//div[@id='combat-victory']/p[2]").string("You earned 30 experience points!"))
+                .andExpect(xpath("//div[@id='combat-victory']/a/@href").string("/dungeon/reenter"))
         ;
-
-        assertThat(session.getAttribute("monster")).isNull();
     }
 
     @Test
@@ -175,18 +174,26 @@ public class CombatControllerTest {
                 .thenReturn(new CombatRound(
                         1,
                         newArrayList(
-                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", 2),
-                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", 12)),
-                        DEATH
+                                format(CAUSED_DAMAGE_MESSAGE, "Alrik", "Orc", "longsword", 2),
+                                format(CAUSED_DAMAGE_MESSAGE, "Orc", "Alrik", "mace", 12)),
+                        DEFEAT
                 ));
 
         this.mvc.perform(get("/combat/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/dead"))
-                .andExpect(xpath("//h2").string("You are dead!"))
-                .andExpect(xpath("//div[@id='page_content']/a/@href").string("/"))
+                .andExpect(view().name("dungeon/combat"))
+                .andExpect(xpath("//div[@id='combat-round']/h5").string("Round 1:"))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[1]").string("Alrik hit Orc with their longsword for 2 points of damage."))
+                .andExpect(xpath("//div[@id='combat-round']//ul/li[2]").string("Orc hit Alrik with their mace for 12 points of damage."))
+                .andExpect(xpath("//h3").string("Combat between you and Orc"))
+                .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 0/12"))
+                .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 5/7"))
+                .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
+                .andExpect(xpath("//div[@id='combat-defeat']/p[1]").string("You are defeated!"))
+                .andExpect(xpath("//div[@id='combat-defeat']/a/@href").string("/"))
+
         ;
     }
 
