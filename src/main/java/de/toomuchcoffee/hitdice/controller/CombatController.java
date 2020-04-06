@@ -22,12 +22,12 @@ import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.VICTOR
 public class CombatController {
     private final CombatService combatService;
 
-    @GetMapping("attack")
+    @GetMapping
     public String enter() {
-        return "redirect:/combat/attack/0";
+        return "redirect:/combat/0";
     }
 
-    @GetMapping("attack/{round}")
+    @GetMapping("{round}")
     public String attack(@PathVariable int round, Model model, HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");

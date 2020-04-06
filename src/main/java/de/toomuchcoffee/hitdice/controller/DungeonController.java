@@ -1,11 +1,11 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
-import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-import static de.toomuchcoffee.hitdice.domain.world.EventType.MAGIC_DOOR;
+import static de.toomuchcoffee.hitdice.domain.world.EventType.*;
 
 @Controller
 @RequestMapping("dungeon")
@@ -32,45 +32,40 @@ public class DungeonController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = dungeonService.create(hero.getLevel());
         request.getSession().setAttribute("dungeon", dungeon);
-        return "dungeon/explore";
+        return "dungeon/map";
     }
 
-    @GetMapping("explore/{direction}")
-    public String explore(@PathVariable Direction direction, HttpServletRequest request) {
+    @GetMapping({"", "{direction}"})
+    public String explore(@PathVariable(required = false) Direction direction, HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        dungeonService.visited(dungeon);
 
-        Optional<Event> optEvent = dungeonService.explore(direction, dungeon);
+        return Optional.ofNullable(direction)
+                .map(d -> dungeonService.explore(d, dungeon))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(event -> {
+                    if (event.getEventType() == MAGIC_DOOR) {
+                        return "redirect:/dungeon/create";
+                    } else {
+                        request.getSession().setAttribute(event.getEventType().name().toLowerCase(), event);
+                        return ImmutableMap.of(
+                                MONSTER, "redirect:/combat",
+                                TREASURE, "dungeon/treasure",
+                                POTION, "dungeon/potion").get(event.getEventType());
+                    }
+                }).orElseGet(() -> {
+                    request.getSession().removeAttribute("treasure");
+                    request.getSession().removeAttribute("potion");
+                    return "dungeon/map";
+                });
+    }
 
-        if (optEvent.isPresent()) {
-            Event event = optEvent.get();
-
-            if (event.getEventType() != MAGIC_DOOR) {
-                request.getSession().setAttribute(event.getEventType().name().toLowerCase(), event);
-            }
-
-            switch (event.getEventType()) {
-                case MONSTER: {
-                    return "redirect:/combat/attack";
-                }
-                case TREASURE: {
-                    return "dungeon/treasure";
-                }
-                case POTION: {
-                    return "dungeon/potion";
-                }
-                case MAGIC_DOOR: {
-                    return "redirect:/dungeon/create";
-                }
-                default: {
-                    dungeonService.markAsVisited(dungeon);
-                    return "dungeon/explore";
-                }
-            }
-        }
-
-        dungeonService.markAsVisited(dungeon);
-        return "dungeon/explore";
+    @GetMapping("reenter")
+    public String reenter(HttpServletRequest request) {
+        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+        dungeonService.cleared(dungeon);
+        return "dungeon/map";
     }
 
     @GetMapping("flee")
@@ -78,21 +73,7 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Position position = dungeonService.getAnyUnoccupiedPosition(dungeon);
         dungeon.setPosition(position);
-        return "dungeon/explore";
-    }
-
-    @GetMapping("continue")
-    public String continueExploring(HttpServletRequest request) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        dungeonService.markAsVisited(dungeon);
-        return "dungeon/explore";
-    }
-
-    @GetMapping("leave")
-    public String leave(HttpServletRequest request) {
-        request.getSession().removeAttribute("treasure");
-        request.getSession().removeAttribute("potion");
-        return "dungeon/explore";
+        return "dungeon/map";
     }
 
     @GetMapping("collect")
@@ -102,19 +83,19 @@ public class DungeonController {
         Treasure treasure = (Treasure) request.getSession().getAttribute("treasure");
         heroService.collectTreasure(hero, treasure);
         request.getSession().removeAttribute("treasure");
-        dungeonService.markAsVisited(dungeon);
-        return "dungeon/explore";
+        dungeonService.cleared(dungeon);
+        return "dungeon/map";
     }
 
-    @GetMapping("recover")
-    public String recover(HttpServletRequest request) {
+    @GetMapping("use")
+    public String use(HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Potion potion = (Potion) request.getSession().getAttribute("potion");
         heroService.drinkPotion(hero, potion);
         request.getSession().removeAttribute("potion");
-        dungeonService.markAsVisited(dungeon);
-        return "dungeon/explore";
+        dungeonService.cleared(dungeon);
+        return "dungeon/map";
     }
 
 }

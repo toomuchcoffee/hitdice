@@ -68,7 +68,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/explore"))
+                .andExpect(view().name("dungeon/map"))
         ;
     }
 
@@ -82,11 +82,11 @@ public class DungeonControllerTest {
 
         when(dungeonService.explore(SOUTH, dungeon)).thenCallRealMethod();
 
-        this.mvc.perform(get("/dungeon/explore/SOUTH")
+        this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/explore"))
+                .andExpect(view().name("dungeon/map"))
         ;
 
         verify(dungeonService).explore(eq(SOUTH), eq(dungeon));
@@ -102,13 +102,13 @@ public class DungeonControllerTest {
 
         when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(SHORTSWORD));
 
-        this.mvc.perform(get("/dungeon/explore/SOUTH")
+        this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/treasure"))
                 .andExpect(xpath("//div[@id='treasure-actions']/a[1]/@href").string("/dungeon/collect"))
-                .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon/leave"))
+                .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon"))
         ;
 
         assertThat(session.getAttribute("treasure")).isEqualTo(SHORTSWORD);
@@ -125,34 +125,17 @@ public class DungeonControllerTest {
         Potion potion = new Potion(5, HEALTH);
         when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(potion));
 
-        this.mvc.perform(get("/dungeon/explore/SOUTH")
+        this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dungeon/potion"))
                 .andExpect(xpath("//h3").string("You found a health potion!"))
-                .andExpect(xpath("//div[@id='potion-actions']/a[1]/@href").string("/dungeon/recover"))
-                .andExpect(xpath("//div[@id='potion-actions']/a[2]/@href").string("/dungeon/leave"))
+                .andExpect(xpath("//div[@id='potion-actions']/a[1]/@href").string("/dungeon/use"))
+                .andExpect(xpath("//div[@id='potion-actions']/a[2]/@href").string("/dungeon"))
         ;
 
         assertThat(session.getAttribute("potion")).isEqualTo(potion);
-    }
-
-    @Test
-    public void dungeonContinue() throws Exception {
-        MockHttpSession session = new MockHttpSession();
-        Dungeon dungeon = new Dungeon(1);
-        session.setAttribute("dungeon", dungeon);
-        session.setAttribute("hero", hero);
-
-        this.mvc.perform(get("/dungeon/continue")
-                .session(session)
-                .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/explore"))
-        ;
-
-        verify(dungeonService).markAsVisited(dungeon);
     }
 
 }

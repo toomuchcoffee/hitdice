@@ -64,7 +64,7 @@ public class CombatControllerTest {
         when(combatService.fight(eq(hero), eq(monster), anyInt()))
                 .thenReturn(new CombatRound(0, new ArrayList<>(), ONGOING));
 
-        this.mvc.perform(get("/combat/attack/0")
+        this.mvc.perform(get("/combat/0")
                 .secure(true)
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
@@ -73,7 +73,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 12/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 7/7"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/1"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/1"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
         ;
     }
@@ -100,7 +100,7 @@ public class CombatControllerTest {
                         ONGOING
                 ));
 
-        this.mvc.perform(get("/combat/attack/1")
+        this.mvc.perform(get("/combat/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//h3").string("Combat between you and Orc"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 10/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 4/7"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/attack/2"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/2"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
         ;
     }
@@ -138,7 +138,7 @@ public class CombatControllerTest {
                         VICTORY
                 ));
 
-        this.mvc.perform(get("/combat/attack/1")
+        this.mvc.perform(get("/combat/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
@@ -152,7 +152,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
                 .andExpect(xpath("//div[@id='combat-exit']/p[1]").string("The Orc is dead!"))
                 .andExpect(xpath("//div[@id='combat-exit']/p[2]").string("You earned 30 experience points!"))
-                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/continue"))
+                .andExpect(xpath("//div[@id='combat-exit']/a/@href").string("/dungeon/reenter"))
         ;
 
         assertThat(session.getAttribute("monster")).isNull();
@@ -180,7 +180,7 @@ public class CombatControllerTest {
                         DEATH
                 ));
 
-        this.mvc.perform(get("/combat/attack/1")
+        this.mvc.perform(get("/combat/1")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())

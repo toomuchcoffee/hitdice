@@ -29,7 +29,7 @@ public class DungeonService {
         initPois(dungeon, heroLevel);
         Position start = getAnyUnoccupiedPosition(dungeon);
         dungeon.setPosition(start);
-        markAsVisited(dungeon);
+        visited(dungeon);
         return dungeon;
     }
 
@@ -50,8 +50,11 @@ public class DungeonService {
         return pos;
     }
 
-    public void markAsVisited(Dungeon dungeon) {
+    public void visited(Dungeon dungeon) {
         dungeon.getVisited()[dungeon.getPosX()][dungeon.getPosY()] = true;
+    }
+
+    public void cleared(Dungeon dungeon) {
         dungeon.getEventMap()[dungeon.getPosX()][dungeon.getPosY()] = null;
     }
 

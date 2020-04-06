@@ -12,8 +12,8 @@
     <h3  th:text="'You found a ' + ${#strings.toLowerCase(session.potion.type)} + ' potion!'"></h3>
 
     <div id="potion-actions">
-        <a class="btn btn-success" href="/dungeon/recover">Drink it!</a>
-        <a class="btn btn-secondary" href="/dungeon/leave">Leave it</a>
+        <a class="btn btn-success" href="/dungeon/use">Drink it!</a>
+        <a class="btn btn-secondary" href="/dungeon">Leave it</a>
     </div>
 
     <div id="hero" th:replace="fragments/hero :: hero"></div>
