@@ -31,7 +31,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = DungeonController.class, secure = false)
 @RunWith(SpringRunner.class)
@@ -64,11 +65,11 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
 
-        this.mvc.perform(get("/dungeon/create")
+        this.mvc.perform(get("/dungeon/enter")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/map"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dungeon"))
         ;
     }
 
@@ -80,16 +81,16 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon)).thenCallRealMethod();
+        when(dungeonService.move(dungeon, SOUTH)).thenCallRealMethod();
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/map"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dungeon"))
         ;
 
-        verify(dungeonService).explore(eq(SOUTH), eq(dungeon));
+        verify(dungeonService).move(eq(dungeon), eq(SOUTH));
     }
 
     @Test
@@ -100,15 +101,13 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(SHORTSWORD));
+        when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(SHORTSWORD));
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/treasure"))
-                .andExpect(xpath("//div[@id='treasure-actions']/a[1]/@href").string("/dungeon/collect"))
-                .andExpect(xpath("//div[@id='treasure-actions']/a[2]/@href").string("/dungeon"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dungeon/treasure"))
         ;
 
         assertThat(session.getAttribute("treasure")).isEqualTo(SHORTSWORD);
@@ -123,16 +122,13 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = new Potion(5, HEALTH);
-        when(dungeonService.explore(SOUTH, dungeon)).thenReturn(Optional.of(potion));
+        when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(potion));
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(view().name("dungeon/potion"))
-                .andExpect(xpath("//h3").string("You found a health potion!"))
-                .andExpect(xpath("//div[@id='potion-actions']/a[1]/@href").string("/dungeon/use"))
-                .andExpect(xpath("//div[@id='potion-actions']/a[2]/@href").string("/dungeon"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dungeon/potion"))
         ;
 
         assertThat(session.getAttribute("potion")).isEqualTo(potion);

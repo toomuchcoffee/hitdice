@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.world;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,30 +23,34 @@ public class Dungeon {
         visited = new boolean[size][size];
     }
 
-    public Position explore(Direction direction) {
+    public Position move(Direction direction) {
         switch (direction) {
             case NORTH: {
                 if (posX > 0) {
                     posX--;
                 }
+                visit();
                 break;
             }
             case EAST: {
                 if (posY < size - 1) {
                     posY++;
                 }
+                visit();
                 break;
             }
             case SOUTH: {
                 if (posX < size - 1) {
                     posX++;
                 }
+                visit();
                 break;
             }
             case WEST: {
                 if (posY > 0) {
                     posY--;
                 }
+                visit();
                 break;
             }
             default:
@@ -73,11 +78,17 @@ public class Dungeon {
         return view;
     }
 
+    private void visit() {
+        visited[posX][posY] = true;
+    }
+
     public void setPosition(Position pos) {
         this.posX = pos.getX();
         this.posY = pos.getY();
+        visit();
     }
 
+    @VisibleForTesting
     public Position getPosition() {
         return new Position(this.posX, this.posY);
     }

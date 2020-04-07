@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("combat")
@@ -19,16 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 public class CombatController {
     private final CombatService combatService;
 
-    @GetMapping
-    public String enter() {
-        return "redirect:/combat/0";
-    }
-
-    @GetMapping("{round}")
-    public String attack(@PathVariable int round, Model model, HttpServletRequest request) {
+    @GetMapping({"", "{round}"})
+    public String attack(@PathVariable(required = false) Integer round, Model model, HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 
+        round = Optional.ofNullable(round).orElse(0);
         CombatRound combatRound = combatService.fight(hero, monster, round);
 
         model.addAttribute("events", combatRound.getEvents());
@@ -37,7 +34,7 @@ public class CombatController {
         model.addAttribute("monster", monster);
         model.addAttribute("round", round);
 
-        return "dungeon/combat";
+        return "combat";
     }
 
 }
