@@ -5,6 +5,7 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,14 +44,14 @@ public class GameController {
     }
 
     @GetMapping("dungeon")
-    public String chooseDungeon(HttpServletRequest request) {
-        request.getSession().setAttribute("mode", DUNGEON);
+    public String chooseDungeon(Model model) {
+        model.addAttribute("mode", DUNGEON);
         return "redirect:/dungeon/enter";
     }
 
     @GetMapping("coliseum")
-    public String chooseColiseum(HttpServletRequest request) {
-        request.getSession().setAttribute("mode", COLISEUM);
+    public String chooseColiseum(Model model) {
+        model.addAttribute("mode", COLISEUM);
         return "redirect:/coliseum";
     }
 }

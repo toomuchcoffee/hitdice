@@ -46,7 +46,7 @@ public class HeroControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("hero/create-1"))
+                .andExpect(view().name("create"))
                 .andExpect(xpath("//h3").string("Create Hero"))
                 .andExpect(xpath("//dl/dt[1]").string("Strength:"))
                 .andExpect(xpath("//dl/dd[1]").string("10"))
@@ -54,8 +54,8 @@ public class HeroControllerTest {
                 .andExpect(xpath("//dl/dd[2]").string("11"))
                 .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
                 .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/hero/create"))
-                .andExpect(xpath("//div[@id='hero-create-actions']/a[2]/@href").string("/hero/create/2"))
+                .andExpect(xpath("//div[@id='hero-create-step-1-actions']/a[1]/@href").string("/hero/create"))
+                .andExpect(xpath("//div[@id='hero-create-step-1-actions']/a[2]/@href").string("/hero/create/2"))
         ;
 
         assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(hero, "combatActions");
@@ -70,8 +70,8 @@ public class HeroControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("hero/create-2"))
-                .andExpect(xpath("//h3").string("Complete your hero"))
+                .andExpect(view().name("create"))
+                .andExpect(xpath("//h3").string("Create Hero"))
                 .andExpect(xpath("//dl/dt[1]").string("Strength:"))
                 .andExpect(xpath("//dl/dd[1]").string("10"))
                 .andExpect(xpath("//dl/dt[2]").string("Dexterity:"))
@@ -99,8 +99,8 @@ public class HeroControllerTest {
                         new BasicNameValuePair("name", "Alrik")
                 )))).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("hero/create-3"))
-                .andExpect(xpath("//h3").string("Complete your hero"))
+                .andExpect(view().name("create"))
+                .andExpect(xpath("//h3").string("Create Hero"))
                 .andExpect(xpath("//h4").string("Alrik"))
                 .andExpect(xpath("//dl/dt[1]").string("Strength:"))
                 .andExpect(xpath("//dl/dd[1]").string("10"))
@@ -108,7 +108,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//dl/dd[2]").string("11"))
                 .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
                 .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//div[@id='hero-create-actions']/a[1]/@href").string("/game/dungeon"))
+                .andExpect(xpath("//div[@id='hero-create-step-3-actions']/a[1]/@href").string("/game/dungeon"))
         ;
 
         assertThat(hero.getName()).isEqualTo("Alrik");
