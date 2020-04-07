@@ -4,6 +4,7 @@ import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class ColiseumController {
     @GetMapping()
-    public String list(HttpServletRequest request) {
-        request.setAttribute("monsters", MonsterTemplate.values());
+    public String list(Model model) {
+        model.addAttribute("monsters", MonsterTemplate.values());
         return "coliseum";
     }
 

@@ -23,9 +23,9 @@ public class GameController {
     private final GameService gameService;
 
     @GetMapping()
-    public String list(HttpServletRequest request) {
+    public String list(Model model) {
         List<Game> games = gameService.list();
-        request.setAttribute("games", games);
+        model.addAttribute("games", games);
         return "game/list";
     }
 
@@ -44,14 +44,14 @@ public class GameController {
     }
 
     @GetMapping("dungeon")
-    public String chooseDungeon(Model model) {
-        model.addAttribute("mode", DUNGEON);
+    public String chooseDungeon(HttpServletRequest request) {
+        request.getSession().setAttribute("mode", DUNGEON);
         return "redirect:/dungeon/enter";
     }
 
     @GetMapping("coliseum")
-    public String chooseColiseum(Model model) {
-        model.addAttribute("mode", COLISEUM);
+    public String chooseColiseum(HttpServletRequest request) {
+        request.getSession().setAttribute("mode", COLISEUM);
         return "redirect:/coliseum";
     }
 }
