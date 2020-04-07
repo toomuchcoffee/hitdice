@@ -46,7 +46,7 @@ public class GameControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("game"))
+                .andExpect(view().name("game/list"))
                 .andExpect(xpath("//div[@id='games']//ul/li[1]").string(dateString))
         ;
     }

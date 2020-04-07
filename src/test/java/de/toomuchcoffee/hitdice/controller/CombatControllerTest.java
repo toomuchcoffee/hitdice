@@ -75,7 +75,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 12/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 7/7"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/1"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
         ;
     }
 
@@ -113,7 +113,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-stats']/div[1]/span").string("Your health: 10/12"))
                 .andExpect(xpath("//div[@id='combat-stats']/div[2]/span").string("Orc's health: 4/7"))
                 .andExpect(xpath("//div[@id='combat-actions']/a[1]/@href").string("/combat/2"))
-                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/dungeon/flee"))
+                .andExpect(xpath("//div[@id='combat-actions']/a[2]/@href").string("/combat/flee"))
         ;
     }
 
@@ -153,7 +153,7 @@ public class CombatControllerTest {
                 .andExpect(xpath("//div[@id='combat-actions']").doesNotExist())
                 .andExpect(xpath("//div[@id='combat-victory']/p[1]").string("The Orc is dead!"))
                 .andExpect(xpath("//div[@id='combat-victory']/p[2]").string("You earned 30 experience points!"))
-                .andExpect(xpath("//div[@id='combat-victory']/a/@href").string("/dungeon/clear"))
+                .andExpect(xpath("//div[@id='combat-victory']/a/@href").string("/combat/exit"))
         ;
     }
 

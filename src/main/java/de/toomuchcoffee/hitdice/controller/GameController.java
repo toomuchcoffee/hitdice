@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static de.toomuchcoffee.hitdice.domain.GameMode.COLISEUM;
+import static de.toomuchcoffee.hitdice.domain.GameMode.DUNGEON;
+
 @Controller
 @RequestMapping("game")
 @RequiredArgsConstructor
@@ -21,15 +24,15 @@ public class GameController {
     @GetMapping()
     public String list(HttpServletRequest request) {
         List<Game> games = gameService.list();
-        request.getSession().setAttribute("games", games);
-        return "game";
+        request.setAttribute("games", games);
+        return "game/list";
     }
 
     @GetMapping("{gameId}")
     public String loadGame(HttpServletRequest request, @PathVariable Integer gameId) {
         Hero hero = gameService.restore(gameId);
         request.getSession().setAttribute("hero", hero);
-        return "redirect:/dungeon/enter";
+        return "game/mode";
     }
 
     @GetMapping("save")
@@ -37,5 +40,17 @@ public class GameController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         gameService.save(hero);
         return "home";
+    }
+
+    @GetMapping("dungeon")
+    public String chooseDungeon(HttpServletRequest request) {
+        request.getSession().setAttribute("mode", DUNGEON);
+        return "redirect:/dungeon/enter";
+    }
+
+    @GetMapping("coliseum")
+    public String chooseColiseum(HttpServletRequest request) {
+        request.getSession().setAttribute("mode", COLISEUM);
+        return "redirect:/coliseum";
     }
 }

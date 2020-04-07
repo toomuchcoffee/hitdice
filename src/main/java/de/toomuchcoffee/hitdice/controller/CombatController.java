@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.domain.GameMode;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.service.CombatService;
@@ -35,6 +36,18 @@ public class CombatController {
         model.addAttribute("round", round);
 
         return "combat";
+    }
+
+    @GetMapping("flee")
+    public String flee(HttpServletRequest request) {
+        GameMode mode = (GameMode) request.getSession().getAttribute("mode");
+        return String.format("redirect:/%s/flee", mode.name().toLowerCase());
+    }
+
+    @GetMapping("exit")
+    public String exit(HttpServletRequest request) {
+        GameMode mode = (GameMode) request.getSession().getAttribute("mode");
+        return String.format("redirect:/%s/clear", mode.name().toLowerCase());
     }
 
 }
