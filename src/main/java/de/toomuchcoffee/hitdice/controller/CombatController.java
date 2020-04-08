@@ -22,7 +22,7 @@ public class CombatController {
     private final CombatService combatService;
 
     @GetMapping({"", "{round}"})
-    public String attack(@PathVariable(required = false) Integer round, Model model, HttpServletRequest request) {
+    public String fight(@PathVariable(required = false) Integer round, Model model, HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 

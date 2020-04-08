@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.util.stream.Collectors.toList;
@@ -41,7 +41,7 @@ public class CombatService {
     private List<String> attack(Combatant attacker, Combatant defender) {
         return attacker.getCombatActions().stream()
                 .map(a -> a.execute(attacker, defender))
-                .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+                .filter(Objects::nonNull)
                 .collect(toList());
     }
 

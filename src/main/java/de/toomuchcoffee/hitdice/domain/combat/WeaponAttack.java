@@ -2,8 +2,6 @@ package de.toomuchcoffee.hitdice.domain.combat;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static java.lang.Math.max;
 
@@ -11,11 +9,8 @@ import static java.lang.Math.max;
 public class WeaponAttack implements CombatAction {
     private final Weapon weapon;
 
-    public Optional<String> execute(Combatant attacker, Combatant defender) {
-        if (condition(attacker, defender)) {
-            return Optional.of(onSuccess(attacker, defender));
-        }
-        return Optional.empty();
+    public String execute(Combatant attacker, Combatant defender) {
+        return condition(attacker, defender) ? onSuccess(attacker, defender) : null;
     }
 
     private boolean condition(Combatant attacker, Combatant defender) {

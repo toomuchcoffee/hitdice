@@ -9,7 +9,6 @@ import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import lombok.Getter;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.*;
@@ -37,12 +36,11 @@ public enum MonsterTemplate {
                         Treasure item = it.next();
                         if (item.isMetallic()) {
                             it.remove();
-                            return Optional.of(String.format("Oh no! The rust monster hit your %s and it crumbles to rust.", item.getName()));
+                            return String.format("Oh no! The rust monster hit your %s and it crumbles to rust.", item.getName());
                         }
                     }
-                    return Optional.of("The rust monster has destroyed all your metal, so no harm done this time!");
                 }
-                return Optional.empty();
+                return null;
             }),
 
     GHOUL("Ghoul", 2, UNCOMMON, -1, 0,
@@ -51,9 +49,9 @@ public enum MonsterTemplate {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
                     hero.getDexterity().decrease(1);
-                    return Optional.of("The ghoul's paralyzing touch makes you lose one point of dexterity!");
+                    return "The ghoul's paralyzing touch makes you lose one point of dexterity!";
                 }
-                return Optional.empty();
+                return null;
             }),
 
     OGRE("Ogre", 3, COMMON, -1, 2,
@@ -68,9 +66,9 @@ public enum MonsterTemplate {
                 if (attacker.getHealth().isInjured()) {
                     int regeneration = D3.roll();
                     attacker.getHealth().increase(regeneration);
-                    return Optional.of(String.format("Oh no! The troll regenerated %d points of stamina!", regeneration));
+                    return String.format("Oh no! The troll regenerated %d points of stamina!", regeneration);
                 }
-                return Optional.empty();
+                return null;
             }),
 
     OOZE("Ooze", 5, RARE, -1, 1,
@@ -79,9 +77,9 @@ public enum MonsterTemplate {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
                     hero.getStamina().decrease(1);
-                    return Optional.of("The ooze's acid harms you in such a bad way, that you lose one point of stamina!");
+                    return "The ooze's acid harms you in such a bad way, that you lose one point of stamina!";
                 }
-                return Optional.empty();
+                return null;
             }),
 
     VAMPIRE("Vampire", 5, RARE, 2, 0,
@@ -90,9 +88,9 @@ public enum MonsterTemplate {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
                     hero.getStrength().decrease(1);
-                    return Optional.of("Don't you just hate vampires? This fella just sucked away one point of strength from you!");
+                    return "Don't you just hate vampires? This fella just sucked away one point of strength from you!";
                 }
-                return Optional.empty();
+                return null;
             }),
 
     ETTIN("Ettin", 4, UNCOMMON, -1, 3,
@@ -107,9 +105,9 @@ public enum MonsterTemplate {
                     hero.getStrength().decrease(1);
                     hero.getDexterity().decrease(1);
                     hero.getStamina().decrease(1);
-                    return Optional.of("The eternal coldness of the Lich's touch weakens you. You lose 1 point on each attribute score!");
+                    return "The eternal coldness of the Lich's touch weakens you. You lose 1 point on each attribute score!";
                 }
-                return Optional.empty();
+                return null;
             }),
 
     MIND_FLAYER("Mind Flayer", 6, VERY_RARE, 4, 0,
@@ -122,9 +120,9 @@ public enum MonsterTemplate {
                             + defender.getDamageBonus()
                             - defender.getArmorClass());
                     defender.reduceHealth(damage);
-                    return Optional.of(String.format("%s hit himself for %d points of damage.", defender.getName(), damage));
+                    return String.format("%s hit himself for %d points of damage.", defender.getName(), damage);
                 }
-                return Optional.empty();
+                return null;
             }),
 
     BEHOLDER("Beholder", 6, VERY_RARE, 0, 0,
@@ -133,7 +131,7 @@ public enum MonsterTemplate {
                 Hero hero = (Hero) defender;
                 int eyes = D12.roll();
                 hero.reduceHealth(eyes);
-                return Optional.of(String.format("%d of the Beholder's eyes beam right into your soul and reduce your health by %d points!", eyes, eyes));
+                return String.format("%d of the Beholder's eyes beam right into your soul and reduce your health by %d points!", eyes, eyes);
             }),
 
     DEMOGORGON("Demogorgon", 7, VERY_RARE, 2, 0,
@@ -143,9 +141,9 @@ public enum MonsterTemplate {
                     Hero hero = (Hero) defender;
                     int damage = D12.roll();
                     hero.reduceHealth(damage);
-                    return Optional.of(String.format("The Demogorgon's tentacles embrace you and sending out electric shocks, causing %d extra points of damage!", damage));
+                    return String.format("The Demogorgon's tentacles embrace you and sending out electric shocks, causing %d extra points of damage!", damage);
                 }
-                return Optional.empty();
+                return null;
             }),
 
     DRAGON("Dragon", 8, VERY_RARE, 0, 5, new WeaponAttack(
@@ -154,9 +152,9 @@ public enum MonsterTemplate {
                 if (D20.check(5)) {
                     int damage = D8.roll(4);
                     defender.reduceHealth(damage);
-                    return Optional.of(String.format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage));
+                    return String.format("The dragon fire is just everywhere and it's damn hot! %d of damage caused...", damage);
                 }
-                return Optional.empty();
+                return null;
             });
 
     private final String name;
