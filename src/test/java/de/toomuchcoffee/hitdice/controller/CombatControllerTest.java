@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.LONGSWORD;
 import static de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate.ORC;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;

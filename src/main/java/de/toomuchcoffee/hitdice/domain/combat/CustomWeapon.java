@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 @Getter
 @RequiredArgsConstructor
-public class CustomWeapon implements GenericWeapon {
+public class CustomWeapon implements Weapon {
     private final String name;
     private final Supplier<Integer> damage;
 }

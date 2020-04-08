@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.HEALTH;
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.SHORTSWORD;
+import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;

@@ -1,6 +1,6 @@
 package de.toomuchcoffee.hitdice.db;
 
-import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.item.Armor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ public class Game {
     private Integer health;
 
     @Enumerated(STRING)
-    private Weapon weapon;
+    private HandWeapon weapon;
 
     @Enumerated(STRING)
     private Armor armor;

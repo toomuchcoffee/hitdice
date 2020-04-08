@@ -4,7 +4,7 @@ import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import org.springframework.stereotype.Service;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D100;
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.*;
+import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.*;
 import static de.toomuchcoffee.hitdice.domain.item.Armor.*;
 
 @Service

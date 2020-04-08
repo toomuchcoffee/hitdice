@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.LONGSWORD;
 import static de.toomuchcoffee.hitdice.domain.item.Armor.LEATHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

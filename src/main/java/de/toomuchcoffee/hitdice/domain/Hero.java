@@ -6,7 +6,7 @@ import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.item.Armor;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
@@ -20,7 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
-import static de.toomuchcoffee.hitdice.domain.combat.Weapon.FISTS;
+import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.FISTS;
 import static java.lang.Math.max;
 
 @Getter
@@ -78,10 +78,10 @@ public class Hero implements Combatant {
         return getStrength().getBonus();
     }
 
-    public Weapon getWeapon() {
+    public HandWeapon getWeapon() {
         return equipment.stream()
-                .filter(i -> i instanceof Weapon)
-                .map(i -> (Weapon) i)
+                .filter(i -> i instanceof HandWeapon)
+                .map(i -> (HandWeapon) i)
                 .findFirst()
                 .orElse(FISTS);
     }
