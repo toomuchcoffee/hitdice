@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hitdice.domain.monster;
+package de.toomuchcoffee.hitdice.domain.world;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
