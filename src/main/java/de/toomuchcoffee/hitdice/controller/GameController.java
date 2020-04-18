@@ -36,6 +36,12 @@ public class GameController {
         return "game/mode";
     }
 
+    @GetMapping("delete/{gameId}")
+    public String deleteGame(@PathVariable Integer gameId) {
+        gameService.delete(gameId);
+        return "redirect:/game";
+    }
+
     @GetMapping("save")
     public String saveGame(HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");

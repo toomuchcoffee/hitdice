@@ -42,4 +42,8 @@ public class GameService {
         BeanUtils.copyProperties(game, hero);
         return hero;
     }
+
+    public void delete(Integer gameId) {
+        gameRepository.deleteById(gameId);
+    }
 }
