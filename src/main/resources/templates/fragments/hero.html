@@ -27,12 +27,16 @@
         <div class="col-lg-4">
             <div class="card border-secondary mb-3">
                 <div class="card-body">
-                    <h4 class="card-title">Combat Stats</h4>
+                    <h4 class="card-title">Equipment &amp; Combat Stats</h4>
                     <dl class="card-text">
                         <dt>Weapon:</dt>
                         <dd th:text="${hero.weapon?.displayName}"></dd>
                         <dt>Armor:</dt>
                         <dd th:text="${hero.armor?.displayName}"></dd>
+                        <dt>Potions:</dt>
+                        <dd>
+                            <span th:replace="fragments/potions :: potions (potions=${hero.potions})"></span>
+                        </dd>
                         <dt>Attack:</dt>
                         <dd th:text="${hero.attack}"></dd>
                         <dt>Health:</dt>

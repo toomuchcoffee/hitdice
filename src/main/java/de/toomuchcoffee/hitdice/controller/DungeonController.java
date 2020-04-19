@@ -1,8 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-
-import static de.toomuchcoffee.hitdice.domain.world.EventType.*;
 
 @Controller
 @RequestMapping("dungeon")
@@ -46,14 +42,18 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         return dungeonService.move(dungeon, direction)
                 .map(event -> {
-                    if (event.getEventType() == MAGIC_DOOR) {
-                        return "redirect:/dungeon/enter";
-                    } else {
-                        request.getSession().setAttribute(event.getEventType().name().toLowerCase(), event);
-                        return ImmutableMap.of(
-                                MONSTER, "redirect:/combat",
-                                TREASURE, "redirect:/dungeon/treasure",
-                                POTION, "redirect:/dungeon/potion").get(event.getEventType());
+                    switch (event.getEventType()) {
+                        case MAGIC_DOOR:
+                            return "redirect:/dungeon/enter";
+                        case MONSTER:
+                            request.getSession().setAttribute("monster", event);
+                            return "redirect:/combat";
+                        case POTION:
+                        case TREASURE:
+                            request.getSession().setAttribute("treasure", event);
+                            return "redirect:/dungeon/treasure";
+                        default:
+                            throw new IllegalArgumentException("Unsupported event type: " + event.getEventType());
                     }
                 }).orElse("redirect:/dungeon");
     }
@@ -61,11 +61,6 @@ public class DungeonController {
     @GetMapping("treasure")
     public String treasure() {
         return "dungeon/treasure";
-    }
-
-    @GetMapping("potion")
-    public String potion() {
-        return "dungeon/potion";
     }
 
     @GetMapping("clear")
@@ -91,14 +86,6 @@ public class DungeonController {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Treasure treasure = (Treasure) request.getSession().getAttribute("treasure");
         heroService.collectTreasure(hero, treasure);
-        return "redirect:/dungeon/clear";
-    }
-
-    @GetMapping("use")
-    public String use(HttpServletRequest request) {
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
-        Potion potion = (Potion) request.getSession().getAttribute("potion");
-        heroService.drinkPotion(hero, potion);
         return "redirect:/dungeon/clear";
     }
 

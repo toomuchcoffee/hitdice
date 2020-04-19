@@ -127,10 +127,10 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/dungeon/potion"))
+                .andExpect(redirectedUrl("/dungeon/treasure"))
         ;
 
-        assertThat(session.getAttribute("potion")).isEqualTo(potion);
+        assertThat(session.getAttribute("treasure")).isEqualTo(potion);
     }
 
 }

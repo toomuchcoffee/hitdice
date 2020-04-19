@@ -2,11 +2,13 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -45,6 +47,15 @@ public class HeroController {
         hero.addEquipment(DAGGER);
         model.addAttribute("step", 3);
         return "create";
+    }
+
+    @GetMapping("use/{potion}")
+    public String use(HttpServletRequest request, @PathVariable Potion potion) {
+        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        hero.getEquipment().remove(potion);
+        heroService.drinkPotion(hero, potion);
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
 }

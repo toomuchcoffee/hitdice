@@ -22,6 +22,7 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.FISTS;
 import static java.lang.Math.max;
+import static java.util.stream.Collectors.toList;
 
 @Getter
 @Setter
@@ -92,6 +93,13 @@ public class Hero implements Combatant {
                 .map(i -> (Armor) i)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<Potion> getPotions() {
+        return equipment.stream()
+                .filter(i -> i instanceof Potion)
+                .map(i -> (Potion) i)
+                .collect(toList());
     }
 
     @Override

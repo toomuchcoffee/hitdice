@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:fragment="potions (potions)" id="potions">
+
+    <span th:each="potion : ${hero.potions}">
+        <a th:href="@{'/hero/use/' + ${potion}}">
+            <span th:if="${potion.name() == 'HEALTH'}">
+                <i class="fas fa-flask text-danger"></i>
+            </span>
+            <span th:if="${potion.name() == 'STRENGTH'}">
+                <i class="fas fa-flask text-primary"></i>
+            </span>
+            <span th:if="${potion.name() == 'DEXTERITY'}">
+                <i class="fas fa-flask text-info"></i>
+            </span>
+            <span th:if="${potion.name() == 'STAMINA'}">
+                <i class="fas fa-flask text-warning"></i>
+            </span>
+        </a>
+    </span>
+
+</div>
+</body>
+</html>
