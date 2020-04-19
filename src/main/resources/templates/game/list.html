@@ -16,9 +16,8 @@
             <li th:each="game : ${games}">
                 <a th:href="@{'/game/' + ${game.id}}" th:text="${#dates.format(game.created, 'dd-MM-yyyy HH:mm')}"> game </a>
                 <a class="btn btn-outline-primary" th:href="@{'/game/delete/' + ${game.id}}">
-                    <i class="fas fa-trash-alt"></i></i>
+                    <i class="fas fa-trash-alt"></i>
                 </a>
-
             </li>
         </ul>
     </div>

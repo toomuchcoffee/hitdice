@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.assertj.core.util.Lists.newArrayList;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -47,7 +48,7 @@ public class GameControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(view().name("game/list"))
-                .andExpect(xpath("//div[@id='games']//ul/li[1]").string(dateString))
+                .andExpect(xpath("//div[@id='games']//ul/li[1]").string(containsString(dateString)))
         ;
     }
 }

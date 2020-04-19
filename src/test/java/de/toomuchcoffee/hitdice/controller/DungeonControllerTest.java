@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -121,7 +120,7 @@ public class DungeonControllerTest {
         dungeon.setPosition(new Position(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        Potion potion = new Potion(5, HEALTH);
+        Potion potion = Potion.HEALTH;
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(potion));
 
         this.mvc.perform(get("/dungeon/SOUTH")

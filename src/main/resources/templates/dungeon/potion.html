@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="page_content" id="page_content">
 
-    <h3  th:text="'You found a ' + ${#strings.toLowerCase(session.potion.type)} + ' potion!'"></h3>
+    <h3>You found a <span th:text="${session.potion.displayName}"></span></h3>
 
     <div id="potion-actions">
         <a class="btn btn-success" href="/dungeon/use">Drink it!</a>

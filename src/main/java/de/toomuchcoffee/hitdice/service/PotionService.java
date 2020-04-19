@@ -1,34 +1,31 @@
 package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.item.Potion;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static de.toomuchcoffee.hitdice.domain.Dice.D12;
-import static de.toomuchcoffee.hitdice.domain.Dice.D4;
-import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
+@RequiredArgsConstructor
 public class PotionService {
+    private final Random random;
 
     public Potion createPotion() {
-        switch (D12.roll()) {
-            case 1:
-                return new Potion(1, STRENGTH);
-            case 2:
-                return new Potion(1, DEXTERITY);
-            case 3:
-                return new Potion(1, STAMINA);
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            default:
-                return new Potion(D4.roll(2), HEALTH);
+        List<Potion> potions = Arrays.stream(Potion.values()).filter(w -> w.getFrequency() != null).collect(toList());
+        int sum = potions.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
+        int roll = random.nextInt(sum);
+        int p = 0;
+        for (Potion potion : potions) {
+            p += potion.getFrequency().getProbability();
+            if (roll < p) {
+                return potion;
+            }
         }
+        throw new IllegalStateException();
     }
 }

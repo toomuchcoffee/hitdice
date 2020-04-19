@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="page_content" id="page_content">
 
-    <h3>You found a <span th:text="${session.treasure.name}"></span></h3>
+    <h3>You found a <span th:text="${session.treasure.displayName}"></span></h3>
 
     <div id="treasure-actions">
         <a class="btn btn-success" href="/dungeon/collect">Take it!</a>
