@@ -25,7 +25,7 @@ public class Monster implements Combatant, Event {
     private final int defense;
     private final Health health;
     private final int armorClass;
-    private List<CombatAction> combatActions = newArrayList();
+    private final List<CombatAction> combatActions = newArrayList();
 
     public Monster(MonsterTemplate template) {
         this.name = template.getName();
