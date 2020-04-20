@@ -7,6 +7,7 @@ import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
+import de.toomuchcoffee.hitdice.service.EventTemplate;
 import lombok.Getter;
 
 import java.util.Iterator;
@@ -18,7 +19,7 @@ import static java.lang.Math.max;
 import static java.lang.String.format;
 
 @Getter
-public enum MonsterTemplate {
+public enum MonsterTemplate implements EventTemplate<Monster> {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
@@ -38,7 +39,7 @@ public enum MonsterTemplate {
                         Treasure item = it.next();
                         if (item.isMetallic()) {
                             it.remove();
-                            return format("Oh no! The Rust Monster hit your %s and it crumbles to rust.", item.getName());
+                            return format("Oh no! The Rust Monster hit your %s and it crumbles to rust.", item.getDisplayName());
                         }
                     }
                 }
@@ -94,7 +95,7 @@ public enum MonsterTemplate {
                         Treasure item = it.next();
                         if (!item.isMetallic()) {
                             it.remove();
-                            return format("The Ooze swallows your %s and destroys it with its acid", item.getName());
+                            return format("The Ooze swallows your %s and destroys it with its acid", item.getDisplayName());
                         }
                     }
                 }
@@ -196,5 +197,10 @@ public enum MonsterTemplate {
         this.defense = defense;
         this.armorClass = armorClass;
         this.combatActions = combatAction;
+    }
+
+    @Override
+    public Monster create() {
+        return new Monster(this);
     }
 }

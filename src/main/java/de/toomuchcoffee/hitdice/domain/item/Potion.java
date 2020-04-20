@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.domain.item;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
+import de.toomuchcoffee.hitdice.service.EventTemplate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,15 +13,15 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D2;
 import static de.toomuchcoffee.hitdice.domain.Dice.D4;
 import static de.toomuchcoffee.hitdice.domain.world.EventType.POTION;
 import static de.toomuchcoffee.hitdice.domain.world.Frequency.COMMON;
-import static de.toomuchcoffee.hitdice.domain.world.Frequency.RARE;
+import static de.toomuchcoffee.hitdice.domain.world.Frequency.VERY_RARE;
 
 @RequiredArgsConstructor
 @Getter
-public enum Potion implements Treasure {
+public enum Potion implements Treasure, EventTemplate<Potion> {
     HEALTH(() -> D4.roll(2), AttributeName.HEALTH, COMMON),
-    STRENGTH(D2::roll, AttributeName.STRENGTH, RARE),
-    DEXTERITY(D2::roll, AttributeName.DEXTERITY, RARE),
-    STAMINA(D2::roll, AttributeName.STAMINA, RARE);
+    STRENGTH(D2::roll, AttributeName.STRENGTH, VERY_RARE),
+    DEXTERITY(D2::roll, AttributeName.DEXTERITY, VERY_RARE),
+    STAMINA(D2::roll, AttributeName.STAMINA, VERY_RARE);
 
     private final Supplier<Integer> power;
     private final AttributeName type;
@@ -43,4 +44,8 @@ public enum Potion implements Treasure {
         return getName() + " potion";
     }
 
+    @Override
+    public Potion create() {
+        return this;
+    }
 }

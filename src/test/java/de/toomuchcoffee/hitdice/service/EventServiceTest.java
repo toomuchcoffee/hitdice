@@ -13,19 +13,20 @@ import java.util.Random;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MonsterServiceTest {
+public class EventServiceTest {
 
     @Mock
     private Random random;
 
-    private MonsterService monsterService;
+    private EventService eventService;
 
     @Before
     public void setUp() throws Exception {
-        monsterService = new MonsterService(random);
+        eventService = new EventService(random);
     }
 
     @Test
@@ -38,10 +39,17 @@ public class MonsterServiceTest {
                 MonsterTemplate.BEHOLDER // very rare (1 -> 6)
         );
 
-        assertThat(monsterService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
-        assertThat(monsterService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
-        assertThat(monsterService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
-        assertThat(monsterService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
-        assertThat(monsterService.createMonster(monsterTemplates).getName()).isEqualTo("Beholder");
+        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
+        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
+        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
+        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
+        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Beholder");
+    }
+
+    @Test
+    public void createsTheRightWeapon() {
+        when(random.nextInt(anyInt())).thenReturn(0);
+
+        assertThat(eventService.createWeapon().getName()).isEqualTo("club");
     }
 }

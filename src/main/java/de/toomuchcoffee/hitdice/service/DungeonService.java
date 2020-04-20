@@ -12,16 +12,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.Dice.D20;
-
 @Service
 @RequiredArgsConstructor
 public class DungeonService {
 
     private final Random random;
-    private final TreasureService treasureService;
-    private final MonsterService monsterService;
-    private final PotionService potionService;
+    private final EventService eventService;
 
     public Dungeon create(int heroLevel) {
         int size = new Random().nextInt(heroLevel + 4) + 5;
@@ -54,28 +50,14 @@ public class DungeonService {
     }
 
     private void initPois(Dungeon dungeon, int heroLevel) {
-        List<MonsterTemplate> monsterTemplates = monsterService.findTemplates(heroLevel);
+        List<MonsterTemplate> monsterTemplates = eventService.findTemplates(heroLevel);
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
-                dungeon.getEventMap()[x][y] = createEvent(monsterTemplates);
+                dungeon.getEventMap()[x][y] = eventService.createEvent(monsterTemplates);
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
         dungeon.getEventMap()[door.getX()][door.getY()] = Event.MAGIC_DOOR_EVENT;
-    }
-
-    private Event createEvent(List<MonsterTemplate> monsterTemplates) {
-        switch (D20.roll()) {
-            case 1:
-                return potionService.createPotion();
-            case 2:
-                return treasureService.createTreasure();
-            case 3:
-            case 4:
-                return monsterService.createMonster(monsterTemplates);
-            default:
-                return null;
-        }
     }
 
 }

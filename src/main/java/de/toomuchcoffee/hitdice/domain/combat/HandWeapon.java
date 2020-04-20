@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.domain.combat;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
+import de.toomuchcoffee.hitdice.service.EventTemplate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +15,7 @@ import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
 
 @Getter
 @RequiredArgsConstructor
-public enum HandWeapon implements Treasure, Weapon {
+public enum HandWeapon implements Treasure, Weapon, EventTemplate<HandWeapon> {
     FISTS("fists", D2::roll, false, null),
     CLUB("club", D3::roll, false, COMMON),
     STAFF("staff", D4::roll, false, COMMON),
@@ -34,5 +35,10 @@ public enum HandWeapon implements Treasure, Weapon {
 
     public String getDisplayName() {
         return name;
+    }
+
+    @Override
+    public HandWeapon create() {
+        return this;
     }
 }
