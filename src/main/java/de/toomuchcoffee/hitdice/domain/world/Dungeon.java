@@ -2,8 +2,13 @@ package de.toomuchcoffee.hitdice.domain.world;
 
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Optional;
+
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.SOIL;
 import static java.lang.Math.abs;
 
 @Getter
@@ -11,16 +16,19 @@ import static java.lang.Math.abs;
 public class Dungeon {
     private int size;
 
-    private Event[][] eventMap;
-    private boolean[][] visited;
+    private Tile[][] tiles;
 
     private int posX;
     private int posY;
 
     public Dungeon(int size) {
         this.size = size;
-        eventMap = new Event[size][size];
-        visited = new boolean[size][size];
+        tiles = new Tile[size][size];
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                tiles[x][y] = new Tile(ROOM);
+            }
+        }
     }
 
     public Position move(Direction direction) {
@@ -64,8 +72,8 @@ public class Dungeon {
 
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                if (abs(x - posX) < 2 && abs(y - posY) < 2 || visited[x][y]) {
-                    Event event = eventMap[x][y];
+                if (abs(x - posX) < 2 && abs(y - posY) < 2 || tiles[x][y].isVisited()) {
+                    Event event = tiles[x][y].getEvent();
                     view[x][y] = event == null ? null : event.getEventType().getSymbol();
                 } else {
                     view[x][y] = "question-circle unexplored";
@@ -79,7 +87,7 @@ public class Dungeon {
     }
 
     private void visit() {
-        visited[posX][posY] = true;
+        tiles[posX][posY].setVisited(true);
     }
 
     public void setPosition(Position pos) {
@@ -93,7 +101,24 @@ public class Dungeon {
         return new Position(this.posX, this.posY);
     }
 
-    public Event getEvent(Position position) {
-        return eventMap[position.getX()][position.getY()];
+    public Optional<Event> getEvent(Position position) {
+        return Optional.ofNullable(tiles[position.getX()][position.getY()].getEvent());
+    }
+
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    public static class Tile {
+        private final TileType type;
+        private Event event;
+        private boolean visited;
+
+        public boolean isOccupied() {
+            return type == SOIL || event != null;
+        }
+    }
+
+    enum TileType {
+        SOIL, ROOM, HALLWAY
     }
 }

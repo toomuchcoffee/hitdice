@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D100;
@@ -24,29 +25,29 @@ import static java.util.stream.Collectors.toList;
 public class EventService {
     private final Random random;
 
-    public Event createEvent(List<MonsterTemplate> monsterTemplates) {
+    public Optional<Event> createEvent(List<MonsterTemplate> monsterTemplates) {
         switch (D100.roll()) {
             case 1:
             case 2:
             case 3:
             case 4:
             case 5:
-                return createPotion();
+                return Optional.of(createPotion());
             case 6:
             case 7:
-                return createArmor();
+                return Optional.of(createArmor());
             case 8:
             case 9:
             case 10:
-                return createWeapon();
+                return Optional.of(createWeapon());
             case 11:
             case 12:
             case 13:
             case 14:
             case 15:
-                return createMonster(monsterTemplates);
+                return Optional.of(createMonster(monsterTemplates));
             default:
-                return null;
+                return Optional.empty();
         }
     }
 
