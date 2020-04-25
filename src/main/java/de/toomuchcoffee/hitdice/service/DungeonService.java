@@ -23,7 +23,7 @@ public class DungeonService {
     private final EventService eventService;
 
     public Dungeon create(int heroLevel) {
-        int size = new Random().nextInt(heroLevel + 4) + 5;
+        int size = new Random().nextInt(heroLevel + 4) + 6;
         Dungeon dungeon = new Dungeon(size);
         initTiles(dungeon, heroLevel);
         Position start = getAnyUnoccupiedPosition(dungeon);
@@ -38,18 +38,18 @@ public class DungeonService {
 
     public Position getAnyUnoccupiedPosition(Dungeon dungeon) {
         if (dungeon.getSize() == 1) {
-            return new Position(0, 0);
+            return Position.of(0, 0);
         }
 
         Position pos;
         do {
-            pos = new Position(random.nextInt(dungeon.getSize()), random.nextInt(dungeon.getSize()));
+            pos = Position.of(random.nextInt(dungeon.getSize()), random.nextInt(dungeon.getSize()));
         } while (dungeon.getTiles()[pos.getX()][pos.getY()].isOccupied());
         return pos;
     }
 
     public void clear(Dungeon dungeon) {
-        dungeon.getTiles()[dungeon.getPosX()][dungeon.getPosY()].setEvent(null);
+        dungeon.getTile(dungeon.getPosition()).setEvent(null);
     }
 
     private void initTiles(Dungeon dungeon, int heroLevel) {
@@ -57,7 +57,9 @@ public class DungeonService {
         for (int x = 0; x < dungeon.getSize(); x++) {
             for (int y = 0; y < dungeon.getSize(); y++) {
                 Tile tile = dungeon.getTiles()[x][y];
-                eventService.createEvent(monsterTemplates).ifPresent(tile::setEvent);
+                if (!tile.isOccupied()) {
+                    eventService.createEvent(monsterTemplates).ifPresent(tile::setEvent);
+                }
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);

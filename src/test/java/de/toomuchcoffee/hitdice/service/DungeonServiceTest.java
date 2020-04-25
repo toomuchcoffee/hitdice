@@ -20,35 +20,35 @@ public class DungeonServiceTest {
     @Before
     public void setUp() throws Exception {
         dungeonService = new DungeonService(null, null);
-        dungeon = new Dungeon(3);
-        dungeon.setPosition(new Position(1, 1));
+        dungeon = new Dungeon(5);
+        dungeon.setPosition(Position.of(2, 2));
     }
 
     @Test
     public void exploreNorth() {
         dungeonService.move(dungeon, NORTH);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(0, 1));
+        assertThat(dungeon.getPosition()).isEqualTo(Position.of(1, 2));
     }
 
     @Test
     public void exploreSouth() {
         dungeonService.move(dungeon, SOUTH);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(2, 1));
+        assertThat(dungeon.getPosition()).isEqualTo(Position.of(3, 2));
     }
 
     @Test
     public void exploreEast() {
         dungeonService.move(dungeon, EAST);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 2));
+        assertThat(dungeon.getPosition()).isEqualTo(Position.of(2, 3));
     }
 
     @Test
     public void exploreWest() {
         dungeonService.move(dungeon, WEST);
 
-        assertThat(dungeon.getPosition()).isEqualTo(new Position(1, 0));
+        assertThat(dungeon.getPosition()).isEqualTo(Position.of(2, 1));
     }
 }

@@ -1,15 +1,15 @@
 package de.toomuchcoffee.hitdice.domain.world;
 
-import com.google.common.annotations.VisibleForTesting;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.SOIL;
-import static java.lang.Math.abs;
 
 @Getter
 @Setter
@@ -18,53 +18,34 @@ public class Dungeon {
 
     private Tile[][] tiles;
 
-    private int posX;
-    private int posY;
+    @Getter
+    private Position position;
 
     public Dungeon(int size) {
         this.size = size;
         tiles = new Tile[size][size];
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                tiles[x][y] = new Tile(ROOM);
+                if (x == 0 || x == size - 1 || y == 0 || y == size - 1) {
+                    tiles[x][y] = new Tile(SOIL);
+                } else {
+                    tiles[x][y] = new Tile(ROOM);
+                }
             }
         }
     }
 
     public Position move(Direction direction) {
-        switch (direction) {
-            case NORTH: {
-                if (posX > 0) {
-                    posX--;
-                }
-                visit();
-                break;
-            }
-            case EAST: {
-                if (posY < size - 1) {
-                    posY++;
-                }
-                visit();
-                break;
-            }
-            case SOUTH: {
-                if (posX < size - 1) {
-                    posX++;
-                }
-                visit();
-                break;
-            }
-            case WEST: {
-                if (posY > 0) {
-                    posY--;
-                }
-                visit();
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("invalid direction: " + direction);
+        Position newPosition = position.move(direction);
+        if (getTile(newPosition).isVisitable() && isAllowed(newPosition)) {
+            position = newPosition;
+            visit();
         }
-        return new Position(this.posX, this.posY);
+        return position;
+    }
+
+    private boolean isAllowed(Position position) {
+        return position.getX() >= 0 && position.getX() < size && position.getY() >= 0 && position.getY() < size;
     }
 
     public String[][] getMap() {
@@ -72,33 +53,50 @@ public class Dungeon {
 
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                if (abs(x - posX) < 2 && abs(y - posY) < 2 || tiles[x][y].isVisited()) {
-                    Event event = tiles[x][y].getEvent();
-                    view[x][y] = event == null ? null : event.getEventType().getSymbol();
+                if (getTile(Position.of(x, y)).isExplored()) {
+                    if (tiles[x][y].getType() == SOIL) {
+                        view[x][y] = "square-full";
+                    } else {
+                        Event event = tiles[x][y].getEvent();
+                        view[x][y] = event == null ? null : event.getEventType().getSymbol();
+                    }
                 } else {
                     view[x][y] = "question-circle unexplored";
                 }
             }
         }
 
-        view[posX][posY] = "user-circle hero";
+        view[position.getX()][position.getY()] = "user-circle hero";
 
         return view;
     }
 
+    public Tile getTile(Position position) {
+        return tiles[position.getX()][position.getY()];
+    }
+
+    private List<Tile> getTilesWithinView(Position position) {
+        List<Tile> tiles = new ArrayList<>();
+        int viewRange = 1;
+        int minX = Math.max(0, position.getX() - viewRange);
+        int maxX = Math.min(size - 1, position.getX() + viewRange);
+        int minY = Math.max(0, position.getY() - viewRange);
+        int maxY = Math.min(size - 1, position.getY() + viewRange);
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                tiles.add(getTile(Position.of(x, y)));
+            }
+        }
+        return tiles;
+    }
+
     private void visit() {
-        tiles[posX][posY].setVisited(true);
+        getTilesWithinView(position).forEach(tile -> tile.setExplored(true));
     }
 
     public void setPosition(Position pos) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
+        this.position = pos;
         visit();
-    }
-
-    @VisibleForTesting
-    public Position getPosition() {
-        return new Position(this.posX, this.posY);
     }
 
     public Optional<Event> getEvent(Position position) {
@@ -111,10 +109,14 @@ public class Dungeon {
     public static class Tile {
         private final TileType type;
         private Event event;
-        private boolean visited;
+        private boolean explored;
 
         public boolean isOccupied() {
             return type == SOIL || event != null;
+        }
+
+        public boolean isVisitable() {
+            return type != SOIL;
         }
     }
 

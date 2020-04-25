@@ -77,7 +77,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
-        dungeon.setPosition(new Position(0, 0));
+        dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
         when(dungeonService.move(dungeon, SOUTH)).thenCallRealMethod();
@@ -97,7 +97,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
-        dungeon.setPosition(new Position(0, 0));
+        dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(SHORTSWORD));
@@ -117,7 +117,7 @@ public class DungeonControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(2);
-        dungeon.setPosition(new Position(0, 0));
+        dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = Potion.HEALTH;
