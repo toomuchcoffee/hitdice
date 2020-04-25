@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
-import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.SOIL;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 
 @Getter
 @Setter
@@ -56,6 +55,8 @@ public class Dungeon {
                 if (getTile(Position.of(x, y)).isExplored()) {
                     if (tiles[x][y].getType() == SOIL) {
                         view[x][y] = "square-full";
+                    } else if (tiles[x][y].getType() == MAGIC_DOOR) {
+                        view[x][y] = "dungeon";
                     } else {
                         Event event = tiles[x][y].getEvent();
                         view[x][y] = event == null ? null : event.getEventType().getSymbol();
@@ -120,7 +121,7 @@ public class Dungeon {
         }
     }
 
-    enum TileType {
-        SOIL, ROOM, HALLWAY
+    public enum TileType {
+        SOIL, ROOM, HALLWAY, MAGIC_DOOR
     }
 }

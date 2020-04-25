@@ -4,16 +4,14 @@ import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
-import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.world.Event.MAGIC_DOOR_EVENT;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +29,9 @@ public class DungeonService {
         return dungeon;
     }
 
-    public Optional<Event> move(Dungeon dungeon, Direction direction) {
+    public Tile move(Dungeon dungeon, Direction direction) {
         Position position = dungeon.move(direction);
-        return dungeon.getEvent(position);
+        return dungeon.getTile(position);
     }
 
     public Position getAnyUnoccupiedPosition(Dungeon dungeon) {
@@ -63,7 +61,7 @@ public class DungeonService {
             }
         }
         Position door = getAnyUnoccupiedPosition(dungeon);
-        dungeon.getTiles()[door.getX()][door.getY()].setEvent(MAGIC_DOOR_EVENT);
+        dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR);
     }
 
 }

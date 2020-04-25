@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum EventType {
     MONSTER("pastafarianism"),
     POTION("flask"),
-    TREASURE("coins"),
-    MAGIC_DOOR("dungeon");
+    TREASURE("coins");
 
     private final String symbol;
 

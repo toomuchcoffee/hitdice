@@ -5,6 +5,7 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.item.Potion;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
@@ -19,11 +20,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
 import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -100,7 +101,9 @@ public class DungeonControllerTest {
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(SHORTSWORD));
+        Tile tile = new Tile(ROOM);
+        tile.setEvent(SHORTSWORD);
+        when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
@@ -121,7 +124,9 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Potion potion = Potion.HEALTH;
-        when(dungeonService.move(dungeon, SOUTH)).thenReturn(Optional.of(potion));
+        Tile tile = new Tile(ROOM);
+        tile.setEvent(potion);
+        when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)

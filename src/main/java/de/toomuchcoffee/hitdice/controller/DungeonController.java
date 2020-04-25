@@ -2,10 +2,8 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
-import de.toomuchcoffee.hitdice.domain.world.Direction;
-import de.toomuchcoffee.hitdice.domain.world.Dungeon;
-import de.toomuchcoffee.hitdice.domain.world.EventType;
-import de.toomuchcoffee.hitdice.domain.world.Position;
+import de.toomuchcoffee.hitdice.domain.world.*;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
 
 @Controller
 @RequestMapping("dungeon")
@@ -40,22 +40,26 @@ public class DungeonController {
     @GetMapping("{direction}")
     public String move(@PathVariable Direction direction, HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        return dungeonService.move(dungeon, direction)
-                .map(event -> {
-                    switch (event.getEventType()) {
-                        case MAGIC_DOOR:
-                            return "redirect:/dungeon/enter";
-                        case MONSTER:
-                            request.getSession().setAttribute("monster", event);
-                            return "redirect:/combat";
-                        case POTION:
-                        case TREASURE:
-                            request.getSession().setAttribute("treasure", event);
-                            return "redirect:/dungeon/treasure";
-                        default:
-                            throw new IllegalArgumentException("Unsupported event type: " + event.getEventType());
-                    }
-                }).orElse("redirect:/dungeon");
+        Tile tile = dungeonService.move(dungeon, direction);
+        if (tile.getType() == MAGIC_DOOR) {
+            return "redirect:/dungeon/enter";
+        } else {
+            Event event = tile.getEvent();
+            if (event != null) {
+                switch (event.getEventType()) {
+                    case MONSTER:
+                        request.getSession().setAttribute("monster", event);
+                        return "redirect:/combat";
+                    case POTION:
+                    case TREASURE:
+                        request.getSession().setAttribute("treasure", event);
+                        return "redirect:/dungeon/treasure";
+                    default:
+                        throw new IllegalStateException("Unsupported event type: " + event.getEventType());
+                }
+            }
+        }
+        return "redirect:/dungeon";
     }
 
     @GetMapping("treasure")
