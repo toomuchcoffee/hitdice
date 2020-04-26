@@ -23,7 +23,7 @@ public enum Potion implements Treasure, EventTemplate<Potion> {
     DEXTERITY(D2::roll, AttributeName.DEXTERITY, VERY_RARE),
     STAMINA(D2::roll, AttributeName.STAMINA, VERY_RARE);
 
-    private final Supplier<Integer> power;
+    private final Supplier<Integer> potency;
     private final AttributeName type;
     private final Frequency frequency;
 

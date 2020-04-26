@@ -119,7 +119,7 @@ public class Hero implements Combatant {
     }
 
     public void drink(Potion potion) {
-        attributes.get(potion.getType()).increase(potion.getPower().get());
+        attributes.get(potion.getType()).increase(potion.getPotency().get());
     }
 
     public Attribute getStrength() {

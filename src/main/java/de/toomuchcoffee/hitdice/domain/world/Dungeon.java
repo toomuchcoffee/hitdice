@@ -31,7 +31,7 @@ public class Dungeon {
     }
 
     public Position move(Direction direction) {
-        Position newPosition = position.move(direction);
+        Position newPosition = position.shift(direction);
         if (isAllowed(newPosition) && getTile(newPosition).isVisitable()) {
             position = newPosition;
             visit();

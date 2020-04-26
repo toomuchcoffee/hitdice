@@ -13,18 +13,28 @@ public class Position {
     private final int x;
     private final int y;
 
-    public Position move(Direction direction) {
-        switch (direction) {
+    public Position shift(Direction direction) {
+        return shift(direction, 1);
+    }
+
+    public Position shift(Direction orientation, int distance) {
+        switch (orientation) {
             case NORTH:
-                return Position.of(x - 1, y);
+                return Position.of(x - distance, y);
             case EAST:
-                return Position.of(x, y + 1);
+                return Position.of(x, y + distance);
             case SOUTH:
-                return Position.of(x + 1, y);
+                return Position.of(x + distance, y);
             case WEST:
-                return Position.of(x, y - 1);
+                return Position.of(x, y - distance);
             default:
-                throw new IllegalStateException("Unknown value: " + direction);
+                throw new IllegalStateException("Unexpected argument: " + orientation);
         }
+    }
+
+    public Position interpolate(Position point) {
+        int x = Math.min(this.getX(), point.getX()) + Math.abs(this.getX() - point.getX()) / 2;
+        int y = Math.min(this.getY(), point.getY()) + Math.abs(this.getY() - point.getY()) / 2;
+        return Position.of(x, y);
     }
 }

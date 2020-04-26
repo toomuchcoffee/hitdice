@@ -2,12 +2,9 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
-import de.toomuchcoffee.hitdice.domain.world.Direction;
-import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType;
-import de.toomuchcoffee.hitdice.domain.world.Position;
-import de.toomuchcoffee.hitdice.service.dungeonmaker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -91,23 +88,23 @@ public class DungeonService {
         List<Square> squares = new ArrayList<>();
 
         // Dig out a single room in the centre of the map
-        Room room = createRoom(Point.of(dungeonSize / 2, dungeonSize / 2));
+        Room room = createRoom(Position.of(dungeonSize / 2, dungeonSize / 2));
         squares.add(room);
 
         while (featureCount > 0) {
             // Pick a wall of any room
             Square picked = squares.get(random.nextInt(squares.size()));
-            Orientation orientation;
+            Direction orientation;
             if (picked instanceof Hallway) {
                 orientation = ((Hallway) picked).getEdges().get(random.nextInt(2));
             } else {
-                orientation = Orientation.values()[random.nextInt(Orientation.values().length)];
+                orientation = Direction.values()[random.nextInt(Direction.values().length)];
             }
-            Point wallBreakThrough = picked.edgeCenter(orientation);
+            Position wallBreakThrough = picked.edgeCenter(orientation);
 
             // Decide upon a new feature to build
             Hallway hallway = createHallway(wallBreakThrough.getX(), wallBreakThrough.getY(), orientation);
-            Point hallwayEnd = wallBreakThrough.add(orientation, hallway.getLength());
+            Position hallwayEnd = wallBreakThrough.shift(orientation, hallway.getLength());
             Room newRoom = createRoom(hallwayEnd, orientation.opposite());
 
             // See if there is room to add the new feature through the chosen wall
@@ -184,21 +181,21 @@ public class DungeonService {
         return tiles;
     }
 
-    private Room createRoom(Point point, Orientation entrance) {
+    private Room createRoom(Position point, Direction entrance) {
         int width = 3 + 2 * random.nextInt(3);
         int height = 3 + 2 * random.nextInt(3);
         return new Room(point.getX(), point.getY(), width, height, entrance);
     }
 
-    private Room createRoom(Point point) {
+    private Room createRoom(Position point) {
         int width = 3 + 2 * random.nextInt(3);
         int height = 3 + 2 * random.nextInt(3);
         return new Room(point.getX(), point.getY(), width, height);
     }
 
-    private Hallway createHallway(int startX, int startY, Orientation orientation) {
+    private Hallway createHallway(int startX, int startY, Direction orientation) {
         int length = 3 + 2 * random.nextInt(4);
-        return new Hallway(Point.of(startX, startY), length, orientation);
+        return new Hallway(Position.of(startX, startY), length, orientation);
     }
 
 }

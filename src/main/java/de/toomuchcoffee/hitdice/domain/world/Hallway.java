@@ -1,22 +1,28 @@
-package de.toomuchcoffee.hitdice.service.dungeonmaker;
+package de.toomuchcoffee.hitdice.domain.world;
 
 import lombok.Getter;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.service.dungeonmaker.Orientation.*;
+import static de.toomuchcoffee.hitdice.domain.world.Direction.*;
 
 @Getter
 public class Hallway extends Square {
     private int length;
-    private Orientation orientation;
+    private Direction orientation;
 
-    public Hallway(Point start, int length, Orientation orientation) {
+    public Hallway(Position start, int length, Direction orientation) {
         this.length = length;
         this.orientation = orientation;
         switch (orientation) {
             case NORTH:
+                xMax = start.getX();
+                xMin = xMax - length;
+                yMin = start.getY();
+                yMax = yMin + 1;
+                break;
+            case EAST:
                 xMin = start.getX();
                 xMax = xMin + 1;
                 yMin = start.getY();
@@ -24,28 +30,22 @@ public class Hallway extends Square {
                 break;
             case SOUTH:
                 xMin = start.getX();
-                xMax = xMin + 1;
-                yMax = start.getY();
-                yMin = yMax - length;
-                break;
-            case EAST:
-                xMin = start.getX();
                 xMax = xMin + length;
                 yMin = start.getY();
                 yMax = yMin + 1;
                 break;
             case WEST:
-                xMax = start.getX();
-                xMin = xMax - length;
-                yMin = start.getY();
-                yMax = yMin + 1;
+                xMin = start.getX();
+                xMax = xMin + 1;
+                yMax = start.getY();
+                yMin = yMax - length;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + orientation);
         }
     }
 
-    public List<Orientation> getEdges() {
+    public List<Direction> getEdges() {
         if (orientation == SOUTH || orientation == NORTH) {
             return newArrayList(EAST, WEST);
         } else {

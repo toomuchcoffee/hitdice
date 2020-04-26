@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hitdice.service.dungeonmaker;
+package de.toomuchcoffee.hitdice.domain.world;
 
 import lombok.*;
 
@@ -32,32 +32,32 @@ public class Square {
                 square.getYMax() < yMin;
     }
 
-    private Point getBL() {
-        return Point.of(xMin, yMin);
+    private Position getNW() {
+        return Position.of(xMin, yMin);
     }
 
-    private Point getBR() {
-        return Point.of(xMax, yMin);
+    private Position getSW() {
+        return Position.of(xMax, yMin);
     }
 
-    private Point getTL() {
-        return Point.of(xMin, yMax);
+    private Position getNE() {
+        return Position.of(xMin, yMax);
     }
 
-    private Point getTR() {
-        return Point.of(xMax, yMax);
+    private Position getSE() {
+        return Position.of(xMax, yMax);
     }
 
-    public Point edgeCenter(Orientation orientation) {
+    public Position edgeCenter(Direction orientation) {
         switch (orientation) {
-            case SOUTH:
-                return getBL().interpolate(getBR());
             case NORTH:
-                return getTL().interpolate(getTR());
+                return getNW().interpolate(getNE());
             case EAST:
-                return getBR().interpolate(getTR());
+                return getNE().interpolate(getSE());
+            case SOUTH:
+                return getSW().interpolate(getSE());
             case WEST:
-                return getBL().interpolate(getTL());
+                return getNW().interpolate(getSW());
             default:
                 throw new IllegalStateException("Unexpected value: " + orientation);
         }
