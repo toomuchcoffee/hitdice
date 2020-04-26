@@ -63,6 +63,14 @@ public class DungeonController {
         return "redirect:/dungeon";
     }
 
+    @GetMapping("leave")
+    public String leave(HttpServletRequest request) {
+        Arrays.stream(EventType.values()).forEach(e -> {
+            request.getSession().removeAttribute(e.name().toLowerCase());
+        });
+        return "redirect:/dungeon";
+    }
+
     @GetMapping("clear")
     public String clear(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
