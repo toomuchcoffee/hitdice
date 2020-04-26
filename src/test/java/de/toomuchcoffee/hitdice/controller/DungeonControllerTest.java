@@ -115,7 +115,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/dungeon/treasure"))
+                .andExpect(redirectedUrl("/dungeon"))
         ;
 
         assertThat(session.getAttribute("treasure")).isEqualTo(SHORTSWORD);
@@ -138,7 +138,7 @@ public class DungeonControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/dungeon/treasure"))
+                .andExpect(redirectedUrl("/dungeon"))
         ;
 
         assertThat(session.getAttribute("treasure")).isEqualTo(potion);

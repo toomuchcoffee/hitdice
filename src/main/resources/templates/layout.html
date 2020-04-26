@@ -37,18 +37,65 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li th:if="${session.hero}" class="nav-item">
-                <a class="nav-link" href="/game/save">Save game</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#heroModal">Show Hero</a>
+            </li>
+            <li th:if="${session.hero}" class="nav-item">
+                <a class="nav-link" href="/game/save">Save Game</a>
             </li>
         </ul>
     </div>
 </nav>
 
 <div class="container">
-
     <div class="content">
         <div layout:fragment="page_content"></div>
     </div>
 </div>
+
+<div id="heroModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Hero Stats</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hero" th:replace="fragments/hero :: hero"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="treasureModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Treasure!</h4>
+            </div>
+            <div class="modal-body">
+                <div id="treasure" th:replace="fragments/treasure :: treasure"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+        var treasure = [[${session.treasure}]];
+        $(window).on('load',function(){
+            if (treasure) {
+                $('#treasureModal').modal('show');
+            }
+        });
+
+    /*]]>*/
+</script>
 
 </body>
 </html>

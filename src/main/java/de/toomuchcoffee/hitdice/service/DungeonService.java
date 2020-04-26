@@ -36,7 +36,7 @@ public class DungeonService {
         Position start = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
         dungeon.setPosition(start);
         Position door = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM));
-        dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR);
+        dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR); // TODO should not be placed at entrances of rooms
         return dungeon;
     }
 

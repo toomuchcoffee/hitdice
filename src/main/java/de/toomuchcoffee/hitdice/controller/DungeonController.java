@@ -54,18 +54,13 @@ public class DungeonController {
                     case POTION:
                     case TREASURE:
                         request.getSession().setAttribute("treasure", event);
-                        return "redirect:/dungeon/treasure";
+                        return "redirect:/dungeon";
                     default:
                         throw new IllegalStateException("Unsupported event type: " + event.getEventType());
                 }
             }
         }
         return "redirect:/dungeon";
-    }
-
-    @GetMapping("treasure")
-    public String treasure() {
-        return "dungeon/treasure";
     }
 
     @GetMapping("clear")

@@ -2,13 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Hero</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <div th:fragment="hero" id="hero" th:with="hero=${session.hero}">
-
-    <div class="row">
+    <div class="row" th:if="${hero}">
         <div class="col-lg-4">
             <div class="card border-secondary mb-3">
                 <div class="card-body">
