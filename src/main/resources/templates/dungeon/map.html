@@ -12,12 +12,6 @@
 
     <div class="jumbotron dungeon-box">
 
-        <table id="dungeon" class="dungeon-map">
-            <tr th:each="row : ${session.dungeon.map}">
-                <td class="dungeon-cell" th:each="col, iter : ${row}" th:with="symbol=${row[iter.index]}"><i th:class="'fas fa-' + ${symbol}"></i></td>
-            </tr>
-        </table>
-
         <div class="btn-group">
             <a class="btn btn-outline-primary" href="/dungeon/WEST">
                 <i class="fas fa-arrow-circle-left"></i>
@@ -32,10 +26,16 @@
                 <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
+
+        <table id="dungeon" class="dungeon-map">
+            <tr th:each="row : ${session.dungeon.map}">
+                <td class="dungeon-cell" th:each="col, iter : ${row}" th:with="symbol=${row[iter.index]}"><i th:class="'fas fa-' + ${symbol}"></i></td>
+            </tr>
+        </table>
+
     </div>
 
     <div th:replace="fragments/hero :: hero"></div>
-
 </div>
 </body>
 </html>

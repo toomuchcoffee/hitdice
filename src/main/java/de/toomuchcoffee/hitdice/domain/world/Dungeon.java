@@ -6,37 +6,33 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.SOIL;
 
 @Getter
 @Setter
 public class Dungeon {
-    private int size;
-
     private Tile[][] tiles;
 
     @Getter
     private Position position;
 
-    public Dungeon(int size) {
-        this.size = size;
-        tiles = new Tile[size][size];
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                if (x == 0 || x == size - 1 || y == 0 || y == size - 1) {
-                    tiles[x][y] = new Tile(SOIL);
-                } else {
-                    tiles[x][y] = new Tile(ROOM);
-                }
-            }
-        }
+    public Dungeon(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public int getWidth() {
+        return tiles.length;
+    }
+
+    public int getHeight() {
+        return tiles[0].length;
     }
 
     public Position move(Direction direction) {
         Position newPosition = position.move(direction);
-        if (getTile(newPosition).isVisitable() && isAllowed(newPosition)) {
+        if (isAllowed(newPosition) && getTile(newPosition).isVisitable()) {
             position = newPosition;
             visit();
         }
@@ -44,14 +40,14 @@ public class Dungeon {
     }
 
     private boolean isAllowed(Position position) {
-        return position.getX() >= 0 && position.getX() < size && position.getY() >= 0 && position.getY() < size;
+        return position.getX() >= 0 && position.getX() < getWidth() && position.getY() >= 0 && position.getY() < getHeight();
     }
 
     public String[][] getMap() {
-        String[][] view = new String[size][size];
+        String[][] view = new String[getWidth()][getHeight()];
 
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
                 if (getTile(Position.of(x, y)).isExplored()) {
                     if (tiles[x][y].getType() == SOIL) {
                         view[x][y] = "square-full";
@@ -80,9 +76,9 @@ public class Dungeon {
         List<Tile> tiles = new ArrayList<>();
         int viewRange = 1;
         int minX = Math.max(0, position.getX() - viewRange);
-        int maxX = Math.min(size - 1, position.getX() + viewRange);
+        int maxX = Math.min(getWidth() - 1, position.getX() + viewRange);
         int minY = Math.max(0, position.getY() - viewRange);
-        int maxY = Math.min(size - 1, position.getY() + viewRange);
+        int maxY = Math.min(getHeight() - 1, position.getY() + viewRange);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 tiles.add(getTile(Position.of(x, y)));
@@ -100,10 +96,6 @@ public class Dungeon {
         visit();
     }
 
-    public Optional<Event> getEvent(Position position) {
-        return Optional.ofNullable(tiles[position.getX()][position.getY()].getEvent());
-    }
-
     @Getter
     @Setter
     @RequiredArgsConstructor
@@ -113,7 +105,7 @@ public class Dungeon {
         private boolean explored;
 
         public boolean isOccupied() {
-            return type == SOIL || event != null;
+            return type == SOIL || type == MAGIC_DOOR || event != null;
         }
 
         public boolean isVisitable() {

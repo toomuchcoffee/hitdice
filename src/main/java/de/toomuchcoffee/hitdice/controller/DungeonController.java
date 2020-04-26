@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
+import static com.google.common.collect.Sets.newHashSet;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 
 @Controller
 @RequestMapping("dungeon")
@@ -80,7 +81,7 @@ public class DungeonController {
     @GetMapping("flee")
     public String flee(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon);
+        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
         dungeon.setPosition(position);
         return "redirect:/dungeon";
     }

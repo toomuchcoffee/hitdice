@@ -5,6 +5,7 @@ import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import org.junit.Before;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.LONGSWORD;
 import static de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate.ORC;
+import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
 import static de.toomuchcoffee.hitdice.service.CombatService.CombatResult.*;
 import static java.lang.String.format;
 import static org.assertj.core.util.Lists.newArrayList;
@@ -36,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class CombatControllerTest {
     private static final String CAUSED_DAMAGE_MESSAGE = "%s hit %s with their %s for %d points of damage.";
+    private final Tile[][] tiles = {{new Tile(ROOM)}};
 
     @MockBean
     private CombatService combatService;
@@ -58,7 +61,7 @@ public class CombatControllerTest {
     @Test
     public void combatStart() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
+        session.setAttribute("dungeon", new Dungeon(tiles));
         session.setAttribute("hero", hero);
         session.setAttribute("monster", monster);
 
@@ -82,7 +85,7 @@ public class CombatControllerTest {
     @Test
     public void combatAttack() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
+        session.setAttribute("dungeon", new Dungeon(tiles));
         session.setAttribute("hero", hero);
         session.setAttribute("monster", monster);
 
@@ -120,7 +123,7 @@ public class CombatControllerTest {
     @Test
     public void combatAttackKillsMonster() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
+        session.setAttribute("dungeon", new Dungeon(tiles));
         session.setAttribute("hero", hero);
         session.setAttribute("monster", monster);
 
@@ -160,7 +163,7 @@ public class CombatControllerTest {
     @Test
     public void combatAttackKillsHero() throws Exception {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("dungeon", new Dungeon(1));
+        session.setAttribute("dungeon", new Dungeon(tiles));
         session.setAttribute("hero", hero);
         session.setAttribute("monster", monster);
 

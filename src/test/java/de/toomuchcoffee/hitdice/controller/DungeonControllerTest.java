@@ -52,6 +52,12 @@ public class DungeonControllerTest {
 
     private Hero hero;
 
+    private Tile[][] tiles = new Tile[][]{
+            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
+            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
+            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)}
+    };
+
     @Before
     public void setUp() throws Exception {
         hero = TestData.getHero();
@@ -60,7 +66,7 @@ public class DungeonControllerTest {
     @Test
     public void dungeonCreate() throws Exception {
         when(random.nextInt(anyInt())).thenReturn(-4);
-        when(dungeonService.create(1)).thenReturn(new Dungeon(1));
+        when(dungeonService.create(1)).thenReturn(new Dungeon(new Tile[][]{{new Tile(ROOM)}}));
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
@@ -77,7 +83,7 @@ public class DungeonControllerTest {
     public void dungeonExploreSouth() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(2);
+        Dungeon dungeon = new Dungeon(tiles);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
@@ -97,7 +103,7 @@ public class DungeonControllerTest {
     public void dungeonTreasure() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(2);
+        Dungeon dungeon = new Dungeon(tiles);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
@@ -119,7 +125,7 @@ public class DungeonControllerTest {
     public void dungeonPotion() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(2);
+        Dungeon dungeon = new Dungeon(tiles);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
