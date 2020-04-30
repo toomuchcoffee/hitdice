@@ -2,8 +2,11 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.item.Treasure;
-import de.toomuchcoffee.hitdice.domain.world.*;
+import de.toomuchcoffee.hitdice.domain.world.Direction;
+import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
+import de.toomuchcoffee.hitdice.domain.world.Event;
+import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
+import static java.util.Collections.list;
 
 @Controller
 @RequestMapping("dungeon")
@@ -27,6 +31,7 @@ public class DungeonController {
 
     @GetMapping("enter")
     public String enter(HttpServletRequest request) {
+        clearSession(request);
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Dungeon dungeon = dungeonService.create(hero.getLevel());
         request.getSession().setAttribute("dungeon", dungeon);
@@ -43,7 +48,8 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         Tile tile = dungeonService.move(dungeon, direction);
         if (tile.getType() == MAGIC_DOOR) {
-            return "redirect:/dungeon/enter";
+            request.getSession().setAttribute("magicDoor", "true");
+            return "redirect:/dungeon";
         } else {
             Event event = tile.getEvent();
             if (event != null) {
@@ -65,9 +71,7 @@ public class DungeonController {
 
     @GetMapping("leave")
     public String leave(HttpServletRequest request) {
-        Arrays.stream(EventType.values()).forEach(e -> {
-            request.getSession().removeAttribute(e.name().toLowerCase());
-        });
+        clearSession(request);
         return "redirect:/dungeon";
     }
 
@@ -75,9 +79,7 @@ public class DungeonController {
     public String clear(HttpServletRequest request) {
         Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
         dungeonService.clear(dungeon);
-        Arrays.stream(EventType.values()).forEach(e -> {
-            request.getSession().removeAttribute(e.name().toLowerCase());
-        });
+        clearSession(request);
         return "redirect:/dungeon";
     }
 
@@ -95,6 +97,13 @@ public class DungeonController {
         Treasure treasure = (Treasure) request.getSession().getAttribute("treasure");
         heroService.collectTreasure(hero, treasure);
         return "redirect:/dungeon/clear";
+    }
+
+    private void clearSession(HttpServletRequest request) {
+        Set<String> nonTempVars = newHashSet("hero", "mode", "dungeon");
+        list(request.getSession().getAttributeNames()).stream()
+                .filter(e -> !nonTempVars.contains(e))
+                .forEach(e -> request.getSession().removeAttribute(e));
     }
 
 }
