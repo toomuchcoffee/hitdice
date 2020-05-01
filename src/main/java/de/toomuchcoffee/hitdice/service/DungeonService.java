@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
+import de.toomuchcoffee.hitdice.domain.item.Treasure;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -8,10 +9,7 @@ import de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -56,6 +54,12 @@ public class DungeonService {
 
     public void clear(Dungeon dungeon) {
         dungeon.getTile(dungeon.getPosition()).setEvent(null);
+    }
+
+    public Optional<Treasure> getTreasure(Dungeon dungeon) {
+        return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getEvent())
+                .filter(e -> e instanceof Treasure)
+                .map(e -> (Treasure) e);
     }
 
     public Tile[][] createTiles() {

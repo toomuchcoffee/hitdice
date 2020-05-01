@@ -46,7 +46,7 @@ public class GameController {
     public String saveGame(HttpServletRequest request) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         gameService.save(hero);
-        return "home";
+        return "redirect:/dungeon";
     }
 
     @GetMapping("dungeon")

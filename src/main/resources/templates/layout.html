@@ -37,9 +37,9 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li th:if="${session.hero}" class="nav-item">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#heroModal">Show Hero</a>
+                <a class="nav-link" href="/hero/stats">Show Hero Stats</a>
             </li>
-            <li th:if="${session.hero}" class="nav-item">
+            <li th:if="${session.dungeon}" class="nav-item">
                 <a class="nav-link" href="/game/save">Save Game</a>
             </li>
         </ul>
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div id="heroModal" class="modal fade" role="dialog">
+<div id="heroStatsModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,40 +62,42 @@
                 <div id="hero" th:replace="fragments/hero :: hero"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a class="btn btn-success" href="#" data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="treasureModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<div id="treasureModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" th:if="${modal == 'treasure'}">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Treasure!</h4>
             </div>
             <div class="modal-body">
-                <div id="treasure" th:replace="fragments/treasure :: treasure"></div>
+                <p>You found a <span th:text="${treasure.displayName}"></span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a class="btn btn-success" href="/dungeon/collect">Take it!</a>
+                <a class="btn btn-secondary" href="/dungeon/clear">Trash it</a>
+                <a class="btn btn-secondary" href="/dungeon">Leave it</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="magicDoorModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<div id="magicDoorModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" th:if="${modal == 'magicDoor'}">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Magic Door!</h4>
             </div>
             <div class="modal-body">
-                <a class="btn btn-success" href="/dungeon/enter">Use it!</a>
-                <a class="btn btn-secondary" href="/dungeon/leave">Not yet...</a>
+                Enter the door to get to the next dungeon level!
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a class="btn btn-success" href="/dungeon/enter">Enter</a>
+                <a class="btn btn-secondary" href="/dungeon">Not yet...</a>
             </div>
         </div>
     </div>
@@ -103,12 +105,10 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-        var session = [[${session}]];
+        var modal = [[${modal}]];
         $(window).on('load',function(){
-            if (session.treasure) {
-                $('#treasureModal').modal('show');
-            } else if (session.magicDoor) {
-                $('#magicDoorModal').modal('show');
+            if (modal) {
+                $('#' + modal + 'Modal').modal('show');
             }
         });
     /*]]>*/

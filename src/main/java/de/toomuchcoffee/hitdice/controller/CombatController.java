@@ -40,12 +40,14 @@ public class CombatController {
 
     @GetMapping("flee")
     public String flee(HttpServletRequest request) {
+        request.getSession().removeAttribute("monster");
         GameMode mode = (GameMode) request.getSession().getAttribute("mode");
         return String.format("redirect:/%s/flee", mode.name().toLowerCase());
     }
 
     @GetMapping("exit")
     public String exit(HttpServletRequest request) {
+        request.getSession().removeAttribute("monster");
         GameMode mode = (GameMode) request.getSession().getAttribute("mode");
         return String.format("redirect:/%s/clear", mode.name().toLowerCase());
     }

@@ -25,14 +25,12 @@ import java.util.Random;
 import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = DungeonController.class, secure = false)
 @RunWith(SpringRunner.class)
@@ -116,9 +114,8 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/dungeon"))
+                .andExpect(flash().attribute("treasure", SHORTSWORD));
         ;
-
-        assertThat(session.getAttribute("treasure")).isEqualTo(SHORTSWORD);
     }
 
     @Test
@@ -139,9 +136,7 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/dungeon"))
-        ;
-
-        assertThat(session.getAttribute("treasure")).isEqualTo(potion);
+                .andExpect(flash().attribute("treasure", potion));
     }
 
 }

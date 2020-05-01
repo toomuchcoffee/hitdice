@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,12 +51,20 @@ public class HeroController {
     }
 
     @GetMapping("use/{potion}")
-    public String use(HttpServletRequest request, @PathVariable Potion potion) {
+    public String use(HttpServletRequest request, @PathVariable Potion potion, RedirectAttributes attributes) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         hero.getEquipment().remove(potion);
         heroService.drinkPotion(hero, potion);
+        attributes.addFlashAttribute("modal", "heroStats");
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
+    }
+
+    @GetMapping("stats")
+    public String showStats(HttpServletRequest request, RedirectAttributes attributes) {
+        String referer = request.getHeader("Referer");
+        attributes.addFlashAttribute("modal", "heroStats");
+        return "redirect:" + referer;
     }
 
 }
