@@ -7,10 +7,10 @@ import de.toomuchcoffee.hitdice.service.CombatService;
 import de.toomuchcoffee.hitdice.service.CombatService.CombatRound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -22,20 +22,23 @@ public class CombatController {
     private final CombatService combatService;
 
     @GetMapping({"", "{round}"})
-    public String fight(@PathVariable(required = false) Integer round, Model model, HttpServletRequest request) {
+    public String fight(@PathVariable(required = false) Integer round, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         Hero hero = (Hero) request.getSession().getAttribute("hero");
         Monster monster = (Monster) request.getSession().getAttribute("monster");
 
         round = Optional.ofNullable(round).orElse(0);
         CombatRound combatRound = combatService.fight(hero, monster, round);
 
-        model.addAttribute("events", combatRound.getEvents());
-        model.addAttribute("result", combatRound.getResult());
+        redirectAttributes.addFlashAttribute("events", combatRound.getEvents());
+        redirectAttributes.addFlashAttribute("result", combatRound.getResult());
 
-        model.addAttribute("monster", monster);
-        model.addAttribute("round", round);
+        redirectAttributes.addFlashAttribute("monster", monster);
+        redirectAttributes.addFlashAttribute("round", round);
 
-        return "combat";
+        redirectAttributes.addFlashAttribute("modal", "combat");
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
     @GetMapping("flee")

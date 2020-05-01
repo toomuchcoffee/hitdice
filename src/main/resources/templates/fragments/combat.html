@@ -1,13 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${monster.name} + ' attack!'"></title>
 </head>
 <body>
-<div layout:fragment="page_content" id="page_content">
+<div th:fragment="combat (hero, monster)">
 
     <h3>Combat between you and <span th:text="${monster.name}"></span></h3>
 
@@ -20,7 +18,7 @@
             </div>
         </span>
 
-    <div id="combat-stats" th:with="hero=${session.hero}">
+    <div id="combat-stats">
         <div>
             <span th:text="'Your health: ' + ${hero.health.displayName}"></span>
             <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.health.value}, max=${hero.health.maxValue})"></div>

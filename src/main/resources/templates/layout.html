@@ -53,7 +53,7 @@
 </div>
 
 <div id="heroStatsModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" th:if="${modal == 'heroStats'}">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Hero Stats</h4>
@@ -63,6 +63,19 @@
             </div>
             <div class="modal-footer">
                 <a class="btn btn-success" href="#" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="combatModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" th:if="${modal == 'combat'}">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Combat!</h4>
+            </div>
+            <div class="modal-body">
+                <div id="combat" th:replace="fragments/combat :: combat(hero=${session.hero}, monster=${session.monster})"></div>
             </div>
         </div>
     </div>
