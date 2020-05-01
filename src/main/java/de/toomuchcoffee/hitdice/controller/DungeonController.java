@@ -1,6 +1,8 @@
 package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.combat.Combat;
+import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -52,7 +54,8 @@ public class DungeonController {
             if (event != null) {
                 switch (event.getEventType()) {
                     case MONSTER:
-                        request.getSession().setAttribute("monster", event);
+                        Hero hero = (Hero) request.getSession().getAttribute("hero");
+                        request.getSession().setAttribute("combat", new Combat(hero, (Monster) event));
                         return "redirect:/combat";
                     case POTION:
                     case TREASURE:

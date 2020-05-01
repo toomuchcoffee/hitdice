@@ -1,5 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.combat.Combat;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +25,21 @@ public class ColiseumController {
 
     @GetMapping("{monster}")
     public String loadMonster(HttpServletRequest request, @PathVariable MonsterTemplate monster) {
-        request.getSession().setAttribute("monster", new Monster(monster));
+        Hero hero = (Hero) request.getSession().getAttribute("hero");
+        Combat combat = new Combat(hero, new Monster(monster));
+        request.getSession().setAttribute("combat", combat);
         return "redirect:/combat";
     }
 
     @GetMapping("clear")
     public String clear(HttpServletRequest request) {
-        request.getSession().removeAttribute("monster");
+        request.getSession().removeAttribute("combat");
         return "redirect:/coliseum";
     }
 
     @GetMapping("flee")
     public String flee(HttpServletRequest request) {
-        request.getSession().removeAttribute("monster");
+        request.getSession().removeAttribute("combat");
         return "redirect:/coliseum";
     }
 }

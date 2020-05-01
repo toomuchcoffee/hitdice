@@ -75,7 +75,7 @@
                 <h4 class="modal-title">Combat!</h4>
             </div>
             <div class="modal-body">
-                <div id="combat" th:replace="fragments/combat :: combat(hero=${session.hero}, monster=${session.monster})"></div>
+                <div id="combat" th:replace="fragments/combat :: combat(combat=${session.combat})"></div>
             </div>
         </div>
     </div>
