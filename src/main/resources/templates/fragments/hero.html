@@ -7,58 +7,74 @@
 </head>
 <body>
 <div th:fragment="hero" id="hero" th:with="hero=${session.hero}">
-    <div class="row" th:if="${hero}">
-        <div class="col-lg-4">
-            <div class="card border-secondary mb-3">
-                <div class="card-body">
-                    <h4 class="card-title" th:text="${#strings.isEmpty(hero.name)} ? 'Hero Statistics' : ${hero.name}"></h4>
-                    <dl class="card-text">
-                        <dt>Strength:</dt>
-                        <dd th:text="${hero.strength.displayName}"></dd>
-                        <dt>Dexterity:</dt>
-                        <dd th:text="${hero.dexterity.displayName}"></dd>
-                        <dt>Stamina:</dt>
-                        <dd th:text="${hero.stamina.displayName}"></dd>
-                    </dl>
+    <span th:if="${hero}">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title" th:text="${#strings.isEmpty(hero.name)} ? 'Hero Statistics' : ${hero.name}"></h4>
+                        <dl class="card-text">
+                            <dt>Strength:</dt>
+                            <dd th:text="${hero.strength.displayName}"></dd>
+                            <dt>Dexterity:</dt>
+                            <dd th:text="${hero.dexterity.displayName}"></dd>
+                            <dt>Stamina:</dt>
+                            <dd th:text="${hero.stamina.displayName}"></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Combat Stats</h4>
+                        <dl class="card-text">
+                            <dt>Attack:</dt>
+                            <dd th:text="${hero.attack}"></dd>
+                            <dt>Health:</dt>
+                            <dd th:text="${hero.health.displayName}"></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Experience</h4>
+                        <dl class="card-text">
+                            <dt>XP:</dt>
+                            <dd th:text="${hero.experience}"></dd>
+                            <dt>Level:</dt>
+                            <dd th:text="${hero.level}"></dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border-secondary mb-3">
-                <div class="card-body">
-                    <h4 class="card-title">Equipment &amp; Combat Stats</h4>
-                    <dl class="card-text">
-                        <dt>Weapon:</dt>
-                        <dd th:text="${hero.weapon?.displayName}"></dd>
-                        <dt>Armor:</dt>
-                        <dd th:text="${hero.armor?.displayName}"></dd>
-                        <dt>Potions:</dt>
-                        <dd>
-                            <span th:replace="fragments/potions :: potions (potions=${hero.potions})"></span>
-                        </dd>
-                        <dt>Attack:</dt>
-                        <dd th:text="${hero.attack}"></dd>
-                        <dt>Health:</dt>
-                        <dd th:text="${hero.health.displayName}"></dd>
-                    </dl>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card border-secondary mb-12">
+                    <div class="card-body">
+                        <h4 class="card-title">Equipment</h4>
+                        <dl class="card-text">
+                            <dt>Weapon:</dt>
+                            <dd th:text="${hero.weapon?.displayName}"></dd>
+                            <dt>Armor:</dt>
+                            <dd th:text="${hero.armor?.displayName}"></dd>
+                            <dt>Potions:</dt>
+                            <dd>
+                                <span th:replace="fragments/potions :: potions (potions=${hero.potions})"></span>
+                            </dd>
+                            <dt>Miscellaneous:</dt>
+                            <dd>
+                                <span th:each="item, iter : ${hero.miscellaneous}" th:text="!${iter.last} ? ${item.displayName} + ', ': ${item.displayName}"></span>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card border-secondary mb-3">
-                <div class="card-body">
-                    <h4 class="card-title">Experience</h4>
-                    <dl class="card-text">
-                        <dt>XP:</dt>
-                        <dd th:text="${hero.experience}"></dd>
-                        <dt>Level:</dt>
-                        <dd th:text="${hero.level}"></dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    </span>
 </div>
 </body>
 </html>

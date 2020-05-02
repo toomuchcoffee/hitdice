@@ -2,9 +2,9 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.item.Armor;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Armor;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.Event;
@@ -56,7 +56,7 @@ public class EventService {
         return create(potions);
     }
 
-    private Treasure createArmor() {
+    private Item createArmor() {
         List<Armor> armors = asList(Armor.values());
         return create(armors);
     }

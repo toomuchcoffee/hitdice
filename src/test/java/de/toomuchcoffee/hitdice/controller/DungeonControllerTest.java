@@ -3,7 +3,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Position;

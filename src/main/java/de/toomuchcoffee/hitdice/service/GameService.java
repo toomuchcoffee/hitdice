@@ -4,9 +4,9 @@ import de.toomuchcoffee.hitdice.db.Game;
 import de.toomuchcoffee.hitdice.db.GameRepository;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.item.Armor;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Armor;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class GameService {
         game.setName(hero.getName());
         game.setLevel(hero.getLevel());
         game.setExperience(hero.getExperience());
-        game.setItems(hero.getEquipment().stream().map(Treasure::getName).toArray(String[]::new));
+        game.setItems(hero.getEquipment().stream().map(Item::getName).toArray(String[]::new));
         game.setHealth(hero.getHealth().getValue());
         game.setMaxHealth(hero.getHealth().getMaxValue());
         game.setStrength(hero.getStrength().getValue());
@@ -49,7 +49,7 @@ public class GameService {
         return hero;
     }
 
-    private List<Treasure> fromStringArray(String[] items) {
+    private List<Item> fromStringArray(String[] items) {
         if (items == null) {
             return new ArrayList<>();
         }

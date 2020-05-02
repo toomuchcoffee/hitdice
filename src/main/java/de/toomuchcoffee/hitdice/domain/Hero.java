@@ -8,9 +8,9 @@ import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
-import de.toomuchcoffee.hitdice.domain.item.Armor;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Armor;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +31,7 @@ public class Hero implements Combatant {
 
     private SortedMap<AttributeName, AbstractAttribute> attributes = new TreeMap<>();
 
-    private List<Treasure> equipment = new ArrayList<>();
+    private List<Item> equipment = new ArrayList<>();
 
     private int experience;
 
@@ -109,8 +109,14 @@ public class Hero implements Combatant {
                 .orElse(0);
     }
 
-    public void addEquipment(Treasure item) {
+    public void addEquipment(Item item) {
         equipment.add(0, item);
+    }
+
+    public List<Item> getMiscellaneous() {
+        return equipment.stream()
+                .filter(e -> !getArmor().equals(e) && !getWeapon().equals(e) && !(e instanceof Potion))
+                .collect(toList());
     }
 
     @Override

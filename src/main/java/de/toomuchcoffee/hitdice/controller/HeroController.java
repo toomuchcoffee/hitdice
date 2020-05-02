@@ -2,7 +2,7 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

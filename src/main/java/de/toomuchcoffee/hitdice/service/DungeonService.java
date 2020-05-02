@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -56,10 +56,10 @@ public class DungeonService {
         dungeon.getTile(dungeon.getPosition()).setEvent(null);
     }
 
-    public Optional<Treasure> getTreasure(Dungeon dungeon) {
+    public Optional<Item> getTreasure(Dungeon dungeon) {
         return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getEvent())
-                .filter(e -> e instanceof Treasure)
-                .map(e -> (Treasure) e);
+                .filter(e -> e instanceof Item)
+                .map(e -> (Item) e);
     }
 
     public Tile[][] createTiles() {

@@ -5,7 +5,7 @@ import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.CustomWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
 import de.toomuchcoffee.hitdice.service.EventTemplate;
 import lombok.Getter;
@@ -34,9 +34,9 @@ public enum MonsterTemplate implements EventTemplate<Monster> {
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(7)) {
                     Hero hero = (Hero) defender;
-                    Iterator<Treasure> it = hero.getEquipment().iterator();
+                    Iterator<Item> it = hero.getEquipment().iterator();
                     while (it.hasNext()) {
-                        Treasure item = it.next();
+                        Item item = it.next();
                         if (item.isMetallic()) {
                             it.remove();
                             return format("Oh no! The Rust Monster hit your %s and it crumbles to rust.", item.getDisplayName());
@@ -90,9 +90,9 @@ public enum MonsterTemplate implements EventTemplate<Monster> {
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(7)) {
                     Hero hero = (Hero) defender;
-                    Iterator<Treasure> it = hero.getEquipment().iterator();
+                    Iterator<Item> it = hero.getEquipment().iterator();
                     while (it.hasNext()) {
-                        Treasure item = it.next();
+                        Item item = it.next();
                         if (!item.isMetallic()) {
                             it.remove();
                             return format("The Ooze swallows your %s and destroys it with its acid", item.getDisplayName());

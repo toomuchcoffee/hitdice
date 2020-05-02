@@ -2,8 +2,8 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.item.Potion;
-import de.toomuchcoffee.hitdice.domain.item.Treasure;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +19,8 @@ public class HeroService {
         return hero;
     }
 
-    public void collectTreasure(Hero hero, Treasure treasure) {
-        hero.addEquipment(treasure);
+    public void collectTreasure(Hero hero, Item item) {
+        hero.addEquipment(item);
     }
 
     public void drinkPotion(Hero hero, Potion potion) {

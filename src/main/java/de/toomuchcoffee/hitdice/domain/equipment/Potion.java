@@ -1,4 +1,4 @@
-package de.toomuchcoffee.hitdice.domain.item;
+package de.toomuchcoffee.hitdice.domain.equipment;
 
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
@@ -17,7 +17,7 @@ import static de.toomuchcoffee.hitdice.domain.world.Frequency.VERY_RARE;
 
 @RequiredArgsConstructor
 @Getter
-public enum Potion implements Treasure, EventTemplate<Potion> {
+public enum Potion implements Item, EventTemplate<Potion> {
     HEALTH(() -> D4.roll(2), AttributeName.HEALTH, COMMON),
     STRENGTH(D2::roll, AttributeName.STRENGTH, VERY_RARE),
     DEXTERITY(D2::roll, AttributeName.DEXTERITY, VERY_RARE),
