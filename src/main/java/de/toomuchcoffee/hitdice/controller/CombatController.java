@@ -20,7 +20,7 @@ public class CombatController {
     private final CombatService combatService;
 
     @GetMapping
-    public String fight(WebRequest request, RedirectAttributes redirectAttributes, @SessionAttribute Combat combat) {
+    public String fight(@SessionAttribute Combat combat, RedirectAttributes redirectAttributes, WebRequest request) {
         combatService.fight(combat);
         redirectAttributes.addFlashAttribute("modal", "combat");
         String referer = request.getHeader("Referer");

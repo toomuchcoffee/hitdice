@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,8 +25,7 @@ public class ColiseumController {
     }
 
     @GetMapping("{monster}")
-    public String loadMonster(HttpSession session, @PathVariable MonsterTemplate monster) {
-        Hero hero = (Hero) session.getAttribute("hero");
+    public String loadMonster(@PathVariable MonsterTemplate monster, @SessionAttribute Hero hero, HttpSession session) {
         Combat combat = new Combat(hero, new Monster(monster));
         session.setAttribute("combat", combat);
         return "redirect:/combat";

@@ -31,14 +31,18 @@ public class DungeonController {
     private final HeroService heroService;
 
     @GetMapping("enter")
-    public String enter(HttpSession session, @SessionAttribute Hero hero) {
-        Dungeon dungeon = dungeonService.create(hero.getLevel());
-        session.setAttribute("dungeon", dungeon);
+    public String enter(HttpSession session) {
+        session.removeAttribute("dungeon");
         return "redirect:/dungeon";
     }
 
     @GetMapping
-    public String index() {
+    public String index(HttpSession session, @SessionAttribute Hero hero) {
+        Dungeon dungeon = (Dungeon) session.getAttribute("dungeon");
+        if (dungeon == null) {
+            dungeon = dungeonService.create(hero.getLevel());
+            session.setAttribute("dungeon", dungeon);
+        }
         return "dungeon/map";
     }
 

@@ -24,7 +24,7 @@ public class HeroController {
     private final HeroService heroService;
 
     @GetMapping("create")
-    public String create(Model model, HttpSession session) {
+    public String create(HttpSession session, Model model) {
         Hero hero = heroService.create();
         session.setAttribute("hero", hero);
         model.addAttribute("step", 1);
@@ -39,7 +39,7 @@ public class HeroController {
     }
 
     @PostMapping(value = "create/3", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    public String save(@SessionAttribute Hero hero, Model model, HeroUpdate heroUpdate) {
+    public String save(@SessionAttribute Hero hero, HeroUpdate heroUpdate, Model model) {
         hero.setName(heroUpdate.getName());
         hero.addEquipment(DAGGER);
         model.addAttribute("step", 3);
@@ -47,7 +47,7 @@ public class HeroController {
     }
 
     @GetMapping("use/{potion}")
-    public String use(WebRequest request, @SessionAttribute Hero hero, @PathVariable Potion potion, RedirectAttributes attributes) {
+    public String use(@PathVariable Potion potion, @SessionAttribute Hero hero, RedirectAttributes attributes, WebRequest request) {
         hero.getEquipment().remove(potion);
         heroService.drinkPotion(hero, potion);
         attributes.addFlashAttribute("modal", "heroStats");
@@ -56,9 +56,9 @@ public class HeroController {
     }
 
     @GetMapping("stats")
-    public String showStats(WebRequest request, RedirectAttributes attributes) {
-        String referer = request.getHeader("Referer");
+    public String showStats(RedirectAttributes attributes, WebRequest request) {
         attributes.addFlashAttribute("modal", "heroStats");
+        String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
 

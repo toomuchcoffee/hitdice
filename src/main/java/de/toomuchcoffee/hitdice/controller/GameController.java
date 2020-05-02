@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.db.Game;
+import de.toomuchcoffee.hitdice.domain.GameMode;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.service.GameService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-
-import static de.toomuchcoffee.hitdice.domain.GameMode.COLISEUM;
-import static de.toomuchcoffee.hitdice.domain.GameMode.DUNGEON;
 
 @Controller
 @RequestMapping("game")
@@ -31,7 +29,7 @@ public class GameController {
     }
 
     @GetMapping("{gameId}")
-    public String loadGame(HttpSession session, @PathVariable Integer gameId) {
+    public String loadGame(@PathVariable Integer gameId, HttpSession session) {
         Hero hero = gameService.restore(gameId);
         session.setAttribute("hero", hero);
         return "game/mode";
@@ -49,15 +47,9 @@ public class GameController {
         return "redirect:/dungeon";
     }
 
-    @GetMapping("dungeon")
-    public String chooseDungeon(HttpSession session) {
-        session.setAttribute("mode", DUNGEON);
-        return "redirect:/dungeon/enter";
-    }
-
-    @GetMapping("coliseum")
-    public String chooseColiseum(HttpSession session) {
-        session.setAttribute("mode", COLISEUM);
-        return "redirect:/coliseum";
+    @GetMapping("mode/{mode}")
+    public String mode(@PathVariable GameMode mode, HttpSession session) {
+        session.setAttribute("mode", mode);
+        return "redirect:/" + mode.name().toLowerCase();
     }
 }
