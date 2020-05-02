@@ -1,6 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:hsqldb:mem:hitdice;sql.syntax_pgs=true
-  test:
-    database:
-      replace: none
+  flyway:
+    enabled: true
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation=true:

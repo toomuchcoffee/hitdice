@@ -26,19 +26,20 @@ public enum HandWeapon implements Treasure, Weapon, EventTemplate<HandWeapon> {
     WARHAMMER("warhammer", D8::roll, true, RARE),
     CLAYMORE("claymore", D10::roll, true, VERY_RARE);
 
-    private final String name;
+    private final String displayName;
     private final Supplier<Integer> damage;
     private final boolean metallic;
     private final Frequency frequency;
 
     private final EventType eventType = TREASURE;
 
-    public String getDisplayName() {
-        return name;
-    }
-
     @Override
     public HandWeapon create() {
         return this;
+    }
+
+    @Override
+    public String getName() {
+        return name();
     }
 }

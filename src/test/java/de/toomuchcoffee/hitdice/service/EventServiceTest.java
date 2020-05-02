@@ -50,6 +50,6 @@ public class EventServiceTest {
     public void createsTheRightWeapon() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThat(eventService.createWeapon().getName()).isEqualTo("club");
+        assertThat(eventService.createWeapon().getDisplayName()).isEqualTo("club");
     }
 }

@@ -1,17 +1,21 @@
 package de.toomuchcoffee.hitdice.db;
 
+import de.toomuchcoffee.hitdice.config.JpaConfig;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
+import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.DOCKER;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+@DataJpaTest
+@Import(JpaConfig.class)
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@AutoConfigureEmbeddedDatabase(provider = DOCKER)
 public class GameRepositoryTest {
     @Autowired
     private GameRepository gameRepository;
@@ -19,31 +23,18 @@ public class GameRepositoryTest {
     @Test
     public void savesGame() {
         Game game = new Game();
+        game.setName("foo");
+        game.setItems(new String[]{"SHORTSWORD", "LEATHER", "HEALTH"});
 
         Game save = gameRepository.save(game);
+        Game found = gameRepository.findById(save.getId())
+                .orElseThrow(IllegalStateException::new);
 
-        assertThat(save.getId()).isNotNull();
-        assertThat(save.getCreated()).isNotNull();
-        assertThat(save.getModified()).isNotNull();
+        assertThat(found.getId()).isNotNull();
+        assertThat(found.getName()).isEqualTo("foo");
+        assertThat(found.getItems()).isEqualTo(new String[]{"SHORTSWORD", "LEATHER", "HEALTH"});
+        assertThat(found.getCreated()).isNotNull();
+        assertThat(found.getModified()).isNotNull();
     }
 
-    @Test
-    public void modifiesGame() {
-        Game save = gameRepository.save(new Game());
-
-        Optional<Game> found = gameRepository.findById(save.getId());
-
-        assertThat(found).isPresent();
-
-        Game game = found.get();
-        game.setName("foo");
-
-        Game modified = gameRepository.save(game);
-
-        assertThat(modified.getId()).isEqualTo(save.getId());
-        assertThat(modified.getName()).isEqualTo("foo");
-        assertThat(modified.getCreated()).isNotNull();
-        assertThat(modified.getModified()).isNotNull();
-        assertThat(modified.getModified()).isAfter(modified.getCreated());
-    }
 }

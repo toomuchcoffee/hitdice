@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.world.EventType.TREASURE;
 import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
-import static java.lang.String.format;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,18 +16,19 @@ public enum Armor implements Treasure, EventTemplate<Treasure> {
     CHAIN("chain mail", 3, true, RARE),
     PLATE("plate armor", 4, true, VERY_RARE);
 
-    private final String name;
+    private final String displayName;
     private final int protection;
     private final boolean metallic;
     private final Frequency frequency;
     private final EventType eventType = TREASURE;
 
-    public String getDisplayName() {
-        return format("%s (ac: %d)", name, protection);
-    }
-
     @Override
     public Treasure create() {
         return this;
+    }
+
+    @Override
+    public String getName() {
+        return name();
     }
 }

@@ -8,6 +8,6 @@ import java.util.function.Supplier;
 @Getter
 @RequiredArgsConstructor
 public class CustomWeapon implements Weapon {
-    private final String name;
+    private final String displayName;
     private final Supplier<Integer> damage;
 }

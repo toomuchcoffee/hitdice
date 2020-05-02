@@ -1,9 +1,11 @@
 package de.toomuchcoffee.hitdice.db;
 
-import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.item.Armor;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,12 +13,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 
-import static javax.persistence.EnumType.STRING;
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
+@TypeDefs({
+        @TypeDef(name = "string-array", typeClass = StringArrayType.class)
+})
+
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +35,9 @@ public class Game {
     private Integer maxHealth;
     private Integer health;
 
-    @Enumerated(STRING)
-    private HandWeapon weapon;
-
-    @Enumerated(STRING)
-    private Armor armor;
+    @Type(type = "string-array")
+    @Column(columnDefinition = "text[]")
+    private String[] items;
 
     @CreatedDate
     private Date created;

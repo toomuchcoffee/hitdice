@@ -83,7 +83,7 @@ public class Hero implements Combatant {
         return equipment.stream()
                 .filter(i -> i instanceof HandWeapon)
                 .map(i -> (HandWeapon) i)
-                .findFirst()
+                .max(Comparator.naturalOrder())
                 .orElse(FISTS);
     }
 
@@ -91,7 +91,7 @@ public class Hero implements Combatant {
         return equipment.stream()
                 .filter(i -> i instanceof Armor)
                 .map(i -> (Armor) i)
-                .findFirst()
+                .max(Comparator.naturalOrder())
                 .orElse(null);
     }
 

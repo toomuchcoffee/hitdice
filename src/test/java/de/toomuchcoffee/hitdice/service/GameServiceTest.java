@@ -41,7 +41,9 @@ public class GameServiceTest {
 
         Game expected = getGame();
 
-        assertThat(argumentCaptor.getValue()).isEqualToComparingFieldByField(expected);
+        assertThat(argumentCaptor.getValue()).isEqualToIgnoringGivenFields(expected, "items");
+        assertThat(argumentCaptor.getValue().getItems()).hasSize(2);
+        assertThat(argumentCaptor.getValue().getItems()).contains("LONGSWORD", "LEATHER");
     }
 
     @Test
@@ -52,7 +54,9 @@ public class GameServiceTest {
 
         Hero expected = getHero();
 
-        assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions");
+        assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
+        assertThat(hero.getEquipment()).hasSize(2);
+        assertThat(hero.getEquipment()).contains(LEATHER, LONGSWORD);
         assertThat(hero.getHealth().getValue()).isEqualTo(5);
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
@@ -75,8 +79,7 @@ public class GameServiceTest {
         expected.setStrength(10);
         expected.setMaxHealth(12);
         expected.setHealth(5);
-        expected.setWeapon(LONGSWORD);
-        expected.setArmor(LEATHER);
+        expected.setItems(new String[]{"LONGSWORD", "LEATHER"});
         expected.setLevel(2);
         expected.setExperience(251);
         expected.setName("Alrik");

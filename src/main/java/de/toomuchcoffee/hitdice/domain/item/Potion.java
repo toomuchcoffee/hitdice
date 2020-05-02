@@ -30,8 +30,8 @@ public enum Potion implements Treasure, EventTemplate<Potion> {
     private final EventType eventType = POTION;
 
     @Override
-    public String getName() {
-        return type.name().toLowerCase();
+    public String getDisplayName() {
+        return type.name().toLowerCase() + " potion";
     }
 
     @Override
@@ -40,12 +40,12 @@ public enum Potion implements Treasure, EventTemplate<Potion> {
     }
 
     @Override
-    public String getDisplayName() {
-        return getName() + " potion";
+    public Potion create() {
+        return this;
     }
 
     @Override
-    public Potion create() {
-        return this;
+    public String getName() {
+        return name();
     }
 }
