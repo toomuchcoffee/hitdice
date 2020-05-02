@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("combat")
@@ -18,28 +20,24 @@ public class CombatController {
     private final CombatService combatService;
 
     @GetMapping
-    public String fight(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        Combat combat = (Combat) request.getSession().getAttribute("combat");
-
+    public String fight(WebRequest request, RedirectAttributes redirectAttributes, @SessionAttribute Combat combat) {
         combatService.fight(combat);
-
         redirectAttributes.addFlashAttribute("modal", "combat");
-
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
 
     @GetMapping("flee")
-    public String flee(HttpServletRequest request) {
-        request.getSession().removeAttribute("combat");
-        GameMode mode = (GameMode) request.getSession().getAttribute("mode");
+    public String flee(HttpSession session) {
+        session.removeAttribute("combat");
+        GameMode mode = (GameMode) session.getAttribute("mode");
         return String.format("redirect:/%s/flee", mode.name().toLowerCase());
     }
 
     @GetMapping("exit")
-    public String exit(HttpServletRequest request) {
-        request.getSession().removeAttribute("combat");
-        GameMode mode = (GameMode) request.getSession().getAttribute("mode");
+    public String exit(HttpSession session) {
+        session.removeAttribute("combat");
+        GameMode mode = (GameMode) session.getAttribute("mode");
         return String.format("redirect:/%s/clear", mode.name().toLowerCase());
     }
 

@@ -70,12 +70,15 @@
 
 <div id="combatModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" th:if="${modal == 'combat'}">
-        <div class="modal-content">
+        <div class="modal-content" th:with="combat=${session.combat}">
             <div class="modal-header">
-                <h4 class="modal-title">Combat!</h4>
+                <h4 class="modal-title">Combat between you and <span th:text="${combat.monster.name}"></span></h4>
             </div>
             <div class="modal-body">
-                <div id="combat" th:replace="fragments/combat :: combat(combat=${session.combat})"></div>
+                <div id="combat-round" th:replace="fragments/combat-round :: combat-round(combat=${combat})"></div>
+            </div>
+            <div class="modal-footer">
+                <div id="combat-actions" th:replace="fragments/combat-actions :: combat-actions(combat=${combat})"></div>
             </div>
         </div>
     </div>

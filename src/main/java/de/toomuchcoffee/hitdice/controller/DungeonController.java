@@ -15,9 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
@@ -30,21 +31,23 @@ public class DungeonController {
     private final HeroService heroService;
 
     @GetMapping("enter")
-    public String enter(HttpServletRequest request) {
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
+    public String enter(HttpSession session, @SessionAttribute Hero hero) {
         Dungeon dungeon = dungeonService.create(hero.getLevel());
-        request.getSession().setAttribute("dungeon", dungeon);
+        session.setAttribute("dungeon", dungeon);
         return "redirect:/dungeon";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String index() {
         return "dungeon/map";
     }
 
     @GetMapping("{direction}")
-    public String move(@PathVariable Direction direction, HttpServletRequest request, RedirectAttributes attributes) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+    public String move(@PathVariable Direction direction,
+                       @SessionAttribute Dungeon dungeon,
+                       @SessionAttribute Hero hero,
+                       HttpSession session,
+                       RedirectAttributes attributes) {
         Tile tile = dungeonService.move(dungeon, direction);
         if (tile.getType() == MAGIC_DOOR) {
             attributes.addFlashAttribute("modal", "magicDoor");
@@ -54,8 +57,7 @@ public class DungeonController {
             if (event != null) {
                 switch (event.getEventType()) {
                     case MONSTER:
-                        Hero hero = (Hero) request.getSession().getAttribute("hero");
-                        request.getSession().setAttribute("combat", new Combat(hero, (Monster) event));
+                        session.setAttribute("combat", new Combat(hero, (Monster) event));
                         return "redirect:/combat";
                     case POTION:
                     case TREASURE:
@@ -71,24 +73,20 @@ public class DungeonController {
     }
 
     @GetMapping("clear")
-    public String clear(HttpServletRequest request) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+    public String clear(@SessionAttribute Dungeon dungeon) {
         dungeonService.clear(dungeon);
         return "redirect:/dungeon";
     }
 
     @GetMapping("flee")
-    public String flee(HttpServletRequest request) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
+    public String flee(@SessionAttribute Dungeon dungeon) {
         Position position = dungeonService.getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
         dungeon.setPosition(position);
         return "redirect:/dungeon";
     }
 
     @GetMapping("collect")
-    public String collect(HttpServletRequest request) {
-        Dungeon dungeon = (Dungeon) request.getSession().getAttribute("dungeon");
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
+    public String collect(@SessionAttribute Dungeon dungeon, @SessionAttribute Hero hero) {
         dungeonService.getTreasure(dungeon).ifPresent(event -> heroService.collectTreasure(hero, event));
         return "redirect:/dungeon/clear";
     }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("coliseum")
@@ -24,22 +24,22 @@ public class ColiseumController {
     }
 
     @GetMapping("{monster}")
-    public String loadMonster(HttpServletRequest request, @PathVariable MonsterTemplate monster) {
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
+    public String loadMonster(HttpSession session, @PathVariable MonsterTemplate monster) {
+        Hero hero = (Hero) session.getAttribute("hero");
         Combat combat = new Combat(hero, new Monster(monster));
-        request.getSession().setAttribute("combat", combat);
+        session.setAttribute("combat", combat);
         return "redirect:/combat";
     }
 
     @GetMapping("clear")
-    public String clear(HttpServletRequest request) {
-        request.getSession().removeAttribute("combat");
+    public String clear(HttpSession session) {
+        session.removeAttribute("combat");
         return "redirect:/coliseum";
     }
 
     @GetMapping("flee")
-    public String flee(HttpServletRequest request) {
-        request.getSession().removeAttribute("combat");
+    public String flee(HttpSession session) {
+        session.removeAttribute("combat");
         return "redirect:/coliseum";
     }
 }

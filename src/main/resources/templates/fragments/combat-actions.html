@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${monster.name} + ' attack!'"></title>
+</head>
+<body>
+<div th:fragment="combat-actions (combat)" th:with="monster=${combat.monster}, status=${combat.status}">
+
+    <div th:if="${status.name() == 'ONGOING'}">
+        <a class="btn btn-success" href="/combat">Attack</a>
+        <a class="btn btn-warning" href="/combat/flee">Flee</a>
+    </div>
+    <div th:if="${status.name() == 'VICTORY'}">
+        <a class="btn btn-primary" href="/combat/exit">Leave battle field</a>
+    </div>
+    <div th:if="${status.name() == 'DEFEAT'}">
+        <a class="btn btn-primary" href="/">Start new game</a>
+    </div>
+
+</div>
+</body>
+</html>

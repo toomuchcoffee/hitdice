@@ -9,8 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static de.toomuchcoffee.hitdice.domain.GameMode.COLISEUM;
@@ -30,9 +31,9 @@ public class GameController {
     }
 
     @GetMapping("{gameId}")
-    public String loadGame(HttpServletRequest request, @PathVariable Integer gameId) {
+    public String loadGame(HttpSession session, @PathVariable Integer gameId) {
         Hero hero = gameService.restore(gameId);
-        request.getSession().setAttribute("hero", hero);
+        session.setAttribute("hero", hero);
         return "game/mode";
     }
 
@@ -43,21 +44,20 @@ public class GameController {
     }
 
     @GetMapping("save")
-    public String saveGame(HttpServletRequest request) {
-        Hero hero = (Hero) request.getSession().getAttribute("hero");
+    public String saveGame(@SessionAttribute Hero hero) {
         gameService.save(hero);
         return "redirect:/dungeon";
     }
 
     @GetMapping("dungeon")
-    public String chooseDungeon(HttpServletRequest request) {
-        request.getSession().setAttribute("mode", DUNGEON);
+    public String chooseDungeon(HttpSession session) {
+        session.setAttribute("mode", DUNGEON);
         return "redirect:/dungeon/enter";
     }
 
     @GetMapping("coliseum")
-    public String chooseColiseum(HttpServletRequest request) {
-        request.getSession().setAttribute("mode", COLISEUM);
+    public String chooseColiseum(HttpSession session) {
+        session.setAttribute("mode", COLISEUM);
         return "redirect:/coliseum";
     }
 }

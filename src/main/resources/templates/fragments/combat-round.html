@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${monster.name} + ' attack!'"></title>
+</head>
+<body>
+<div th:fragment="combat-round (combat)"
+     th:with="hero=${combat.hero}, monster=${combat.monster}, round=${combat.round}, events=${combat.events}, status=${combat.status}">
+
+    <span th:if="${round} > 0">
+        <div id="combat-round">
+            <h5>Round <span th:text="${round}"></span>:</h5>
+            <ul>
+                <li th:each="event : ${events}" th:text="${event}"></li>
+                <span th:if="${status.name() == 'VICTORY'}">
+                    <li><mark>The <span th:text="${monster.name}"></span> is dead!</mark></li>
+                    <li><mark>You earned <span th:text="${monster.value}"></span> experience points!</mark></li>
+                </span>
+                <span th:if="${status.name() == 'DEFEAT'}">
+                    <li><mark>You are defeated!</mark></li>
+                </span>
+            </ul>
+        </div>
+    </span>
+
+    <div id="combat-stats">
+        <div>
+            <span th:text="'Your health: ' + ${hero.health.displayName}"></span>
+            <div id="progress-hero" th:replace="fragments/progress :: progress(current=${hero.health.value}, max=${hero.health.maxValue})"></div>
+        </div>
+        <div>
+            <span th:text="${monster.name} + '\'s health: ' + ${monster.health.displayName}"></span>
+            <div id="progress-monster" th:replace="fragments/progress :: progress(current=${monster.health.value}, max=${monster.health.maxValue})"></div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
