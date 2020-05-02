@@ -24,27 +24,26 @@ public class HeroController {
 
     private final HeroService heroService;
 
-    @GetMapping("create")
-    public String create(HttpSession session, Model model) {
+    @GetMapping("roll")
+    public String roll(HttpSession session, Model model) {
         Hero hero = heroService.create();
         session.setAttribute("hero", hero);
-        model.addAttribute("step", 1);
+        model.addAttribute("confirmed", false);
         return "create";
     }
 
-    @GetMapping("create/2")
-    public String edit(@SessionAttribute Hero hero, Model model) {
-        model.addAttribute("hero", hero);
-        model.addAttribute("step", 2);
-        return "create";
-    }
-
-    @PostMapping(value = "create/3", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    public String save(@SessionAttribute Hero hero, HeroUpdate heroUpdate, Model model) {
-        hero.setName(heroUpdate.getName());
+    @GetMapping("confirm")
+    public String confirm(@SessionAttribute Hero hero, Model model) {
         hero.addEquipment(DAGGER);
-        model.addAttribute("step", 3);
+        model.addAttribute("hero", hero);
+        model.addAttribute("confirmed", true);
         return "create";
+    }
+
+    @PostMapping(value = "finalize", consumes = APPLICATION_FORM_URLENCODED_VALUE)
+    public String finalize(@SessionAttribute Hero hero, HeroUpdate heroUpdate, Model model) {
+        hero.setName(heroUpdate.getName());
+        return "game/mode";
     }
 
     @GetMapping("use/{potion}")

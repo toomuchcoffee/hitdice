@@ -42,7 +42,7 @@ public class HeroControllerTest {
 
         MockHttpSession session = new MockHttpSession();
 
-        this.mvc.perform(get("/hero/create")
+        this.mvc.perform(get("/hero/roll")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
@@ -54,8 +54,8 @@ public class HeroControllerTest {
                 .andExpect(xpath("//dl/dd[2]").string("11"))
                 .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
                 .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//div[@id='hero-create-step-1-actions']/a[1]/@href").string("/hero/create"))
-                .andExpect(xpath("//div[@id='hero-create-step-1-actions']/a[2]/@href").string("/hero/create/2"))
+                .andExpect(xpath("//div[@id='hero-roll']/a[1]/@href").string("/hero/roll"))
+                .andExpect(xpath("//div[@id='hero-roll']/a[2]/@href").string("/hero/confirm"))
         ;
 
         assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(hero, "combatActions");
@@ -66,7 +66,7 @@ public class HeroControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
 
-        this.mvc.perform(get("/hero/create/2")
+        this.mvc.perform(get("/hero/confirm")
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class HeroControllerTest {
                 .andExpect(xpath("//dl/dd[2]").string("11"))
                 .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
                 .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//form/@action").string("/hero/create/3"))
+                .andExpect(xpath("//form/@action").string("/hero/finalize"))
                 .andExpect(xpath("//form/input[@name='name']").exists())
                 .andExpect(xpath("//form/input[@type='submit']/@value").string("Save"))
         ;
@@ -92,23 +92,14 @@ public class HeroControllerTest {
         HeroUpdate update = new HeroUpdate();
         update.setName("Alrik");
 
-        this.mvc.perform(post("/hero/create/3")
+        this.mvc.perform(post("/hero/finalize")
                 .session(session)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(EntityUtils.toString(new UrlEncodedFormEntity(singletonList(
                         new BasicNameValuePair("name", "Alrik")
                 )))).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create"))
-                .andExpect(xpath("//h3").string("Create Hero"))
-                .andExpect(xpath("//h4").string("Alrik"))
-                .andExpect(xpath("//dl/dt[1]").string("Strength:"))
-                .andExpect(xpath("//dl/dd[1]").string("10"))
-                .andExpect(xpath("//dl/dt[2]").string("Dexterity:"))
-                .andExpect(xpath("//dl/dd[2]").string("11"))
-                .andExpect(xpath("//dl/dt[3]").string("Stamina:"))
-                .andExpect(xpath("//dl/dd[3]").string("12"))
-                .andExpect(xpath("//div[@id='hero-create-step-3-actions']/a[1]/@href").string("/game/dungeon"))
+                .andExpect(view().name("game/mode"))
         ;
 
         assertThat(hero.getName()).isEqualTo("Alrik");

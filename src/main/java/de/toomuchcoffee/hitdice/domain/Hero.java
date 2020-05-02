@@ -115,7 +115,7 @@ public class Hero implements Combatant {
 
     public List<Item> getMiscellaneous() {
         return equipment.stream()
-                .filter(e -> !getArmor().equals(e) && !getWeapon().equals(e) && !(e instanceof Potion))
+                .filter(e -> !e.equals(getArmor()) && !e.equals(getWeapon()) && !(e instanceof Potion))
                 .collect(toList());
     }
 

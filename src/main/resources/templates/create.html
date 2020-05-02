@@ -13,28 +13,21 @@
 
     <div th:replace="fragments/hero :: hero"></div>
 
-    <span th:if="${step} == 1">
-        <div id="hero-create-step-1-actions">
-            <a class="btn btn-secondary" href="/hero/create">Roll again</a>
-            <a class="btn btn-success" href="/hero/create/2">Continue</a>
+    <span th:unless="${confirmed}">
+        <div id="hero-roll">
+            <a class="btn btn-secondary" href="/hero/roll">Roll again</a>
+            <a class="btn btn-success" href="/hero/confirm">Continue</a>
         </div>
     </span>
 
-    <span th:if="${step} == 2">
+    <span th:if="${confirmed}">
         <div class="form-group">
-            <form action="#" th:action="@{/hero/create/3}" th:object="${hero}" method="post">
+            <form action="#" th:action="@{/hero/finalize}" th:object="${hero}" method="post">
                 <label class="col-form-label col-form-label-lg" for="hero-name">Hero name: </label>
-                <input  th:field="*{name}" class="form-control form-control-lg" type="text" placeholder="Alrik maybe?" id="hero-name"/>
+                <input th:field="*{name}" class="form-control form-control-lg" type="text" placeholder="Alrik maybe?" id="hero-name"/>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 <input class="btn btn-primary btn-lg btn-block" type="submit" value="Save"/>
             </form>
-        </div>
-    </span>
-
-    <span th:if="${step} == 3">
-        <div id="hero-create-step-3-actions">
-            <a class="btn btn-primary btn-lg btn-block" href="/game/dungeon">Start dungeon crawl</a>
-            <a class="btn btn-secondary btn-lg btn-block" href="/game/coliseum">Fight in the coliseum</a>
         </div>
     </span>
 </div>
