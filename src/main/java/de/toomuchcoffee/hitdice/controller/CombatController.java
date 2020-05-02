@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.GameMode;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
 import de.toomuchcoffee.hitdice.domain.combat.CombatService;
@@ -22,7 +23,7 @@ public class CombatController {
     @GetMapping
     public String fight(@SessionAttribute Combat combat, RedirectAttributes redirectAttributes, WebRequest request) {
         combatService.fight(combat);
-        redirectAttributes.addFlashAttribute("modal", "combat");
+        redirectAttributes.addFlashAttribute("modal", ModalData.forId("combat"));
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }

@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
@@ -50,7 +51,7 @@ public class CombatControllerTest {
                 .session(session)
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(flash().attribute("modal", "combat"));
+                .andExpect(flash().attribute("modal", ModalData.forId("combat")));
 
         assertThat(session.getAttribute("combat")).isEqualTo(combat);
     }

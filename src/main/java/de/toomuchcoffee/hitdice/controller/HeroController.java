@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
+import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.service.HeroService;
@@ -50,14 +51,14 @@ public class HeroController {
     public String use(@PathVariable Potion potion, @SessionAttribute Hero hero, RedirectAttributes attributes, WebRequest request) {
         hero.getEquipment().remove(potion);
         heroService.drinkPotion(hero, potion);
-        attributes.addFlashAttribute("modal", "heroStats");
+        attributes.addFlashAttribute("modal", ModalData.forId("heroStats"));
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
 
     @GetMapping("stats")
     public String showStats(RedirectAttributes attributes, WebRequest request) {
-        attributes.addFlashAttribute("modal", "heroStats");
+        attributes.addFlashAttribute("modal", ModalData.forId("heroStats"));
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }

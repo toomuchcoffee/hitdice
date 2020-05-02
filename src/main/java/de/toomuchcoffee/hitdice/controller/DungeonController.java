@@ -1,7 +1,9 @@
 package de.toomuchcoffee.hitdice.controller;
 
+import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
@@ -54,7 +56,7 @@ public class DungeonController {
                        RedirectAttributes attributes) {
         Tile tile = dungeonService.move(dungeon, direction);
         if (tile.getType() == MAGIC_DOOR) {
-            attributes.addFlashAttribute("modal", "magicDoor");
+            attributes.addFlashAttribute("modal", ModalData.magicDoorModal());
             return "redirect:/dungeon";
         } else {
             Event event = tile.getEvent();
@@ -65,7 +67,7 @@ public class DungeonController {
                         return "redirect:/combat";
                     case POTION:
                     case TREASURE:
-                        attributes.addFlashAttribute("modal", "treasure");
+                        attributes.addFlashAttribute("modal", ModalData.treasureModal((Item) event));
                         attributes.addFlashAttribute("treasure", event);
                         return "redirect:/dungeon";
                     default:

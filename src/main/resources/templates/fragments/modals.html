@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Progress</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<div th:fragment="modals">
+
+<span th:if="${modal}">
+    <div id="heroStatsModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" th:if="${modal?.id} == 'heroStats'">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Hero Stats</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="hero" th:replace="fragments/hero :: hero"></div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success" href="#" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="combatModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" th:if="${modal?.id} == 'combat'">
+            <div class="modal-content" th:with="combat=${session.combat}">
+                <div class="modal-header">
+                    <h4 class="modal-title">Combat between you and <span th:text="${combat.monster.name}"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="combat-round" th:replace="fragments/combat-round :: combat-round(combat=${combat})"></div>
+                </div>
+                <div class="modal-footer">
+                    <div id="combat-actions"
+                         th:replace="fragments/combat-actions :: combat-actions(combat=${combat})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:id="${modal?.id} + 'Modal'" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" th:if="${modal?.title}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" th:text="${modal.title}"> modal title </h4>
+                </div>
+                <div class="modal-body">
+                    <p th:text="${modal.body}"> modal body </p>
+                </div>
+                <div class="modal-footer">
+                    <a th:each="button, iter : ${modal.buttons}"
+                       th:class="${iter.first} ? 'btn btn-success' : 'btn btn-secondary'"
+                       th:href="${button.url}"
+                       th:text="${button.label}"> link </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        var modalId = [[${modal?.id}]];
+        $(window).on('load',function(){
+            if (modalId) {
+                $('#' + modalId + 'Modal').modal('show');
+            }
+        });
+    /*]]>*/
+    </script>
+
+    </div>
+</span>
+
+</body>
+</html>
