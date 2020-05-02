@@ -50,6 +50,6 @@ public class GameController {
     @GetMapping("mode/{mode}")
     public String mode(@PathVariable GameMode mode, HttpSession session) {
         session.setAttribute("mode", mode);
-        return "redirect:/" + mode.name().toLowerCase();
+        return "redirect:" + mode.getUrl();
     }
 }
