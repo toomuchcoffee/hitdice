@@ -19,7 +19,7 @@ import java.util.Date;
 @TypeDefs({
         @TypeDef(name = "string-array", typeClass = StringArrayType.class)
 })
-public class Game {
+public class Hero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

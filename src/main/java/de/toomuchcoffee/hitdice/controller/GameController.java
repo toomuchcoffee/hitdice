@@ -1,6 +1,6 @@
 package de.toomuchcoffee.hitdice.controller;
 
-import de.toomuchcoffee.hitdice.db.Game;
+import de.toomuchcoffee.hitdice.controller.dto.Game;
 import de.toomuchcoffee.hitdice.domain.GameMode;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.service.GameService;
@@ -28,16 +28,16 @@ public class GameController {
         return "game/list";
     }
 
-    @GetMapping("{gameId}")
-    public String loadGame(@PathVariable Integer gameId, HttpSession session) {
-        Hero hero = gameService.restore(gameId);
+    @GetMapping("{id}")
+    public String loadGame(@PathVariable Integer id, HttpSession session) {
+        Hero hero = gameService.restore(id);
         session.setAttribute("hero", hero);
         return "game/mode";
     }
 
-    @GetMapping("delete/{gameId}")
-    public String deleteGame(@PathVariable Integer gameId) {
-        gameService.delete(gameId);
+    @GetMapping("delete/{id}")
+    public String deleteGame(@PathVariable Integer id) {
+        gameService.delete(id);
         return "redirect:/game";
     }
 

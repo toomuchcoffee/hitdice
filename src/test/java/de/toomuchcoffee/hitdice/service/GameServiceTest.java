@@ -1,8 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.db.Game;
-import de.toomuchcoffee.hitdice.db.GameRepository;
-import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.db.Hero;
+import de.toomuchcoffee.hitdice.db.HeroRepository;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +10,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Optional;
 
 import static de.toomuchcoffee.hitdice.domain.equipment.Armor.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.LONGSWORD;
@@ -21,25 +22,25 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GameServiceTest {
     @Mock
-    private GameRepository gameRepository;
+    private HeroRepository heroRepository;
 
     private GameService gameService;
 
     @Before
     public void setUp() throws Exception {
-        gameService = new GameService(gameRepository);
+        gameService = new GameService(heroRepository, new HeroMapper());
     }
 
     @Test
     public void savesGame() {
-        Hero hero = getHero();
+        de.toomuchcoffee.hitdice.domain.Hero hero = getHero();
 
         gameService.save(hero);
 
-        ArgumentCaptor<Game> argumentCaptor = ArgumentCaptor.forClass(Game.class);
-        verify(gameRepository).save(argumentCaptor.capture());
+        ArgumentCaptor<Hero> argumentCaptor = ArgumentCaptor.forClass(Hero.class);
+        verify(heroRepository).save(argumentCaptor.capture());
 
-        Game expected = getGame();
+        Hero expected = getGame();
 
         assertThat(argumentCaptor.getValue()).isEqualToIgnoringGivenFields(expected, "items");
         assertThat(argumentCaptor.getValue().getItems()).hasSize(2);
@@ -48,11 +49,11 @@ public class GameServiceTest {
 
     @Test
     public void restoresGame() {
-        when(gameRepository.getOne(123)).thenReturn(getGame());
+        when(heroRepository.findById(123)).thenReturn(Optional.of(getGame()));
 
-        Hero hero = gameService.restore(123);
+        de.toomuchcoffee.hitdice.domain.Hero hero = gameService.restore(123);
 
-        Hero expected = getHero();
+        de.toomuchcoffee.hitdice.domain.Hero expected = getHero();
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
         assertThat(hero.getEquipment()).hasSize(2);
@@ -61,8 +62,8 @@ public class GameServiceTest {
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
 
-    private Hero getHero() {
-        Hero hero = TestData.getHero();
+    private de.toomuchcoffee.hitdice.domain.Hero getHero() {
+        de.toomuchcoffee.hitdice.domain.Hero hero = TestData.getHero();
         ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
         hero.addEquipment(LONGSWORD);
         hero.addEquipment(LEATHER);
@@ -72,8 +73,8 @@ public class GameServiceTest {
         return hero;
     }
 
-    private Game getGame() {
-        Game expected = new Game();
+    private Hero getGame() {
+        Hero expected = new Hero();
         expected.setStamina(12);
         expected.setDexterity(11);
         expected.setStrength(10);

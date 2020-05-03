@@ -14,7 +14,8 @@
     <div id="games">
         <ul>
             <li th:each="game : ${games}">
-                <a th:href="@{'/game/' + ${game.id}}" th:text="${#dates.format(game.created, 'dd-MM-yyyy HH:mm')}"> game </a>
+                <a th:href="@{'/game/' + ${game.id}}"
+                   th:text="${#dates.format(game.created, 'dd-MM-yyyy HH:mm')} + ': ' + ${game.name} + ' (lvl ' + ${game.level}+ ')'"> game </a>
                 <a class="btn btn-outline-primary" th:href="@{'/game/delete/' + ${game.id}}">
                     <i class="fas fa-trash-alt"></i>
                 </a>

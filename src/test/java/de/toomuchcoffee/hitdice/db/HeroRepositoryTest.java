@@ -16,18 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaConfig.class)
 @RunWith(SpringRunner.class)
 @AutoConfigureEmbeddedDatabase(provider = DOCKER)
-public class GameRepositoryTest {
+public class HeroRepositoryTest {
     @Autowired
-    private GameRepository gameRepository;
+    private HeroRepository heroRepository;
 
     @Test
     public void savesGame() {
-        Game game = new Game();
-        game.setName("foo");
-        game.setItems(new String[]{"SHORTSWORD", "LEATHER", "HEALTH"});
+        Hero hero = new Hero();
+        hero.setName("foo");
+        hero.setItems(new String[]{"SHORTSWORD", "LEATHER", "HEALTH"});
 
-        Game save = gameRepository.save(game);
-        Game found = gameRepository.findById(save.getId())
+        Hero save = heroRepository.save(hero);
+        Hero found = heroRepository.findById(save.getId())
                 .orElseThrow(IllegalStateException::new);
 
         assertThat(found.getId()).isNotNull();

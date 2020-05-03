@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.controller;
 
 
-import de.toomuchcoffee.hitdice.db.Game;
+import de.toomuchcoffee.hitdice.controller.dto.Game;
 import de.toomuchcoffee.hitdice.service.GameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
