@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.SHORTSWORD;
+import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -50,7 +50,7 @@ public class DungeonControllerTest {
 
     private Hero hero;
 
-    private Tile[][] tiles = new Tile[][]{
+    private final Tile[][] TILES = new Tile[][]{
             {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
             {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
             {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)}
@@ -81,7 +81,7 @@ public class DungeonControllerTest {
     public void dungeonExploreSouth() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(tiles);
+        Dungeon dungeon = new Dungeon(TILES);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
@@ -101,7 +101,7 @@ public class DungeonControllerTest {
     public void dungeonTreasure() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(tiles);
+        Dungeon dungeon = new Dungeon(TILES);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
@@ -122,7 +122,7 @@ public class DungeonControllerTest {
     public void dungeonPotion() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
-        Dungeon dungeon = new Dungeon(tiles);
+        Dungeon dungeon = new Dungeon(TILES);
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 

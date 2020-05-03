@@ -5,18 +5,16 @@ import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.Dice.D4;
-import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
-import static java.util.Arrays.asList;
 
 @Getter
+@Builder
 public class Monster implements Combatant, Event {
     private final EventType eventType = MONSTER;
 
@@ -25,16 +23,7 @@ public class Monster implements Combatant, Event {
     private final int defense;
     private final Health health;
     private final int armorClass;
-    private final List<CombatAction> combatActions = newArrayList();
-
-    public Monster(MonsterTemplate template) {
-        this.name = template.getName();
-        this.level = template.getLevel();
-        this.health = new Health(template.getLevel() == 0 ? D4.roll() : D8.roll(template.getLevel()));
-        this.defense = template.getDefense();
-        this.armorClass = template.getArmorClass();
-        this.combatActions.addAll(asList(template.getCombatActions()));
-    }
+    private final List<CombatAction> combatActions;
 
     @Override
     public int getAttack() {

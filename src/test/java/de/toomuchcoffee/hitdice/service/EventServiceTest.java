@@ -47,9 +47,9 @@ public class EventServiceTest {
     }
 
     @Test
-    public void createsTheRightWeapon() {
+    public void createsTheRightItem() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThat(eventService.createWeapon().getDisplayName()).isEqualTo("club");
+        assertThat(eventService.createItem().getDisplayName()).isEqualTo("health potion");
     }
 }

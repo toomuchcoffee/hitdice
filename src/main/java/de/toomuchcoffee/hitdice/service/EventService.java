@@ -1,22 +1,16 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.equipment.Potion;
+import de.toomuchcoffee.hitdice.domain.equipment.*;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
-import static de.toomuchcoffee.hitdice.domain.Dice.D100;
+import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
@@ -26,47 +20,30 @@ public class EventService {
     private final Random random;
 
     public Optional<Event> createEvent(List<MonsterTemplate> monsterTemplates) {
-        switch (D100.roll()) {
+        switch (D20.roll()) {
             case 1:
             case 2:
+                return Optional.of(createItem());
             case 3:
-            case 4:
-            case 5:
-                return Optional.of(createPotion());
-            case 6:
-            case 7:
-                return Optional.of(createArmor());
-            case 8:
-            case 9:
-            case 10:
-                return Optional.of(createWeapon());
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
                 return Optional.of(createMonster(monsterTemplates));
             default:
                 return Optional.empty();
         }
     }
 
-    private Potion createPotion() {
-        List<Potion> potions = asList(Potion.values());
-        return create(potions);
-    }
-
-    private Item createArmor() {
-        List<Armor> armors = asList(Armor.values());
-        return create(armors);
+    private static final List<Item> AVAILABLE_ITEMS = new ArrayList<>();
+    static {
+        AVAILABLE_ITEMS.addAll(asList(Potion.values()));
+        AVAILABLE_ITEMS.addAll(asList(Armor.values()));
+        AVAILABLE_ITEMS.addAll(asList(Shield.values()));
+        AVAILABLE_ITEMS.addAll(Arrays.stream(HandWeapon.values())
+                .filter(w -> w.getFrequency() != null)
+                .collect(toList()));
     }
 
     @VisibleForTesting
-    HandWeapon createWeapon() {
-        List<HandWeapon> weapons = Arrays.stream(HandWeapon.values())
-                .filter(w -> w.getFrequency() != null)
-                .collect(toList());
-        return create(weapons);
+    Item createItem() {
+        return create(AVAILABLE_ITEMS);
     }
 
     @VisibleForTesting

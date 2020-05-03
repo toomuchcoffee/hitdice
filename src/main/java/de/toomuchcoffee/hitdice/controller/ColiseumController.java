@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
-import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ public class ColiseumController {
 
     @GetMapping("{monster}")
     public String loadMonster(@PathVariable MonsterTemplate monster, @SessionAttribute Hero hero, HttpSession session) {
-        Combat combat = new Combat(hero, new Monster(monster));
+        Combat combat = new Combat(hero, monster.create());
         session.setAttribute("combat", combat);
         return "redirect:/combat";
     }

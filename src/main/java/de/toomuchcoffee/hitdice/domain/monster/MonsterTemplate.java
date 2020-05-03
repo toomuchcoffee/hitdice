@@ -1,10 +1,11 @@
 package de.toomuchcoffee.hitdice.domain.monster;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.CustomWeapon;
-import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
+import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
 import de.toomuchcoffee.hitdice.service.EventTemplate;
@@ -13,10 +14,11 @@ import lombok.Getter;
 import java.util.Iterator;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
-import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.*;
+import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.*;
 import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
 import static java.lang.Math.max;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 @Getter
 public enum MonsterTemplate implements EventTemplate<Monster> {
@@ -201,6 +203,13 @@ public enum MonsterTemplate implements EventTemplate<Monster> {
 
     @Override
     public Monster create() {
-        return new Monster(this);
+        return Monster.builder()
+                .name(name)
+                .level(level)
+                .health(new Health(level == 0 ? D4.roll() : D8.roll(level)))
+                .defense(defense)
+                .armorClass(armorClass)
+                .combatActions(asList(combatActions))
+                .build();
     }
 }

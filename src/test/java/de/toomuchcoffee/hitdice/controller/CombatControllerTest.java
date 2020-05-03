@@ -35,9 +35,9 @@ public class CombatControllerTest {
     private Combat combat;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Hero hero = TestData.getHero();
-        Monster monster = new Monster(ORC);
+        Monster monster = ORC.create();
         combat = new Combat(hero, monster);
     }
 

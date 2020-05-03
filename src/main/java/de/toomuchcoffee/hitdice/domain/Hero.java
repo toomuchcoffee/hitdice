@@ -6,11 +6,8 @@ import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
-import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.equipment.Potion;
+import de.toomuchcoffee.hitdice.domain.equipment.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
-import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.FISTS;
+import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.FISTS;
 import static java.lang.Math.max;
 import static java.util.stream.Collectors.toList;
 
@@ -66,7 +63,9 @@ public class Hero implements Combatant {
 
     @Override
     public int getDefense() {
-        return getDexterity().getBonus();
+        return getDexterity().getBonus() + Optional.ofNullable(getShield())
+                .map(Shield::getDefense)
+                .orElse(0);
     }
 
     public List<CombatAction> getCombatActions() {
@@ -80,19 +79,23 @@ public class Hero implements Combatant {
     }
 
     public HandWeapon getWeapon() {
-        return equipment.stream()
-                .filter(i -> i instanceof HandWeapon)
-                .map(i -> (HandWeapon) i)
-                .max(Comparator.naturalOrder())
-                .orElse(FISTS);
+        return getEquipment(HandWeapon.class, FISTS);
     }
 
     public Armor getArmor() {
+        return getEquipment(Armor.class, null);
+    }
+
+    public Shield getShield() {
+        return getEquipment(Shield.class, null);
+    }
+
+    private <T extends Comparable<T>> T getEquipment(Class<T> clazz, T defaultValue) {
         return equipment.stream()
-                .filter(i -> i instanceof Armor)
-                .map(i -> (Armor) i)
+                .filter(clazz::isInstance)
+                .map(clazz::cast)
                 .max(Comparator.naturalOrder())
-                .orElse(null);
+                .orElse(defaultValue);
     }
 
     public List<Potion> getPotions() {
@@ -115,7 +118,7 @@ public class Hero implements Combatant {
 
     public List<Item> getMiscellaneous() {
         return equipment.stream()
-                .filter(e -> !e.equals(getArmor()) && !e.equals(getWeapon()) && !(e instanceof Potion))
+                .filter(e -> !e.equals(getArmor()) && !e.equals(getWeapon()) && !e.equals(getShield()) && !(e instanceof Potion))
                 .collect(toList());
     }
 

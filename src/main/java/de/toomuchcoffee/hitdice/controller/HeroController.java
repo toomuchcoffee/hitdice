@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
-import static de.toomuchcoffee.hitdice.domain.combat.HandWeapon.DAGGER;
+import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.DAGGER;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @Controller

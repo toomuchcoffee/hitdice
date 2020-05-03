@@ -6,18 +6,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.world.EventType.TREASURE;
-import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
+import static de.toomuchcoffee.hitdice.domain.world.Frequency.RARE;
+import static de.toomuchcoffee.hitdice.domain.world.Frequency.UNCOMMON;
 
 @Getter
 @RequiredArgsConstructor
-public enum Armor implements Item {
-    PADDED("padded armor", 1, false, COMMON),
-    LEATHER("leather armor", 2, false, UNCOMMON),
-    CHAIN("chain mail", 3, true, RARE),
-    PLATE("plate armor", 4, true, VERY_RARE);
+public enum Shield implements Item {
+    SMALL("small shield", 2, false, UNCOMMON),
+    LARGE("large shield", 3, true, RARE);
 
     private final String displayName;
-    private final int protection;
+    private final int defense;
     private final boolean metallic;
     private final Frequency frequency;
     private final EventType eventType = TREASURE;
