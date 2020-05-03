@@ -2,6 +2,7 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.db.Hero;
 import de.toomuchcoffee.hitdice.db.HeroRepository;
+import de.toomuchcoffee.hitdice.db.Item;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.HashSet;
 import java.util.Optional;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.equipment.Armor.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,7 +31,9 @@ public class GameServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        gameService = new GameService(heroRepository, new HeroMapper());
+        ItemMapper itemMapper = new ItemMapper();
+        HeroMapper heroMapper = new HeroMapper(itemMapper);
+        gameService = new GameService(heroRepository, heroMapper);
     }
 
     @Test
@@ -42,9 +47,7 @@ public class GameServiceTest {
 
         Hero expected = getGame();
 
-        assertThat(argumentCaptor.getValue()).isEqualToIgnoringGivenFields(expected, "items");
-        assertThat(argumentCaptor.getValue().getItems()).hasSize(2);
-        assertThat(argumentCaptor.getValue().getItems()).contains("LONGSWORD", "LEATHER");
+        assertThat(argumentCaptor.getValue()).isEqualToComparingFieldByField(expected);
     }
 
     @Test
@@ -80,10 +83,23 @@ public class GameServiceTest {
         expected.setStrength(10);
         expected.setMaxHealth(12);
         expected.setHealth(5);
-        expected.setItems(new String[]{"LONGSWORD", "LEATHER"});
+        expected.setItems(getItems());
         expected.setLevel(2);
         expected.setExperience(251);
         expected.setName("Alrik");
         return expected;
+    }
+
+    private HashSet<Item> getItems() {
+        return newHashSet(
+                createItem(LONGSWORD.name()),
+                createItem(LEATHER.name())
+        );
+    }
+
+    private Item createItem(String name) {
+        Item item = new Item();
+        item.setName(name);
+        return item;
     }
 }

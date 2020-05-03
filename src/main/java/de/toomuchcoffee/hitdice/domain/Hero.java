@@ -43,7 +43,7 @@ public class Hero implements Combatant {
         this.levelUp();
     }
 
-    public void initializeWithPresets(int strength, int dexterity, int stamina, int health, int maxHealth) {
+    public void initialize(int strength, int dexterity, int stamina, int health, int maxHealth) {
         attributes.put(STRENGTH, new Attribute(strength));
         attributes.put(DEXTERITY, new Attribute(dexterity));
         attributes.put(STAMINA, new Attribute(stamina));
