@@ -7,7 +7,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -20,7 +19,6 @@ import java.util.Date;
 @TypeDefs({
         @TypeDef(name = "string-array", typeClass = StringArrayType.class)
 })
-
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +39,4 @@ public class Game {
 
     @CreatedDate
     private Date created;
-
-    @LastModifiedDate
-    private Date modified;
-
 }

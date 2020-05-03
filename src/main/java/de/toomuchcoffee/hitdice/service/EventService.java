@@ -3,7 +3,7 @@ package de.toomuchcoffee.hitdice.service;
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.equipment.*;
 import de.toomuchcoffee.hitdice.domain.monster.Monster;
-import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
+import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
 import de.toomuchcoffee.hitdice.domain.world.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,13 @@ import static java.util.stream.Collectors.toList;
 public class EventService {
     private final Random random;
 
-    public Optional<Event> createEvent(List<MonsterTemplate> monsterTemplates) {
+    public Optional<Event> createEvent(List<MonsterFactory> monsterFactories) {
         switch (D20.roll()) {
             case 1:
             case 2:
                 return Optional.of(createItem());
             case 3:
-                return Optional.of(createMonster(monsterTemplates));
+                return Optional.of(createMonster(monsterFactories));
             default:
                 return Optional.empty();
         }
@@ -47,7 +47,7 @@ public class EventService {
     }
 
     @VisibleForTesting
-    Monster createMonster(List<MonsterTemplate> templates) {
+    Monster createMonster(List<MonsterFactory> templates) {
         return create(templates);
     }
 
@@ -64,8 +64,8 @@ public class EventService {
         throw new IllegalStateException();
     }
 
-    public List<MonsterTemplate> findTemplates(int heroLevel) {
-        return Arrays.stream(MonsterTemplate.values())
+    public List<MonsterFactory> findTemplates(int heroLevel) {
+        return Arrays.stream(MonsterFactory.values())
                 .filter(t -> t.getLevel() > heroLevel - 5 && t.getLevel() <= heroLevel)
                 .collect(toList());
     }

@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.service;
 
 
-import de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate;
+import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,17 +33,17 @@ public class EventServiceTest {
     public void createsTheRightMonster() {
         when(random.nextInt(7)).thenReturn(0, 3, 4, 5, 6);
 
-        List<MonsterTemplate> monsterTemplates = newArrayList(
-                MonsterTemplate.ETTIN, // uncommon (4 -> 0-3)
-                MonsterTemplate.OOZE, // rare (2 -> 4-5)
-                MonsterTemplate.BEHOLDER // very rare (1 -> 6)
+        List<MonsterFactory> monsterFactories = newArrayList(
+                MonsterFactory.ETTIN, // uncommon (4 -> 0-3)
+                MonsterFactory.OOZE, // rare (2 -> 4-5)
+                MonsterFactory.BEHOLDER // very rare (1 -> 6)
         );
 
-        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
-        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ettin");
-        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
-        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Ooze");
-        assertThat(eventService.createMonster(monsterTemplates).getName()).isEqualTo("Beholder");
+        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ettin");
+        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ettin");
+        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ooze");
+        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ooze");
+        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Beholder");
     }
 
     @Test

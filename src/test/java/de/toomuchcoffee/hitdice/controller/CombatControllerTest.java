@@ -17,7 +17,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static de.toomuchcoffee.hitdice.domain.monster.MonsterTemplate.ORC;
+import static de.toomuchcoffee.hitdice.domain.monster.MonsterFactory.ORC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;

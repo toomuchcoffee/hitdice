@@ -34,7 +34,6 @@ public class GameRepositoryTest {
         assertThat(found.getName()).isEqualTo("foo");
         assertThat(found.getItems()).isEqualTo(new String[]{"SHORTSWORD", "LEATHER", "HEALTH"});
         assertThat(found.getCreated()).isNotNull();
-        assertThat(found.getModified()).isNotNull();
     }
 
 }

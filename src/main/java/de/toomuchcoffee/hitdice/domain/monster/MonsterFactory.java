@@ -21,7 +21,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 @Getter
-public enum MonsterTemplate implements EventTemplate<Monster> {
+public enum MonsterFactory implements EventTemplate<Monster> {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
@@ -192,7 +192,7 @@ public enum MonsterTemplate implements EventTemplate<Monster> {
     private final int armorClass;
     private final CombatAction[] combatActions;
 
-    MonsterTemplate(String name, int level, Frequency frequency, int defense, int armorClass, CombatAction... combatAction) {
+    MonsterFactory(String name, int level, Frequency frequency, int defense, int armorClass, CombatAction... combatAction) {
         this.name = name;
         this.level = level;
         this.frequency = frequency;
