@@ -3,7 +3,6 @@ package de.toomuchcoffee.hitdice.domain.event.factory;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.event.Event;
-import de.toomuchcoffee.hitdice.domain.event.EventType;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import java.util.function.Supplier;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D2;
 import static de.toomuchcoffee.hitdice.domain.Dice.D4;
-import static de.toomuchcoffee.hitdice.domain.event.EventType.POTION;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.COMMON;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.VERY_RARE;
 
@@ -30,11 +28,9 @@ public enum PotionFactory implements EventFactory<Potion> {
     private final AttributeName type;
     private final Frequency frequency;
 
-    private final EventType eventType = POTION;
-
     @Override
     public Event<Potion> createEvent() {
-        return new Event<>(POTION, createObject());
+        return new Event<>(createObject());
     }
 
     @Override

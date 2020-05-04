@@ -16,7 +16,6 @@ import lombok.Getter;
 import java.util.Iterator;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
-import static de.toomuchcoffee.hitdice.domain.event.EventType.MONSTER;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 import static java.lang.Math.max;
 import static java.lang.String.format;
@@ -206,7 +205,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
     @Override
     public Event<Monster> createEvent() {
         Monster monster = createObject();
-        return new Event<>(MONSTER, monster);
+        return new Event<>(monster);
     }
 
     @Override

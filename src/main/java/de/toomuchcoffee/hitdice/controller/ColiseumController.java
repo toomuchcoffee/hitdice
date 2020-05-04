@@ -25,7 +25,7 @@ public class ColiseumController {
     }
 
     @GetMapping("{monster}")
-    public String loadMonster(@PathVariable MonsterFactory factory, @SessionAttribute Hero hero, HttpSession session) {
+    public String loadMonster(@PathVariable("monster") MonsterFactory factory, @SessionAttribute Hero hero, HttpSession session) {
         Combat combat = new Combat(hero, (Monster) factory.createEvent().getObject());
         session.setAttribute("combat", combat);
         return "redirect:/combat";

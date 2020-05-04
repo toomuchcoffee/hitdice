@@ -2,13 +2,11 @@ package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.Shield;
 import de.toomuchcoffee.hitdice.domain.event.Event;
-import de.toomuchcoffee.hitdice.domain.event.EventType;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static de.toomuchcoffee.hitdice.domain.event.EventType.TREASURE;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.RARE;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.UNCOMMON;
 
@@ -22,11 +20,10 @@ public enum ShieldFactory implements EventFactory<Shield> {
     private final int defense;
     private final boolean metallic;
     private final Frequency frequency;
-    private final EventType eventType = TREASURE;
 
     @Override
     public Event<Shield> createEvent() {
-        return new Event<>(TREASURE, createObject());
+        return new Event<>(createObject());
     }
 
     @Override

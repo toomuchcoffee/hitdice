@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.event.Event;
-import de.toomuchcoffee.hitdice.domain.event.EventType;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Supplier;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
-import static de.toomuchcoffee.hitdice.domain.event.EventType.TREASURE;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 
 @Getter
@@ -31,11 +29,10 @@ public enum WeaponFactory implements EventFactory<HandWeapon> {
     private final Supplier<Integer> damage;
     private final boolean metallic;
     private final Frequency frequency;
-    private final EventType eventType = TREASURE;
 
     @Override
     public Event<HandWeapon> createEvent() {
-        return new Event<>(TREASURE, createObject());
+        return new Event<>(createObject());
     }
 
     @Override
