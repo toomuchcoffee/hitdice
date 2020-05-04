@@ -1,9 +1,9 @@
 package de.toomuchcoffee.hitdice.service;
 
 
+import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.monster.Monster;
-import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
+import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

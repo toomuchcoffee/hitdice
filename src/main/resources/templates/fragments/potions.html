@@ -9,17 +9,17 @@
 <div th:fragment="potions (potions)" id="potions">
 
     <span th:each="potion : ${hero.potions}">
-        <a th:href="@{'/hero/use/' + ${potion}}" data-toggle="tooltip" th:title="${potion.displayName}">
-            <span th:if="${potion.name() == 'HEALTH'}">
+        <a th:href="@{'/hero/use/' + ${potion.id}}" data-toggle="tooltip" th:title="${potion.displayName}">
+            <span th:if="${potion.type.name() == 'HEALTH'}">
                 <i class="fas fa-flask text-danger"></i>
             </span>
-            <span th:if="${potion.name() == 'STRENGTH'}">
+            <span th:if="${potion.type.name() == 'STRENGTH'}">
                 <i class="fas fa-flask text-success"></i>
             </span>
-            <span th:if="${potion.name() == 'DEXTERITY'}">
+            <span th:if="${potion.type.name() == 'DEXTERITY'}">
                 <i class="fas fa-flask text-info"></i>
             </span>
-            <span th:if="${potion.name() == 'STAMINA'}">
+            <span th:if="${potion.type.name() == 'STAMINA'}">
                 <i class="fas fa-flask text-warning"></i>
             </span>
         </a>

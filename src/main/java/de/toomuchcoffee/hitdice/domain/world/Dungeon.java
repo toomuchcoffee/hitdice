@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.world;
 
+import de.toomuchcoffee.hitdice.domain.event.Event;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

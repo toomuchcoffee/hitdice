@@ -16,8 +16,8 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static de.toomuchcoffee.hitdice.domain.equipment.Armor.LEATHER;
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.LONGSWORD;
+import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
+import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,7 +60,7 @@ public class GameServiceTest {
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
         assertThat(hero.getEquipment()).hasSize(2);
-        assertThat(hero.getEquipment()).contains(LEATHER, LONGSWORD);
+        assertThat(hero.getEquipment()).contains(LEATHER.createObject(), LONGSWORD.createObject());
         assertThat(hero.getHealth().getValue()).isEqualTo(5);
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
@@ -68,8 +68,8 @@ public class GameServiceTest {
     private de.toomuchcoffee.hitdice.domain.Hero getHero() {
         de.toomuchcoffee.hitdice.domain.Hero hero = TestData.getHero();
         ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
-        hero.addEquipment(LONGSWORD);
-        hero.addEquipment(LEATHER);
+        hero.addEquipment(LONGSWORD.createObject());
+        hero.addEquipment(LEATHER.createObject());
         hero.setLevel(2);
         hero.setExperience(251);
         hero.setName("Alrik");

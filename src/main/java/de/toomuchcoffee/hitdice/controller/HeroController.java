@@ -3,7 +3,9 @@ package de.toomuchcoffee.hitdice.controller;
 import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
+import de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.DAGGER;
+import static de.toomuchcoffee.hitdice.domain.Dice.D4;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @Controller
@@ -34,7 +37,7 @@ public class HeroController {
 
     @GetMapping("confirm")
     public String confirm(@SessionAttribute Hero hero, Model model) {
-        hero.addEquipment(DAGGER);
+        hero.addEquipment(new HandWeapon(WeaponFactory.DAGGER, "dagger", true, D4::roll));
         model.addAttribute("hero", hero);
         model.addAttribute("confirmed", true);
         return "create";
@@ -47,8 +50,9 @@ public class HeroController {
     }
 
     @GetMapping("use/{potion}")
-    public String use(@PathVariable Potion potion, @SessionAttribute Hero hero, RedirectAttributes attributes, WebRequest request) {
-        hero.getEquipment().remove(potion);
+    public String use(@PathVariable("potion") UUID potionId, @SessionAttribute Hero hero, RedirectAttributes attributes, WebRequest request) {
+        int i = hero.getEquipment().indexOf(Potion.of(potionId)); // FIXME super ugly
+        Potion potion = (Potion) hero.getEquipment().remove(i);
         heroService.drinkPotion(hero, potion);
         attributes.addFlashAttribute("modal", ModalData.forId("heroStats"));
         String referer = request.getHeader("Referer");

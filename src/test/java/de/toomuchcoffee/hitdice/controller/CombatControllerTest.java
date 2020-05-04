@@ -2,10 +2,10 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
 import de.toomuchcoffee.hitdice.domain.combat.CombatService;
-import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static de.toomuchcoffee.hitdice.domain.monster.MonsterFactory.ORC;
+import static de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory.ORC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
@@ -37,7 +37,7 @@ public class CombatControllerTest {
     @Before
     public void setUp() {
         Hero hero = TestData.getHero();
-        Monster monster = (Monster) ORC.create().getObject();
+        Monster monster = (Monster) ORC.createEvent().getObject();
         combat = new Combat(hero, monster);
     }
 

@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static de.toomuchcoffee.hitdice.domain.equipment.Armor.LEATHER;
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.SHORTSWORD;
-import static de.toomuchcoffee.hitdice.domain.equipment.Potion.HEALTH;
+import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
+import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
+import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.SHORTSWORD;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.DOCKER;
 import static org.assertj.core.api.Assertions.assertThat;
 

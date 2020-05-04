@@ -1,37 +1,37 @@
-package de.toomuchcoffee.hitdice.domain.monster;
+package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
+import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.CustomWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.world.Event;
-import de.toomuchcoffee.hitdice.domain.world.Frequency;
-import de.toomuchcoffee.hitdice.service.EventFacory;
+import de.toomuchcoffee.hitdice.domain.event.Event;
+import de.toomuchcoffee.hitdice.domain.event.Frequency;
+import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
 
 import java.util.Iterator;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.*;
-import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
-import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
+import static de.toomuchcoffee.hitdice.domain.event.EventType.MONSTER;
+import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 @Getter
-public enum MonsterFactory implements EventFacory {
+public enum MonsterFactory implements EventFactory {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
     GOBLIN("Goblin", 1, COMMON, 0, 1,
-            new WeaponAttack(SHORTSWORD)),
+            new WeaponAttack(new HandWeapon(null, "scimitar", true, D6::roll))),
 
     ORC("Orc", 2, COMMON, 0, 2,
-            new WeaponAttack(MACE)),
+            new WeaponAttack(new HandWeapon(null, "great scimitar", true, () -> D8.roll() + 1))),
 
     RUST_MONSTER("Rust monster", 3, UNCOMMON, 0, 2,
             new WeaponAttack(new CustomWeapon("tail", D6::roll)),
@@ -76,7 +76,7 @@ public enum MonsterFactory implements EventFacory {
             new WeaponAttack(new CustomWeapon("big club", () -> D6.roll(2)))),
 
     SKELETON("Skeleton", 1, COMMON, 0, 2,
-            new WeaponAttack(LONGSWORD)),
+            new WeaponAttack(new HandWeapon(null, "ancient sword", true, D8::roll))),
 
     TROLL("Troll", 4, UNCOMMON, -1, 3,
             new WeaponAttack(new CustomWeapon("claws", D10::roll)),
@@ -151,7 +151,7 @@ public enum MonsterFactory implements EventFacory {
             }),
 
     LICH("Lich", 7, VERY_RARE, 0, 3,
-            new WeaponAttack(CLAYMORE),
+            new WeaponAttack(new HandWeapon(null, "two-handed sword", true, D12::roll)),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(4)) {
                     Hero hero = (Hero) defender;
@@ -204,15 +204,21 @@ public enum MonsterFactory implements EventFacory {
     }
 
     @Override
-    public Event create() {
-        Monster monster = Monster.builder()
-                .name(name)
-                .level(level)
-                .health(new Health(level == 0 ? D4.roll() : D8.roll(level)))
-                .defense(defense)
-                .armorClass(armorClass)
-                .combatActions(asList(combatActions))
-                .build();
+    public Event createEvent() {
+        Monster monster = createObject();
         return new Event(MONSTER, monster);
+    }
+
+    @Override
+    public Monster createObject() {
+        return new Monster(
+                this,
+                name,
+                level,
+                defense,
+                new Health(level == 0 ? D4.roll() : D8.roll(level)),
+                armorClass,
+                asList(combatActions)
+        );
     }
 }

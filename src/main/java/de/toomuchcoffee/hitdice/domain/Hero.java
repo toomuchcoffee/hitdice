@@ -90,11 +90,11 @@ public class Hero implements Combatant {
         return getEquipment(Shield.class, null);
     }
 
-    private <T extends Comparable<T>> T getEquipment(Class<T> clazz, T defaultValue) {
+    private <T extends Item> T getEquipment(Class<T> clazz, T defaultValue) {
         return equipment.stream()
                 .filter(clazz::isInstance)
                 .map(clazz::cast)
-                .max(Comparator.naturalOrder())
+                .findFirst()// FIXME order by best equipment
                 .orElse(defaultValue);
     }
 

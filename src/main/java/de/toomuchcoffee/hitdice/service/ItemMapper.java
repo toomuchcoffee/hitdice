@@ -1,9 +1,9 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.equipment.Potion;
+import de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory;
+import de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory;
+import de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory;
 import org.springframework.stereotype.Component;
 
 import static java.util.Arrays.stream;
@@ -13,21 +13,23 @@ public class ItemMapper {
     public Item fromDb(de.toomuchcoffee.hitdice.db.Item dbItem) {
         String s = dbItem.getName();
 
-        if (stream(HandWeapon.values()).map(HandWeapon::name).anyMatch(e -> e.equals(s))) {
-            return HandWeapon.valueOf(s);
+        // FIXME should be type safe!
+
+        if (stream(WeaponFactory.values()).map(WeaponFactory::name).anyMatch(e -> e.equals(s))) {
+            return (Item) WeaponFactory.valueOf(s).createEvent().getObject();
         }
-        if (stream(Armor.values()).map(Armor::name).anyMatch(e -> e.equals(s))) {
-            return Armor.valueOf(s);
+        if (stream(ArmorFactory.values()).map(ArmorFactory::name).anyMatch(e -> e.equals(s))) {
+            return (Item) ArmorFactory.valueOf(s).createEvent().getObject();
         }
-        if (stream(Potion.values()).map(Potion::name).anyMatch(e -> e.equals(s))) {
-            return Potion.valueOf(s);
+        if (stream(PotionFactory.values()).map(PotionFactory::name).anyMatch(e -> e.equals(s))) {
+            return (Item) PotionFactory.valueOf(s).createEvent().getObject();
         }
         throw new IllegalStateException("Value doesn't match any registered enum: " + s);
     }
 
     public de.toomuchcoffee.hitdice.db.Item toDb(Item item) {
         de.toomuchcoffee.hitdice.db.Item dbItem = new de.toomuchcoffee.hitdice.db.Item();
-        dbItem.setName(item.getName());
+        dbItem.setName(item.getFactory().name()); // FIXME
         return dbItem;
     }
 

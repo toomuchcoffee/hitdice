@@ -3,10 +3,9 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
-import de.toomuchcoffee.hitdice.domain.equipment.Potion;
+import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
-import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
@@ -23,11 +22,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Random;
 
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.SHORTSWORD;
+import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
+import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
-import static de.toomuchcoffee.hitdice.domain.world.EventType.POTION;
-import static de.toomuchcoffee.hitdice.domain.world.EventType.TREASURE;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -109,7 +107,8 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Tile tile = new Tile(ROOM);
-        tile.setEvent(new Event(TREASURE, SHORTSWORD));
+        Event event = SHORTSWORD.createEvent();
+        tile.setEvent(event);
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
@@ -117,7 +116,7 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/dungeon"))
-                .andExpect(flash().attribute("treasure", SHORTSWORD));
+                .andExpect(flash().attribute("treasure", event.getObject()));
         ;
     }
 
@@ -129,9 +128,9 @@ public class DungeonControllerTest {
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        Potion potion = Potion.HEALTH;
         Tile tile = new Tile(ROOM);
-        tile.setEvent(new Event(POTION, potion));
+        Event event = HEALTH.createEvent();
+        tile.setEvent(event);
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
@@ -139,7 +138,7 @@ public class DungeonControllerTest {
                 .accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/dungeon"))
-                .andExpect(flash().attribute("treasure", potion));
+                .andExpect(flash().attribute("treasure", event.getObject()));
     }
 
 }

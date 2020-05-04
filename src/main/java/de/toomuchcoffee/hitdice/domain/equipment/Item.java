@@ -1,13 +1,9 @@
 package de.toomuchcoffee.hitdice.domain.equipment;
 
-import de.toomuchcoffee.hitdice.domain.world.Event;
-import de.toomuchcoffee.hitdice.domain.world.Frequency;
-import de.toomuchcoffee.hitdice.service.EventFacory;
+import de.toomuchcoffee.hitdice.service.EventFactory;
 
-public interface Item extends EventFacory {
-    String getName();
+public interface Item {
     boolean isMetallic();
     String getDisplayName();
-    Frequency getFrequency();
-    Event create();
+    EventFactory getFactory();
 }

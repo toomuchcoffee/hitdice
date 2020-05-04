@@ -2,7 +2,8 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
+import de.toomuchcoffee.hitdice.domain.event.Event;
+import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType;

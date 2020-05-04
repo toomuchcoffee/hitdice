@@ -1,22 +1,19 @@
-package de.toomuchcoffee.hitdice.domain.monster;
+package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.world.EventType;
-import lombok.Builder;
+import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
-
 @Getter
-@Builder
+@RequiredArgsConstructor
 public class Monster implements Combatant {
-    private final EventType eventType = MONSTER;
-
+    private final EventFactory factory;
     private final String name;
     private final int level;
     private final int defense;

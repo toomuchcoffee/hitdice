@@ -1,12 +1,8 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.equipment.Potion;
-import de.toomuchcoffee.hitdice.domain.equipment.Shield;
-import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
-import de.toomuchcoffee.hitdice.domain.world.Event;
+import de.toomuchcoffee.hitdice.domain.event.Event;
+import de.toomuchcoffee.hitdice.domain.event.factory.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +29,12 @@ public class EventService {
         }
     }
 
-    private static final List<EventFacory> FACTORIES = new ArrayList<>();
+    private static final List<EventFactory> FACTORIES = new ArrayList<>();
     static {
-        FACTORIES.addAll(asList(Potion.values()));
-        FACTORIES.addAll(asList(Armor.values()));
-        FACTORIES.addAll(asList(Shield.values()));
-        FACTORIES.addAll(Arrays.stream(HandWeapon.values())
-                .filter(w -> w.getFrequency() != null)
-                .collect(toList()));
+        FACTORIES.addAll(asList(PotionFactory.values()));
+        FACTORIES.addAll(asList(ArmorFactory.values()));
+        FACTORIES.addAll(asList(ShieldFactory.values()));
+        FACTORIES.addAll(asList(WeaponFactory.values()));
     }
 
     @VisibleForTesting
@@ -53,14 +47,14 @@ public class EventService {
         return create(templates);
     }
 
-    private Event create(List<? extends EventFacory> factories) {
+    private Event create(List<? extends EventFactory> factories) {
         int sum = factories.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
         int roll = random.nextInt(sum);
         int p = 0;
-        for (EventFacory factory : factories) {
+        for (EventFactory factory : factories) {
             p += factory.getFrequency().getProbability();
             if (roll < p) {
-                return factory.create();
+                return factory.createEvent();
             }
         }
         throw new IllegalStateException();

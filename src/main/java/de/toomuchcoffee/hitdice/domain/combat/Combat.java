@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.domain.combat;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
-import de.toomuchcoffee.hitdice.domain.monster.Monster;
+import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.service.CombatStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
