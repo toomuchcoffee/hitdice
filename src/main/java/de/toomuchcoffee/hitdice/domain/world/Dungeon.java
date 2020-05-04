@@ -55,7 +55,7 @@ public class Dungeon {
                         view[x][y] = "dungeon";
                     } else {
                         Event event = tiles[x][y].getEvent();
-                        view[x][y] = event == null ? null : event.getEventType().getSymbol();
+                        view[x][y] = event == null ? null : event.getType().getSymbol();
                     }
                 } else {
                     view[x][y] = "question-circle unexplored";

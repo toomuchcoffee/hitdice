@@ -7,21 +7,23 @@ import de.toomuchcoffee.hitdice.domain.combat.CustomWeapon;
 import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
-import de.toomuchcoffee.hitdice.service.EventTemplate;
+import de.toomuchcoffee.hitdice.service.EventFacory;
 import lombok.Getter;
 
 import java.util.Iterator;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.*;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.*;
+import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
 import static de.toomuchcoffee.hitdice.domain.world.Frequency.*;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 @Getter
-public enum MonsterFactory implements EventTemplate<Monster> {
+public enum MonsterFactory implements EventFacory {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
@@ -202,8 +204,8 @@ public enum MonsterFactory implements EventTemplate<Monster> {
     }
 
     @Override
-    public Monster create() {
-        return Monster.builder()
+    public Event create() {
+        Monster monster = Monster.builder()
                 .name(name)
                 .level(level)
                 .health(new Health(level == 0 ? D4.roll() : D8.roll(level)))
@@ -211,5 +213,6 @@ public enum MonsterFactory implements EventTemplate<Monster> {
                 .armorClass(armorClass)
                 .combatActions(asList(combatActions))
                 .build();
+        return new Event(MONSTER, monster);
     }
 }

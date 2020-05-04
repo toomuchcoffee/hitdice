@@ -58,8 +58,9 @@ public class DungeonService {
 
     public Optional<Item> getTreasure(Dungeon dungeon) {
         return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getEvent())
+                .map(Event::getObject)
                 .filter(e -> e instanceof Item)
-                .map(e -> (Item) e);
+                .map(i -> (Item) i);
     }
 
     public Tile[][] createTiles() {
@@ -75,7 +76,7 @@ public class DungeonService {
     }
 
     private void addEvents(Dungeon dungeon, int heroLevel, Set<TileType> filter) {
-        List<MonsterFactory> factories = eventService.findTemplates(heroLevel);
+        List<MonsterFactory> factories = eventService.findFactories(heroLevel);
         for (int x = 0; x < dungeon.getWidth(); x++) {
             for (int y = 0; y < dungeon.getHeight(); y++) {
                 Tile tile = dungeon.getTiles()[x][y];

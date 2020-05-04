@@ -6,6 +6,7 @@ import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
+import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
@@ -25,6 +26,8 @@ import java.util.Random;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.SHORTSWORD;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.SOUTH;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.ROOM;
+import static de.toomuchcoffee.hitdice.domain.world.EventType.POTION;
+import static de.toomuchcoffee.hitdice.domain.world.EventType.TREASURE;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -106,7 +109,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Tile tile = new Tile(ROOM);
-        tile.setEvent(SHORTSWORD);
+        tile.setEvent(new Event(TREASURE, SHORTSWORD));
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
@@ -128,7 +131,7 @@ public class DungeonControllerTest {
 
         Potion potion = Potion.HEALTH;
         Tile tile = new Tile(ROOM);
-        tile.setEvent(potion);
+        tile.setEvent(new Event(POTION, potion));
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")

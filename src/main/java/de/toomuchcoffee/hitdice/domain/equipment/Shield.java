@@ -1,5 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.equipment;
 
+import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
 import lombok.Getter;
@@ -24,5 +25,10 @@ public enum Shield implements Item {
     @Override
     public String getName() {
         return name();
+    }
+
+    @Override
+    public Event create() {
+        return new Event(TREASURE, this);
     }
 }

@@ -61,17 +61,17 @@ public class DungeonController {
         } else {
             Event event = tile.getEvent();
             if (event != null) {
-                switch (event.getEventType()) {
+                switch (event.getType()) {
                     case MONSTER:
-                        session.setAttribute("combat", new Combat(hero, (Monster) event));
+                        session.setAttribute("combat", new Combat(hero, (Monster) event.getObject()));
                         return "redirect:/combat";
                     case POTION:
                     case TREASURE:
-                        attributes.addFlashAttribute("modal", ModalData.treasureModal((Item) event));
-                        attributes.addFlashAttribute("treasure", event);
+                        attributes.addFlashAttribute("modal", ModalData.treasureModal((Item) event.getObject()));
+                        attributes.addFlashAttribute("treasure", event.getObject());
                         return "redirect:/dungeon";
                     default:
-                        throw new IllegalStateException("Unsupported event type: " + event.getEventType());
+                        throw new IllegalStateException("Unsupported event type: " + event.getType());
                 }
             }
         }
@@ -93,7 +93,7 @@ public class DungeonController {
 
     @GetMapping("collect")
     public String collect(@SessionAttribute Dungeon dungeon, @SessionAttribute Hero hero) {
-        dungeonService.getTreasure(dungeon).ifPresent(event -> heroService.collectTreasure(hero, event));
+        dungeonService.getTreasure(dungeon).ifPresent(item -> heroService.collectTreasure(hero, item));
         return "redirect:/dungeon/clear";
     }
 

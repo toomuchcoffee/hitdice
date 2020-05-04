@@ -3,7 +3,6 @@ package de.toomuchcoffee.hitdice.domain.monster;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import static de.toomuchcoffee.hitdice.domain.world.EventType.MONSTER;
 
 @Getter
 @Builder
-public class Monster implements Combatant, Event {
+public class Monster implements Combatant {
     private final EventType eventType = MONSTER;
 
     private final String name;

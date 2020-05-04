@@ -1,6 +1,8 @@
 package de.toomuchcoffee.hitdice.service;
 
 
+import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.monster.Monster;
 import de.toomuchcoffee.hitdice.domain.monster.MonsterFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,17 +41,17 @@ public class EventServiceTest {
                 MonsterFactory.BEHOLDER // very rare (1 -> 6)
         );
 
-        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ettin");
-        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ettin");
-        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ooze");
-        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Ooze");
-        assertThat(eventService.createMonster(monsterFactories).getName()).isEqualTo("Beholder");
+        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Beholder");
     }
 
     @Test
     public void createsTheRightItem() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThat(eventService.createItem().getDisplayName()).isEqualTo("health potion");
+        assertThat(((Item) eventService.createItem().getObject()).getDisplayName()).isEqualTo("health potion");
     }
 }

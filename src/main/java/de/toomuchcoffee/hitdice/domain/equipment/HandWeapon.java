@@ -1,6 +1,7 @@
 package de.toomuchcoffee.hitdice.domain.equipment;
 
 import de.toomuchcoffee.hitdice.domain.combat.Weapon;
+import de.toomuchcoffee.hitdice.domain.world.Event;
 import de.toomuchcoffee.hitdice.domain.world.EventType;
 import de.toomuchcoffee.hitdice.domain.world.Frequency;
 import lombok.Getter;
@@ -36,5 +37,10 @@ public enum HandWeapon implements Item, Weapon {
     @Override
     public String getName() {
         return name();
+    }
+
+    @Override
+    public Event create() {
+        return new Event(TREASURE, this);
     }
 }
