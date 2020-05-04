@@ -3,6 +3,7 @@ package de.toomuchcoffee.hitdice.service;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory;
 import de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory;
+import de.toomuchcoffee.hitdice.domain.event.factory.ShieldFactory;
 import de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,16 +14,17 @@ public class ItemMapper {
     public Item fromDb(de.toomuchcoffee.hitdice.db.Item dbItem) {
         String s = dbItem.getName();
 
-        // FIXME should be type safe!
-
         if (stream(WeaponFactory.values()).map(WeaponFactory::name).anyMatch(e -> e.equals(s))) {
-            return (Item) WeaponFactory.valueOf(s).createEvent().getObject();
+            return WeaponFactory.valueOf(s).createEvent().getObject();
         }
         if (stream(ArmorFactory.values()).map(ArmorFactory::name).anyMatch(e -> e.equals(s))) {
-            return (Item) ArmorFactory.valueOf(s).createEvent().getObject();
+            return ArmorFactory.valueOf(s).createEvent().getObject();
+        }
+        if (stream(ShieldFactory.values()).map(ShieldFactory::name).anyMatch(e -> e.equals(s))) {
+            return ShieldFactory.valueOf(s).createEvent().getObject();
         }
         if (stream(PotionFactory.values()).map(PotionFactory::name).anyMatch(e -> e.equals(s))) {
-            return (Item) PotionFactory.valueOf(s).createEvent().getObject();
+            return PotionFactory.valueOf(s).createEvent().getObject();
         }
         throw new IllegalStateException("Value doesn't match any registered enum: " + s);
     }

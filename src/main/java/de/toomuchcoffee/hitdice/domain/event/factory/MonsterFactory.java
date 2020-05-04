@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 @Getter
-public enum MonsterFactory implements EventFactory {
+public enum MonsterFactory implements EventFactory<Monster> {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
@@ -204,9 +204,9 @@ public enum MonsterFactory implements EventFactory {
     }
 
     @Override
-    public Event createEvent() {
+    public Event<Monster> createEvent() {
         Monster monster = createObject();
-        return new Event(MONSTER, monster);
+        return new Event<>(MONSTER, monster);
     }
 
     @Override

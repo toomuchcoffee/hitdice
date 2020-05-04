@@ -14,7 +14,7 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.UNCOMMON;
 
 @Getter
 @RequiredArgsConstructor
-public enum ShieldFactory implements EventFactory {
+public enum ShieldFactory implements EventFactory<Shield> {
     SMALL("small shield", 2, false, UNCOMMON),
     LARGE("large shield", 3, true, RARE);
 
@@ -25,12 +25,12 @@ public enum ShieldFactory implements EventFactory {
     private final EventType eventType = TREASURE;
 
     @Override
-    public Event createEvent() {
-        return new Event(TREASURE, createObject());
+    public Event<Shield> createEvent() {
+        return new Event<>(TREASURE, createObject());
     }
 
     @Override
-    public Object createObject() {
+    public Shield createObject() {
         return new Shield(this, displayName, metallic, defense);
     }
 }

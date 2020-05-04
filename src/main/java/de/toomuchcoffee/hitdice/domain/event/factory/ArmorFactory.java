@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.EventType;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
@@ -14,7 +13,7 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 
 @Getter
 @RequiredArgsConstructor
-public enum ArmorFactory implements EventFactory {
+public enum ArmorFactory implements EventFactory<Armor> {
     PADDED("padded armor", 1, false, COMMON),
     LEATHER("leather armor", 2, false, UNCOMMON),
     CHAIN("chain mail", 3, true, RARE),
@@ -27,12 +26,12 @@ public enum ArmorFactory implements EventFactory {
     private final EventType eventType = TREASURE;
 
     @Override
-    public Event createEvent() {
-        return new Event(TREASURE, createObject());
+    public Event<Armor> createEvent() {
+        return new Event<>(TREASURE, createObject());
     }
 
     @Override
-    public Item createObject() {
+    public Armor createObject() {
         return new Armor(this, displayName, metallic, protection);
     }
 }

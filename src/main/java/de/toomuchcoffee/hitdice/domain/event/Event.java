@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class Event {
+public class Event<T> {
     private final EventType type;
-    private final Object object;
+    private final T object;
 }

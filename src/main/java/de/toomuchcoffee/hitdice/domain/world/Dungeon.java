@@ -55,7 +55,7 @@ public class Dungeon {
                     } else if (tiles[x][y].getType() == MAGIC_DOOR) {
                         view[x][y] = "dungeon";
                     } else {
-                        Event event = tiles[x][y].getEvent();
+                        Event<?> event = tiles[x][y].getEvent();
                         view[x][y] = event == null ? null : event.getType().getSymbol();
                     }
                 } else {
@@ -102,7 +102,7 @@ public class Dungeon {
     @RequiredArgsConstructor
     public static class Tile {
         private final TileType type;
-        private Event event;
+        private Event<?> event;
         private boolean explored;
 
         public boolean isOccupied() {

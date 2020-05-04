@@ -3,6 +3,8 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.TestData;
+import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -107,7 +109,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Tile tile = new Tile(ROOM);
-        Event event = SHORTSWORD.createEvent();
+        Event<HandWeapon> event = SHORTSWORD.createEvent();
         tile.setEvent(event);
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 
@@ -129,7 +131,7 @@ public class DungeonControllerTest {
         session.setAttribute("dungeon", dungeon);
 
         Tile tile = new Tile(ROOM);
-        Event event = HEALTH.createEvent();
+        Event<Potion> event = HEALTH.createEvent();
         tile.setEvent(event);
         when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
 

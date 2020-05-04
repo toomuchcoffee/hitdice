@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class Potion implements Item {
     @EqualsAndHashCode.Include // FIXME this is ugly
     private final UUID id;
-    private final EventFactory factory;
+    private final EventFactory<Potion> factory;
     private final String displayName;
     private final boolean metallic = false;
 

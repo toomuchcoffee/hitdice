@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.EventType;
@@ -21,7 +20,7 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.VERY_RARE;
 
 @Getter
 @RequiredArgsConstructor
-public enum PotionFactory implements EventFactory {
+public enum PotionFactory implements EventFactory<Potion> {
     HEALTH(() -> D4.roll(2), AttributeName.HEALTH, COMMON),
     STRENGTH(D2::roll, AttributeName.STRENGTH, VERY_RARE),
     DEXTERITY(D2::roll, AttributeName.DEXTERITY, VERY_RARE),
@@ -34,12 +33,12 @@ public enum PotionFactory implements EventFactory {
     private final EventType eventType = POTION;
 
     @Override
-    public Event createEvent() {
-        return new Event(POTION, createObject());
+    public Event<Potion> createEvent() {
+        return new Event<>(POTION, createObject());
     }
 
     @Override
-    public Item createObject() {
+    public Potion createObject() {
         return new Potion(UUID.randomUUID(), this, type.name().toLowerCase() + " potion", potency, type);
     }
 }

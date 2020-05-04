@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
 public class EventService {
     private final Random random;
 
-    public Optional<Event> createEvent(List<MonsterFactory> monsterFactories) {
+    public Optional<Event<?>> createEvent(List<MonsterFactory> monsterFactories) {
         switch (D20.roll()) {
             case 1:
             case 2:
@@ -29,7 +29,7 @@ public class EventService {
         }
     }
 
-    private static final List<EventFactory> FACTORIES = new ArrayList<>();
+    private static final List<EventFactory<?>> FACTORIES = new ArrayList<>();
     static {
         FACTORIES.addAll(asList(PotionFactory.values()));
         FACTORIES.addAll(asList(ArmorFactory.values()));
@@ -38,20 +38,20 @@ public class EventService {
     }
 
     @VisibleForTesting
-    Event createItem() {
+    Event<?> createItem() {
         return create(FACTORIES);
     }
 
     @VisibleForTesting
-    Event createMonster(List<MonsterFactory> templates) {
-        return create(templates);
+    Event<?> createMonster(List<MonsterFactory> factories) {
+        return create(factories);
     }
 
-    private Event create(List<? extends EventFactory> factories) {
+    private Event<?> create(List<? extends EventFactory<?>> factories) {
         int sum = factories.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
         int roll = random.nextInt(sum);
         int p = 0;
-        for (EventFactory factory : factories) {
+        for (EventFactory<?> factory : factories) {
             p += factory.getFrequency().getProbability();
             if (roll < p) {
                 return factory.createEvent();

@@ -59,7 +59,7 @@ public class DungeonController {
             attributes.addFlashAttribute("modal", ModalData.magicDoorModal());
             return "redirect:/dungeon";
         } else {
-            Event event = tile.getEvent();
+            Event<?> event = tile.getEvent();
             if (event != null) {
                 switch (event.getType()) {
                     case MONSTER:

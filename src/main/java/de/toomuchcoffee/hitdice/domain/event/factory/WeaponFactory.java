@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.EventType;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
@@ -17,7 +16,7 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 
 @Getter
 @RequiredArgsConstructor
-public enum WeaponFactory implements EventFactory {
+public enum WeaponFactory implements EventFactory<HandWeapon> {
     DAGGER("dagger", D4::roll, true, COMMON),
     STAFF("staff", D4::roll, false, COMMON),
     SHORTSWORD("shortsword", D6::roll, true, UNCOMMON),
@@ -35,12 +34,12 @@ public enum WeaponFactory implements EventFactory {
     private final EventType eventType = TREASURE;
 
     @Override
-    public Event createEvent() {
-        return new Event(TREASURE, createObject());
+    public Event<HandWeapon> createEvent() {
+        return new Event<>(TREASURE, createObject());
     }
 
     @Override
-    public Item createObject() {
+    public HandWeapon createObject() {
         return new HandWeapon(this, displayName, metallic, damage);
     }
 }

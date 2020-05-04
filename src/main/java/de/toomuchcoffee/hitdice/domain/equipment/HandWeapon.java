@@ -16,7 +16,7 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D2;
 public class HandWeapon implements Item, Weapon {
     public static final HandWeapon FISTS = new HandWeapon(null, "fists", false, D2::roll);
 
-    private final EventFactory factory;
+    private final EventFactory<HandWeapon> factory;
     private final String displayName;
     private final boolean metallic;
 

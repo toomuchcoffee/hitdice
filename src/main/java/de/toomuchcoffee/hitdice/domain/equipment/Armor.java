@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode // FIXME remove
 public class Armor implements Item {
-    private final EventFactory factory;
+    private final EventFactory<Armor> factory;
     private final String displayName;
     private final boolean metallic;
 

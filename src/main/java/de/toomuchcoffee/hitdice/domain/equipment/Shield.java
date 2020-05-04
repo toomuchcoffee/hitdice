@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class Shield implements Item {
-    private final EventFactory factory;
+    private final EventFactory<Shield> factory;
     private final String displayName;
     private final boolean metallic;
 
