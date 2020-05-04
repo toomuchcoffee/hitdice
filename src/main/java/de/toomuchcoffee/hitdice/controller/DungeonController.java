@@ -5,7 +5,6 @@ import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -59,17 +58,14 @@ public class DungeonController {
             attributes.addFlashAttribute("modal", ModalData.magicDoorModal());
             return "redirect:/dungeon";
         } else {
-            Event<?> event = tile.getEvent();
-            if (event != null) {
-                if (event.getObject() instanceof Monster) {
-                    session.setAttribute("combat", new Combat(hero, (Monster) event.getObject()));
-                    return "redirect:/combat";
-                }
-                if (event.getObject() != null) {
-                    attributes.addFlashAttribute("modal", ModalData.treasureModal((Item) event.getObject()));
-                    attributes.addFlashAttribute("treasure", event.getObject());
-                    return "redirect:/dungeon";
-                }
+            Object occupant = tile.getOccupant();
+            if (occupant instanceof Monster) {
+                session.setAttribute("combat", new Combat(hero, (Monster) occupant));
+                return "redirect:/combat";
+            } else if (occupant != null) {
+                attributes.addFlashAttribute("modal", ModalData.treasureModal((Item) occupant));
+                attributes.addFlashAttribute("treasure", occupant);
+                return "redirect:/dungeon";
             }
         }
         return "redirect:/dungeon";

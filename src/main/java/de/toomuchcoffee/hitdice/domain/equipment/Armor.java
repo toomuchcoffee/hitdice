@@ -12,6 +12,7 @@ public class Armor implements Item {
     private final EventFactory<Armor> factory;
     private final String displayName;
     private final boolean metallic;
+    private final int ordinal;
 
     private final int protection;
 }

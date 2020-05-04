@@ -14,11 +14,12 @@ import static de.toomuchcoffee.hitdice.domain.Dice.D2;
 @RequiredArgsConstructor
 @EqualsAndHashCode // FIXME remove
 public class HandWeapon implements Item, Weapon {
-    public static final HandWeapon FISTS = new HandWeapon(null, "fists", false, D2::roll);
+    public static final HandWeapon FISTS = new HandWeapon(null, "fists", false, 0, D2::roll);
 
     private final EventFactory<HandWeapon> factory;
     private final String displayName;
     private final boolean metallic;
+    private final int ordinal;
 
     private final Supplier<Integer> damage;
 }

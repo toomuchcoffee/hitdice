@@ -60,7 +60,7 @@ public class GameServiceTest {
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
         assertThat(hero.getEquipment()).hasSize(2);
-        assertThat(hero.getEquipment()).contains(LEATHER.createObject(), LONGSWORD.createObject());
+        assertThat(hero.getEquipment()).contains(LEATHER.create(), LONGSWORD.create());
         assertThat(hero.getHealth().getValue()).isEqualTo(5);
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
@@ -68,8 +68,8 @@ public class GameServiceTest {
     private de.toomuchcoffee.hitdice.domain.Hero getHero() {
         de.toomuchcoffee.hitdice.domain.Hero hero = TestData.getHero();
         ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
-        hero.addEquipment(LONGSWORD.createObject());
-        hero.addEquipment(LEATHER.createObject());
+        hero.addEquipment(LONGSWORD.create());
+        hero.addEquipment(LEATHER.create());
         hero.setLevel(2);
         hero.setExperience(251);
         hero.setName("Alrik");

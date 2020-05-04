@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.factory.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 public class EventService {
     private final Random random;
 
-    public Optional<Event<?>> createEvent(List<MonsterFactory> monsterFactories) {
+    public Optional<Object> createEvent(List<MonsterFactory> monsterFactories) {
         switch (D20.roll()) {
             case 1:
             case 2:
@@ -38,23 +37,23 @@ public class EventService {
     }
 
     @VisibleForTesting
-    Event<?> createItem() {
+    Object createItem() {
         return create(FACTORIES);
     }
 
     @VisibleForTesting
-    Event<?> createMonster(List<MonsterFactory> factories) {
+    Object createMonster(List<MonsterFactory> factories) {
         return create(factories);
     }
 
-    private Event<?> create(List<? extends EventFactory<?>> factories) {
+    private Object create(List<? extends EventFactory<?>> factories) {
         int sum = factories.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
         int roll = random.nextInt(sum);
         int p = 0;
         for (EventFactory<?> factory : factories) {
             p += factory.getFrequency().getProbability();
             if (roll < p) {
-                return factory.createEvent();
+                return factory.create();
             }
         }
         throw new IllegalStateException();

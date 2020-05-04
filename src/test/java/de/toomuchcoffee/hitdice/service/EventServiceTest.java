@@ -41,17 +41,17 @@ public class EventServiceTest {
                 MonsterFactory.BEHOLDER // very rare (1 -> 6)
         );
 
-        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ettin");
-        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ettin");
-        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ooze");
-        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Ooze");
-        assertThat(((Monster) eventService.createMonster(monsterFactories).getObject()).getName()).isEqualTo("Beholder");
+        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Beholder");
     }
 
     @Test
     public void createsTheRightItem() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThat(((Item) eventService.createItem().getObject()).getDisplayName()).isEqualTo("health potion");
+        assertThat(((Item) eventService.createItem()).getDisplayName()).isEqualTo("health potion");
     }
 }

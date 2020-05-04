@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -54,12 +53,11 @@ public class DungeonService {
     }
 
     public void clear(Dungeon dungeon) {
-        dungeon.getTile(dungeon.getPosition()).setEvent(null);
+        dungeon.getTile(dungeon.getPosition()).setOccupant(null);
     }
 
     public Optional<Item> getTreasure(Dungeon dungeon) {
-        return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getEvent())
-                .map(Event::getObject)
+        return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getOccupant())
                 .filter(e -> e instanceof Item)
                 .map(i -> (Item) i);
     }
@@ -82,7 +80,7 @@ public class DungeonService {
             for (int y = 0; y < dungeon.getHeight(); y++) {
                 Tile tile = dungeon.getTiles()[x][y];
                 if (!tile.isOccupied() && filter.contains(tile.getType())) {
-                    eventService.createEvent(factories).ifPresent(tile::setEvent);
+                    eventService.createEvent(factories).ifPresent(tile::setOccupant);
                 }
             }
         }

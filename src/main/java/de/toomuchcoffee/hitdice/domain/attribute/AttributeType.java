@@ -1,5 +1,5 @@
 package de.toomuchcoffee.hitdice.domain.attribute;
 
-public enum AttributeName {
+public enum AttributeType {
     STRENGTH, DEXTERITY, STAMINA, HEALTH
 }

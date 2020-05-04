@@ -10,6 +10,7 @@ public class Shield implements Item {
     private final EventFactory<Shield> factory;
     private final String displayName;
     private final boolean metallic;
+    private final int ordinal;
 
     private final int defense;
 }

@@ -1,14 +1,12 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
-import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
+import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D2;
@@ -19,22 +17,17 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.VERY_RARE;
 @Getter
 @RequiredArgsConstructor
 public enum PotionFactory implements EventFactory<Potion> {
-    HEALTH(() -> D4.roll(2), AttributeName.HEALTH, COMMON),
-    STRENGTH(D2::roll, AttributeName.STRENGTH, VERY_RARE),
-    DEXTERITY(D2::roll, AttributeName.DEXTERITY, VERY_RARE),
-    STAMINA(D2::roll, AttributeName.STAMINA, VERY_RARE);
+    HEALTH(() -> D4.roll(2), AttributeType.HEALTH, COMMON),
+    STRENGTH(D2::roll, AttributeType.STRENGTH, VERY_RARE),
+    DEXTERITY(D2::roll, AttributeType.DEXTERITY, VERY_RARE),
+    STAMINA(D2::roll, AttributeType.STAMINA, VERY_RARE);
 
     private final Supplier<Integer> potency;
-    private final AttributeName type;
+    private final AttributeType type;
     private final Frequency frequency;
 
     @Override
-    public Event<Potion> createEvent() {
-        return new Event<>(createObject());
-    }
-
-    @Override
-    public Potion createObject() {
-        return new Potion(UUID.randomUUID(), this, type.name().toLowerCase() + " potion", potency, type);
+    public Potion create() {
+        return new Potion(this, type.name().toLowerCase() + " potion", 0, potency, type);
     }
 }

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 @Getter
 @RequiredArgsConstructor
 public class Monster implements Combatant {
-    private final EventFactory factory;
+    private final EventFactory<Monster> factory;
     private final String name;
     private final int level;
     private final int defense;

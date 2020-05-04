@@ -15,16 +15,16 @@ public class ItemMapper {
         String s = dbItem.getName();
 
         if (stream(WeaponFactory.values()).map(WeaponFactory::name).anyMatch(e -> e.equals(s))) {
-            return WeaponFactory.valueOf(s).createEvent().getObject();
+            return WeaponFactory.valueOf(s).create();
         }
         if (stream(ArmorFactory.values()).map(ArmorFactory::name).anyMatch(e -> e.equals(s))) {
-            return ArmorFactory.valueOf(s).createEvent().getObject();
+            return ArmorFactory.valueOf(s).create();
         }
         if (stream(ShieldFactory.values()).map(ShieldFactory::name).anyMatch(e -> e.equals(s))) {
-            return ShieldFactory.valueOf(s).createEvent().getObject();
+            return ShieldFactory.valueOf(s).create();
         }
         if (stream(PotionFactory.values()).map(PotionFactory::name).anyMatch(e -> e.equals(s))) {
-            return PotionFactory.valueOf(s).createEvent().getObject();
+            return PotionFactory.valueOf(s).create();
         }
         throw new IllegalStateException("Value doesn't match any registered enum: " + s);
     }

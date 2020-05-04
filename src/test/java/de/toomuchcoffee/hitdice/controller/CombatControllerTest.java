@@ -37,7 +37,7 @@ public class CombatControllerTest {
     @Before
     public void setUp() {
         Hero hero = TestData.getHero();
-        Monster monster = (Monster) ORC.createEvent().getObject();
+        Monster monster = ORC.create();
         combat = new Combat(hero, monster);
     }
 

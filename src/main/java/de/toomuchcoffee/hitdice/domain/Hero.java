@@ -2,7 +2,7 @@ package de.toomuchcoffee.hitdice.domain;
 
 import de.toomuchcoffee.hitdice.domain.attribute.AbstractAttribute;
 import de.toomuchcoffee.hitdice.domain.attribute.Attribute;
-import de.toomuchcoffee.hitdice.domain.attribute.AttributeName;
+import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
@@ -16,7 +16,7 @@ import java.util.*;
 import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
-import static de.toomuchcoffee.hitdice.domain.attribute.AttributeName.*;
+import static de.toomuchcoffee.hitdice.domain.attribute.AttributeType.*;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.FISTS;
 import static java.lang.Math.max;
 import static java.util.stream.Collectors.toList;
@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 public class Hero implements Combatant {
     private String name;
 
-    private SortedMap<AttributeName, AbstractAttribute> attributes = new TreeMap<>();
+    private SortedMap<AttributeType, AbstractAttribute> attributes = new TreeMap<>();
 
     private List<Item> equipment = new ArrayList<>();
 
@@ -94,7 +94,7 @@ public class Hero implements Combatant {
         return equipment.stream()
                 .filter(clazz::isInstance)
                 .map(clazz::cast)
-                .findFirst()// FIXME order by best equipment
+                .max(Comparator.comparingInt(Item::getOrdinal))
                 .orElse(defaultValue);
     }
 
@@ -125,10 +125,6 @@ public class Hero implements Combatant {
     @Override
     public boolean isDefeated() {
         return attributes.values().stream().anyMatch(v -> v.getValue() <= 0);
-    }
-
-    public void drink(Potion potion) {
-        attributes.get(potion.getType()).increase(potion.getPotency().get());
     }
 
     public Attribute getStrength() {

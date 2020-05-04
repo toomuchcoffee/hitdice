@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.Shield;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
@@ -22,12 +21,7 @@ public enum ShieldFactory implements EventFactory<Shield> {
     private final Frequency frequency;
 
     @Override
-    public Event<Shield> createEvent() {
-        return new Event<>(createObject());
-    }
-
-    @Override
-    public Shield createObject() {
-        return new Shield(this, displayName, metallic, defense);
+    public Shield create() {
+        return new Shield(this, displayName, metallic, ordinal(), defense);
     }
 }

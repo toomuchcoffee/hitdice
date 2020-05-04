@@ -1,7 +1,6 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.equipment.Armor;
-import de.toomuchcoffee.hitdice.domain.event.Event;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
@@ -23,12 +22,7 @@ public enum ArmorFactory implements EventFactory<Armor> {
     private final Frequency frequency;
 
     @Override
-    public Event<Armor> createEvent() {
-        return new Event<>(createObject());
-    }
-
-    @Override
-    public Armor createObject() {
-        return new Armor(this, displayName, metallic, protection);
+    public Armor create() {
+        return new Armor(this, displayName, metallic, ordinal(), protection);
     }
 }
