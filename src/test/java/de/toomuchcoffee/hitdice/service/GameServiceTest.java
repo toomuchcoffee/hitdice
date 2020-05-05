@@ -14,6 +14,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
@@ -60,7 +61,9 @@ public class GameServiceTest {
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
         assertThat(hero.getEquipment()).hasSize(2);
-        assertThat(hero.getEquipment()).contains(LEATHER.create(), LONGSWORD.create());
+        assertThat(hero.getEquipment().stream()
+                .map(de.toomuchcoffee.hitdice.domain.equipment.Item::getDisplayName)
+                .collect(Collectors.toSet())).contains(LEATHER.getDisplayName(), LONGSWORD.getDisplayName());
         assertThat(hero.getHealth().getValue()).isEqualTo(5);
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }

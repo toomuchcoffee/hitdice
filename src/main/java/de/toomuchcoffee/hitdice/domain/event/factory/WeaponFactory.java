@@ -14,15 +14,15 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 @Getter
 @RequiredArgsConstructor
 public enum WeaponFactory implements EventFactory<HandWeapon> {
-    DAGGER("dagger", D4::roll, true, COMMON),
-    STAFF("staff", D4::roll, false, COMMON),
-    SHORTSWORD("shortsword", D6::roll, true, UNCOMMON),
-    MACE("mace", D6::roll, true, UNCOMMON),
-    LONGSWORD("longsword", D8::roll, true, RARE),
-    BATTLEAXE("battleaxe", D8::roll, true, RARE),
-    WARHAMMER("warhammer", D8::roll, true, RARE),
-    CLAYMORE("claymore", D10::roll, true, VERY_RARE),
-    MAUL("maul", D10::roll, true, VERY_RARE);
+    DAGGER("dagger", D4.roller(), true, COMMON),
+    STAFF("staff", D4.roller(), false, COMMON),
+    SHORTSWORD("shortsword", D6.roller(), true, UNCOMMON),
+    MACE("mace", D6.roller(), true, UNCOMMON),
+    LONGSWORD("longsword", D8.roller(), true, RARE),
+    BATTLEAXE("battleaxe", D8.roller(), true, RARE),
+    WARHAMMER("warhammer", D8.roller(), true, RARE),
+    CLAYMORE("claymore", D10.roller(), true, VERY_RARE),
+    MAUL("maul", D10.roller(), true, VERY_RARE);
 
     private final String displayName;
     private final Supplier<Integer> damage;

@@ -11,6 +11,7 @@ import static java.util.Arrays.stream;
 
 @Component
 public class ItemMapper {
+    // FIXME should be independent from event factories
     public Item fromDb(de.toomuchcoffee.hitdice.db.Item dbItem) {
         String s = dbItem.getName();
 
@@ -29,9 +30,10 @@ public class ItemMapper {
         throw new IllegalStateException("Value doesn't match any registered enum: " + s);
     }
 
+    // FIXME should be independent from event factories
     public de.toomuchcoffee.hitdice.db.Item toDb(Item item) {
         de.toomuchcoffee.hitdice.db.Item dbItem = new de.toomuchcoffee.hitdice.db.Item();
-        dbItem.setName(item.getFactory().name()); // FIXME
+        dbItem.setName(item.getFactory().name());
         return dbItem;
     }
 

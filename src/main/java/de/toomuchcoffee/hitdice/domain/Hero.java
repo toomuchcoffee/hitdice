@@ -14,8 +14,8 @@ import lombok.Setter;
 import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
+import static de.toomuchcoffee.hitdice.domain.Dice._3D6;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeType.*;
 import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.FISTS;
 import static java.lang.Math.max;
@@ -36,9 +36,9 @@ public class Hero implements Combatant {
 
     public void initialize() {
         attributes = new TreeMap<>();
-        attributes.put(STRENGTH, new Attribute(D6.roll(3)));
-        attributes.put(DEXTERITY, new Attribute(D6.roll(3)));
-        attributes.put(STAMINA, new Attribute(D6.roll(3)));
+        attributes.put(STRENGTH, new Attribute(_3D6.roll()));
+        attributes.put(DEXTERITY, new Attribute(_3D6.roll()));
+        attributes.put(STAMINA, new Attribute(_3D6.roll()));
         attributes.put(HEALTH, new Health(0));
         this.levelUp();
     }

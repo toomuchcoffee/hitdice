@@ -10,17 +10,17 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Supplier;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D2;
-import static de.toomuchcoffee.hitdice.domain.Dice.D4;
+import static de.toomuchcoffee.hitdice.domain.Dice.of;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.COMMON;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.VERY_RARE;
 
 @Getter
 @RequiredArgsConstructor
 public enum PotionFactory implements EventFactory<Potion> {
-    HEALTH(() -> D4.roll(2), AttributeType.HEALTH, COMMON),
-    STRENGTH(D2::roll, AttributeType.STRENGTH, VERY_RARE),
-    DEXTERITY(D2::roll, AttributeType.DEXTERITY, VERY_RARE),
-    STAMINA(D2::roll, AttributeType.STAMINA, VERY_RARE);
+    HEALTH(of(2, 4).roller(), AttributeType.HEALTH, COMMON),
+    STRENGTH(D2.roller(), AttributeType.STRENGTH, VERY_RARE),
+    DEXTERITY(D2.roller(), AttributeType.DEXTERITY, VERY_RARE),
+    STAMINA(D2.roller(), AttributeType.STAMINA, VERY_RARE);
 
     private final Supplier<Integer> potency;
     private final AttributeType type;

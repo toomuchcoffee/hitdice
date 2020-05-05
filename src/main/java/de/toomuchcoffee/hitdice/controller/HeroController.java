@@ -41,7 +41,7 @@ public class HeroController {
                 .displayName("my first dagger")
                 .metallic(true)
                 .ordinal(DAGGER.ordinal())
-                .damage(D4::roll)
+                .damage(D4.roller())
                 .build();
         hero.addEquipment(dagger);
         model.addAttribute("hero", hero);
