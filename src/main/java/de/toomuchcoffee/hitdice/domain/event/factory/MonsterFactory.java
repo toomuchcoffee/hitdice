@@ -26,10 +26,10 @@ public enum MonsterFactory implements EventFactory<Monster> {
             new WeaponAttack(new CustomWeapon("teeth", D3::roll))),
 
     GOBLIN("Goblin", 1, COMMON, 0, 1,
-            new WeaponAttack(new HandWeapon(null, "scimitar", true, 0, D6::roll))),
+            new WeaponAttack(HandWeapon.builder().displayName("scimitar").damage(D6::roll).build())),
 
     ORC("Orc", 2, COMMON, 0, 2,
-            new WeaponAttack(new HandWeapon(null, "great scimitar", true, 0, () -> D8.roll() + 1))),
+            new WeaponAttack(HandWeapon.builder().displayName("great scimitar").damage(() -> D8.roll() + 1).build())),
 
     RUST_MONSTER("Rust monster", 3, UNCOMMON, 0, 2,
             new WeaponAttack(new CustomWeapon("tail", D6::roll)),
@@ -74,7 +74,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             new WeaponAttack(new CustomWeapon("big club", () -> D6.roll(2)))),
 
     SKELETON("Skeleton", 1, COMMON, 0, 2,
-            new WeaponAttack(new HandWeapon(null, "ancient sword", true, 0, D8::roll))),
+            new WeaponAttack(HandWeapon.builder().displayName("ancient sword").damage(D8::roll).build())),
 
     TROLL("Troll", 4, UNCOMMON, -1, 3,
             new WeaponAttack(new CustomWeapon("claws", D10::roll)),
@@ -149,7 +149,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     LICH("Lich", 7, VERY_RARE, 0, 3,
-            new WeaponAttack(new HandWeapon(null, "two-handed sword", true, 0, D12::roll)),
+            new WeaponAttack(HandWeapon.builder().displayName("two-handed sword").damage(D12::roll).build()),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(4)) {
                     Hero hero = (Hero) defender;

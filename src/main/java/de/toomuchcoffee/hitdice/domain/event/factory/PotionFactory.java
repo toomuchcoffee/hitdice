@@ -28,6 +28,11 @@ public enum PotionFactory implements EventFactory<Potion> {
 
     @Override
     public Potion create() {
-        return new Potion(this, type.name().toLowerCase() + " potion", 0, potency, type);
+        return Potion.builder()
+                .factory(this)
+                .displayName(type.name().toLowerCase() + " potion")
+                .potency(potency)
+                .type(type)
+                .build();
     }
 }

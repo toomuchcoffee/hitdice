@@ -31,6 +31,12 @@ public enum WeaponFactory implements EventFactory<HandWeapon> {
 
     @Override
     public HandWeapon create() {
-        return new HandWeapon(this, displayName, metallic, ordinal(), damage);
+        return HandWeapon.builder()
+                .factory(this)
+                .displayName(displayName)
+                .metallic(metallic)
+                .ordinal(ordinal())
+                .damage(damage)
+                .build();
     }
 }

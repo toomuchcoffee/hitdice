@@ -36,7 +36,14 @@ public class HeroController {
 
     @GetMapping("confirm")
     public String confirm(@SessionAttribute Hero hero, Model model) {
-        hero.addEquipment(new HandWeapon(DAGGER, "dagger", true, DAGGER.ordinal(), D4::roll));
+        HandWeapon dagger = HandWeapon.builder()
+                .factory(DAGGER)
+                .displayName("my first dagger")
+                .metallic(true)
+                .ordinal(DAGGER.ordinal())
+                .damage(D4::roll)
+                .build();
+        hero.addEquipment(dagger);
         model.addAttribute("hero", hero);
         model.addAttribute("confirmed", true);
         return "create";

@@ -1,18 +1,12 @@
 package de.toomuchcoffee.hitdice.domain.equipment;
 
-import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@RequiredArgsConstructor
-@EqualsAndHashCode // FIXME remove
-public class Armor implements Item {
-    private final EventFactory<Armor> factory;
-    private final String displayName;
-    private final boolean metallic;
-    private final int ordinal;
-
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true) // FIXME remove
+public class Armor extends Item {
     private final int protection;
 }
