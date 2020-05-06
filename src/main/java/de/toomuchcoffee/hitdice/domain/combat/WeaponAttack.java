@@ -19,7 +19,7 @@ public class WeaponAttack implements CombatAction {
     }
 
     private String onSuccess(Combatant attacker, Combatant defender) {
-        int damage = max(1, weapon.getDamage().get()
+        int damage = max(1, weapon.getDamage().roll()
                 + attacker.getDamageBonus()
                 - defender.getArmorClass());
         defender.reduceHealth(damage);

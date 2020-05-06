@@ -23,16 +23,16 @@ import static java.util.Arrays.asList;
 @Getter
 public enum MonsterFactory implements EventFactory<Monster> {
     GIANT_RAT("Giant Rat", 0, COMMON, 4, 0,
-            new WeaponAttack(new CustomWeapon("teeth", D3.roller()))),
+            new WeaponAttack(new CustomWeapon("teeth", D3))),
 
     GOBLIN("Goblin", 1, COMMON, 0, 1,
-            new WeaponAttack(HandWeapon.builder().displayName("scimitar").damage(D6.roller()).build())),
+            new WeaponAttack(HandWeapon.builder().displayName("scimitar").damage(D6).build())),
 
     ORC("Orc", 2, COMMON, 0, 2,
-            new WeaponAttack(HandWeapon.builder().displayName("great scimitar").damage(D8.roller()).build())),
+            new WeaponAttack(HandWeapon.builder().displayName("great scimitar").damage(D8).build())),
 
     RUST_MONSTER("Rust monster", 3, UNCOMMON, 0, 2,
-            new WeaponAttack(new CustomWeapon("tail", D6.roller())),
+            new WeaponAttack(new CustomWeapon("tail", D6)),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(7)) {
                     Hero hero = (Hero) defender;
@@ -49,7 +49,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     ZOMBIE("Zombie", 2, COMMON, -1, 0,
-            new WeaponAttack(new CustomWeapon("claws", D4.roller())),
+            new WeaponAttack(new CustomWeapon("claws", D4)),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
@@ -60,7 +60,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     GHOUL("Ghoul", 2, UNCOMMON, -1, 0,
-            new WeaponAttack(new CustomWeapon("claws", D4.roller())),
+            new WeaponAttack(new CustomWeapon("claws", D4)),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
@@ -71,13 +71,13 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     OGRE("Ogre", 3, COMMON, -1, 2,
-            new WeaponAttack(new CustomWeapon("big club", of(2, 6).roller()))),
+            new WeaponAttack(new CustomWeapon("big club", of(2, 6)))),
 
     SKELETON("Skeleton", 1, COMMON, 0, 2,
-            new WeaponAttack(HandWeapon.builder().displayName("ancient sword").damage(D8.roller()).build())),
+            new WeaponAttack(HandWeapon.builder().displayName("ancient sword").damage(D8).build())),
 
     TROLL("Troll", 4, UNCOMMON, -1, 3,
-            new WeaponAttack(new CustomWeapon("claws", D10.roller())),
+            new WeaponAttack(new CustomWeapon("claws", D10)),
             (attacker, defender) -> {
                 if (attacker.getHealth().isInjured()) {
                     int regeneration = D3.roll();
@@ -88,7 +88,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     OOZE("Ooze", 5, RARE, -1, 1,
-            new WeaponAttack(new CustomWeapon("acid", of(3, 4).roller())),
+            new WeaponAttack(new CustomWeapon("acid", of(3, 4))),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(7)) {
                     Hero hero = (Hero) defender;
@@ -105,7 +105,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     VAMPIRE("Vampire", 5, RARE, 2, 0,
-            new WeaponAttack(new CustomWeapon("bite", of(2, 4).roller())),
+            new WeaponAttack(new CustomWeapon("bite", of(2, 4))),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(5)) {
                     Hero hero = (Hero) defender;
@@ -116,8 +116,8 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     ETTIN("Ettin", 4, UNCOMMON, -1, 3,
-            new WeaponAttack(new CustomWeapon("big club", of(2, 6).roller())),
-            new WeaponAttack(new CustomWeapon("other big club", of(2, 6).roller()))),
+            new WeaponAttack(new CustomWeapon("big club", of(2, 6))),
+            new WeaponAttack(new CustomWeapon("other big club", of(2, 6)))),
 
 
     MIND_FLAYER("Mind Flayer", 6, VERY_RARE, 4, 0,
@@ -126,7 +126,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
                 if (D20.check(attackScore)) {
                     Hero hero = (Hero) defender;
                     HandWeapon weapon = hero.getWeapon();
-                    int damage = max(1, weapon.getDamage().get()
+                    int damage = max(1, weapon.getDamage().roll()
                             + defender.getDamageBonus()
                             - defender.getArmorClass());
                     defender.reduceHealth(damage);
@@ -136,7 +136,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     BEHOLDER("Beholder", 6, VERY_RARE, 0, 0,
-            new WeaponAttack(new CustomWeapon("bite", of(3, 4).roller())),
+            new WeaponAttack(new CustomWeapon("bite", of(3, 4))),
             (attacker, defender) -> {
                 Hero hero = (Hero) defender;
                 int eyes = D20.roll() - 9;
@@ -149,7 +149,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     LICH("Lich", 7, VERY_RARE, 0, 3,
-            new WeaponAttack(HandWeapon.builder().displayName("two-handed sword").damage(D12.roller()).build()),
+            new WeaponAttack(HandWeapon.builder().displayName("two-handed sword").damage(D12).build()),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(4)) {
                     Hero hero = (Hero) defender;
@@ -162,7 +162,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     DEMOGORGON("Demogorgon", 7, VERY_RARE, 2, 0,
-            new WeaponAttack(new CustomWeapon("bite", of(2, 8).roller())),
+            new WeaponAttack(new CustomWeapon("bite", of(2, 8))),
             (attacker, defender) -> {
                 if (defender instanceof Hero && D20.check(10)) {
                     Hero hero = (Hero) defender;
@@ -175,7 +175,7 @@ public enum MonsterFactory implements EventFactory<Monster> {
             }),
 
     DRAGON("Dragon", 8, VERY_RARE, 0, 5, new WeaponAttack(
-            new CustomWeapon("claws", of(2, 8).roller())),
+            new CustomWeapon("claws", of(2, 8))),
             (attacker, defender) -> {
                 if (D20.check(10)) {
                     int damage = of(4, 8).roll();

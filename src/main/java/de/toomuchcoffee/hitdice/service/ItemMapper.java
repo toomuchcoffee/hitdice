@@ -1,39 +1,78 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory;
-import de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory;
-import de.toomuchcoffee.hitdice.domain.event.factory.ShieldFactory;
-import de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory;
+import de.toomuchcoffee.hitdice.db.ItemType;
+import de.toomuchcoffee.hitdice.domain.Dice;
+import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
+import de.toomuchcoffee.hitdice.domain.equipment.*;
 import org.springframework.stereotype.Component;
 
-import static java.util.Arrays.stream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class ItemMapper {
-    // FIXME should be independent from event factories
     public Item fromDb(de.toomuchcoffee.hitdice.db.Item dbItem) {
-        String s = dbItem.getName();
-
-        if (stream(WeaponFactory.values()).map(WeaponFactory::name).anyMatch(e -> e.equals(s))) {
-            return WeaponFactory.valueOf(s).create();
+        ItemType type = dbItem.getItemType();
+        switch (type){
+            case ARMOR:
+                return Armor.builder()
+                        .displayName(dbItem.getDisplayName())
+                        .metallic(dbItem.isMetallic())
+                        .ordinal(dbItem.getOrdinal())
+                        .protection((Integer) dbItem.getProperties().get("protection"))
+                        .build();
+            case WEAPON:
+                return HandWeapon.builder()
+                        .displayName(dbItem.getDisplayName())
+                        .metallic(dbItem.isMetallic())
+                        .ordinal(dbItem.getOrdinal())
+                        .damage(Dice.deserialize((String) dbItem.getProperties().get("damage")))
+                        .build();
+            case SHIELD:
+                return Shield.builder()
+                        .displayName(dbItem.getDisplayName())
+                        .metallic(dbItem.isMetallic())
+                        .ordinal(dbItem.getOrdinal())
+                        .defense((Integer) dbItem.getProperties().get("defense"))
+                        .build();
+            case POTION:
+                return Potion.builder()
+                        .displayName(dbItem.getDisplayName())
+                        .metallic(dbItem.isMetallic())
+                        .ordinal(dbItem.getOrdinal())
+                        .potency(Dice.deserialize((String) dbItem.getProperties().get("potency")))
+                        .type(AttributeType.valueOf((String) dbItem.getProperties().get("type")))
+                        .build();
+            default:
+                throw new IllegalArgumentException("Unsupported item type: " + type);
         }
-        if (stream(ArmorFactory.values()).map(ArmorFactory::name).anyMatch(e -> e.equals(s))) {
-            return ArmorFactory.valueOf(s).create();
-        }
-        if (stream(ShieldFactory.values()).map(ShieldFactory::name).anyMatch(e -> e.equals(s))) {
-            return ShieldFactory.valueOf(s).create();
-        }
-        if (stream(PotionFactory.values()).map(PotionFactory::name).anyMatch(e -> e.equals(s))) {
-            return PotionFactory.valueOf(s).create();
-        }
-        throw new IllegalStateException("Value doesn't match any registered enum: " + s);
     }
 
-    // FIXME should be independent from event factories
     public de.toomuchcoffee.hitdice.db.Item toDb(Item item) {
         de.toomuchcoffee.hitdice.db.Item dbItem = new de.toomuchcoffee.hitdice.db.Item();
-        dbItem.setName(item.getFactory().name());
+        ItemType type;
+        Map<String, Object> properties = new HashMap<>();
+        if (item instanceof Armor) {
+            type = ItemType.ARMOR;
+            properties.put("protection", ((Armor) item).getProtection());
+        } else if (item instanceof HandWeapon) {
+            type = ItemType.WEAPON;
+            properties.put("damage", ((HandWeapon) item).getDamage().serialize());
+        } else if (item instanceof Shield) {
+            type = ItemType.SHIELD;
+            properties.put("defense", ((Shield) item).getDefense());
+        } else if (item instanceof Potion) {
+            type = ItemType.POTION;
+            properties.put("potency", ((Potion) item).getPotency().serialize());
+            properties.put("type", ((Potion) item).getType().name());
+        } else {
+            throw new IllegalArgumentException("Unsupported item class: " + item.getClass().getName());
+        }
+        dbItem.setItemType(type);
+        dbItem.setProperties(properties);
+        dbItem.setDisplayName(item.getDisplayName());
+        dbItem.setMetallic(item.isMetallic());
+        dbItem.setOrdinal(item.getOrdinal());
         return dbItem;
     }
 

@@ -2,10 +2,10 @@ package de.toomuchcoffee.hitdice.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -14,6 +14,7 @@ import static java.lang.Integer.parseInt;
 
 @EqualsAndHashCode
 @RequiredArgsConstructor
+@ToString
 public class Dice {
     public static final Dice D2 = of(1, 2);
     public static final Dice D3 = of(1, 3);
@@ -33,23 +34,23 @@ public class Dice {
     @EqualsAndHashCode.Exclude
     private final Random random = new Random();
 
-    public Supplier<Integer> roller() {
-        return () -> IntStream.range(0, count).map(a -> _roll()).sum() + plus;
-    }
-
     public Integer roll() {
-        return roller().get();
+        return IntStream.range(0, count).map(a -> random.nextInt(sides) + 1).sum() + plus;
     }
 
-    public boolean check(int p) {
-        return roller().get() <= p;
+    public boolean check(int score) {
+        return roll() <= score;
     }
 
-    private int _roll() {
-        return random.nextInt(sides) + 1;
+    public static Dice of(int count, int sides, int plus) {
+        return new Dice(count, sides, plus);
     }
 
-    public String toString() {
+    public static Dice of(int count, int sides) {
+        return of(count, sides, 0);
+    }
+
+    public String serialize() {
         StringBuilder sb = new StringBuilder();
         sb.append(count);
         sb.append("D");
@@ -63,16 +64,8 @@ public class Dice {
         return sb.toString();
     }
 
-    public static Dice of(int count, int sides, int plus) {
-        return new Dice(count, sides, plus);
-    }
-
-    public static Dice of(int count, int sides) {
-        return of(count, sides, 0);
-    }
-
-    public static Dice from(String s) {
-        String regex = "(\\d+)D(\\d)([+-]\\d+)?";
+    public static Dice deserialize(String s) {
+        String regex = "(\\d+)D(\\d+)([+-]\\d+)?";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(s);
         if (matcher.find()) {

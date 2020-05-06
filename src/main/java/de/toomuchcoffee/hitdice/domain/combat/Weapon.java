@@ -1,8 +1,8 @@
 package de.toomuchcoffee.hitdice.domain.combat;
 
-import java.util.function.Supplier;
+import de.toomuchcoffee.hitdice.domain.Dice;
 
 public interface Weapon {
     String getDisplayName();
-    Supplier<Integer> getDamage();
+    Dice getDamage();
 }

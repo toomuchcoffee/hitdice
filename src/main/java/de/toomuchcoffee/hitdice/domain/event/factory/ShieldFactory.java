@@ -23,7 +23,6 @@ public enum ShieldFactory implements EventFactory<Shield> {
     @Override
     public Shield create() {
         return Shield.builder()
-                .factory(this)
                 .displayName(displayName)
                 .metallic(metallic)
                 .ordinal(ordinal())

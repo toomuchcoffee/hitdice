@@ -1,8 +1,8 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.db.Hero;
-import de.toomuchcoffee.hitdice.db.HeroRepository;
-import de.toomuchcoffee.hitdice.db.Item;
+import com.google.common.collect.ImmutableMap;
+import de.toomuchcoffee.hitdice.db.*;
+import de.toomuchcoffee.hitdice.domain.Dice;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
+import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.LONGSWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -48,7 +50,8 @@ public class GameServiceTest {
 
         Hero expected = getGame();
 
-        assertThat(argumentCaptor.getValue()).isEqualToComparingFieldByField(expected);
+        assertThat(argumentCaptor.getValue()).isEqualToIgnoringGivenFields(expected, "items");
+        assertThat(argumentCaptor.getValue().getItems()).containsAll(getItems());
     }
 
     @Test
@@ -60,10 +63,10 @@ public class GameServiceTest {
         de.toomuchcoffee.hitdice.domain.Hero expected = getHero();
 
         assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
-        assertThat(hero.getEquipment()).hasSize(2);
+        assertThat(hero.getEquipment()).hasSize(3);
         assertThat(hero.getEquipment().stream()
                 .map(de.toomuchcoffee.hitdice.domain.equipment.Item::getDisplayName)
-                .collect(Collectors.toSet())).contains(LEATHER.getDisplayName(), LONGSWORD.getDisplayName());
+                .collect(Collectors.toSet())).contains("leather armor", "longsword", "health potion");
         assertThat(hero.getHealth().getValue()).isEqualTo(5);
         assertThat(hero.getHealth().getMaxValue()).isEqualTo(12);
     }
@@ -73,6 +76,7 @@ public class GameServiceTest {
         ReflectionTestUtils.setField(hero.getHealth(), "value", 5);
         hero.addEquipment(LONGSWORD.create());
         hero.addEquipment(LEATHER.create());
+        hero.addEquipment(HEALTH.create());
         hero.setLevel(2);
         hero.setExperience(251);
         hero.setName("Alrik");
@@ -95,14 +99,28 @@ public class GameServiceTest {
 
     private HashSet<Item> getItems() {
         return newHashSet(
-                createItem(LONGSWORD.name()),
-                createItem(LEATHER.name())
+                ItemTestData.createItem(
+                        LONGSWORD.getDisplayName(),
+                        LONGSWORD.ordinal(),
+                        LONGSWORD.isMetallic(),
+                        ItemType.WEAPON,
+                        ImmutableMap.of("damage", D8.serialize())
+                ),
+                ItemTestData.createItem(
+                        LEATHER.getDisplayName(),
+                        LEATHER.ordinal(),
+                        LEATHER.isMetallic(),
+                        ItemType.ARMOR,
+                        ImmutableMap.of("protection", LEATHER.getProtection())),
+                ItemTestData.createItem("health potion",
+                        HEALTH.ordinal(),
+                        false,
+                        ItemType.POTION,
+                        ImmutableMap.of(
+                                "potency", Dice.of(2, 4).serialize(),
+                                "type", HEALTH.name()
+                        ))
         );
     }
 
-    private Item createItem(String name) {
-        Item item = new Item();
-        item.setName(name);
-        return item;
-    }
 }

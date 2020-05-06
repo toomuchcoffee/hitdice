@@ -32,7 +32,7 @@ public class HeroService {
             if (item instanceof Potion && ((Potion) item).getType().equals(type)) {
                 it.remove();
                 Potion potion = (Potion) item;
-                hero.getAttributes().get(potion.getType()).increase(potion.getPotency().get());
+                hero.getAttributes().get(potion.getType()).increase(potion.getPotency().roll());
                 return;
             }
         }

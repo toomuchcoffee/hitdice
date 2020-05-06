@@ -24,7 +24,6 @@ public enum ArmorFactory implements EventFactory<Armor> {
     @Override
     public Armor create() {
         return Armor.builder()
-                .factory(this)
                 .displayName(displayName)
                 .metallic(metallic)
                 .ordinal(ordinal())

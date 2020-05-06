@@ -1,6 +1,8 @@
 package de.toomuchcoffee.hitdice.db;
 
+import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.config.JpaConfig;
+import de.toomuchcoffee.hitdice.domain.Dice;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.SHORTSWORD;
@@ -33,9 +36,25 @@ public class HeroRepositoryTest {
         Hero save = heroRepository.save(hero);
 
         Set<Item> items = newHashSet(
-                createItem(SHORTSWORD.name()),
-                createItem(LEATHER.name()),
-                createItem(HEALTH.name()));
+                ItemTestData.createItem(
+                        SHORTSWORD.getDisplayName(),
+                        SHORTSWORD.ordinal(),
+                        SHORTSWORD.isMetallic(),
+                        ItemType.WEAPON,
+                        ImmutableMap.of("damage", D6.serialize())
+                ),
+                ItemTestData.createItem(
+                        LEATHER.getDisplayName(),
+                        LEATHER.ordinal(),
+                        LEATHER.isMetallic(),
+                        ItemType.ARMOR,
+                        ImmutableMap.of("protection", LEATHER.getProtection())),
+                ItemTestData.createItem("health potion",
+                        HEALTH.ordinal(),
+                        false,
+                        ItemType.POTION,
+                        ImmutableMap.of("potency", Dice.of(2, 4).serialize()))
+        );
         items.forEach(i -> i.setHero(hero));
         hero.setItems(items);
         heroRepository.save(hero);
@@ -47,12 +66,6 @@ public class HeroRepositoryTest {
         assertThat(found.getName()).isEqualTo("foo");
         assertThat(found.getItems()).isEqualTo(items);
         assertThat(found.getCreated()).isNotNull();
-    }
-
-    private Item createItem(String name) {
-        Item item = new Item();
-        item.setName(name);
-        return item;
     }
 
 }

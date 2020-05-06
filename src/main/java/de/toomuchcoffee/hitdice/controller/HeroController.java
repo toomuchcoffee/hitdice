@@ -37,11 +37,10 @@ public class HeroController {
     @GetMapping("confirm")
     public String confirm(@SessionAttribute Hero hero, Model model) {
         HandWeapon dagger = HandWeapon.builder()
-                .factory(DAGGER)
                 .displayName("my first dagger")
                 .metallic(true)
                 .ordinal(DAGGER.ordinal())
-                .damage(D4.roller())
+                .damage(D4)
                 .build();
         hero.addEquipment(dagger);
         model.addAttribute("hero", hero);
