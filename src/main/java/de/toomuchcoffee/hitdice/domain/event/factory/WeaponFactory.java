@@ -1,7 +1,7 @@
 package de.toomuchcoffee.hitdice.domain.event.factory;
 
 import de.toomuchcoffee.hitdice.domain.Dice;
-import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
+import de.toomuchcoffee.hitdice.domain.equipment.Weapon;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.service.EventFactory;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 
 @Getter
 @RequiredArgsConstructor
-public enum WeaponFactory implements EventFactory<HandWeapon> {
+public enum WeaponFactory implements EventFactory<Weapon> {
     DAGGER("dagger", D4, true, COMMON),
     STAFF("staff", D4, false, COMMON),
     SHORTSWORD("shortsword", D6, true, UNCOMMON),
@@ -29,8 +29,8 @@ public enum WeaponFactory implements EventFactory<HandWeapon> {
     private final Frequency frequency;
 
     @Override
-    public HandWeapon create() {
-        return HandWeapon.builder()
+    public Weapon create() {
+        return Weapon.builder()
                 .displayName(displayName)
                 .metallic(metallic)
                 .ordinal(ordinal())

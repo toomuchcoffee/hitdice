@@ -4,9 +4,9 @@ import de.toomuchcoffee.hitdice.domain.attribute.AbstractAttribute;
 import de.toomuchcoffee.hitdice.domain.attribute.Attribute;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
 import de.toomuchcoffee.hitdice.domain.attribute.Health;
+import de.toomuchcoffee.hitdice.domain.combat.Attack;
 import de.toomuchcoffee.hitdice.domain.combat.CombatAction;
 import de.toomuchcoffee.hitdice.domain.combat.Combatant;
-import de.toomuchcoffee.hitdice.domain.combat.WeaponAttack;
 import de.toomuchcoffee.hitdice.domain.equipment.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.Dice._3D6;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeType.*;
-import static de.toomuchcoffee.hitdice.domain.equipment.HandWeapon.FISTS;
+import static de.toomuchcoffee.hitdice.domain.equipment.Weapon.FISTS;
 import static java.lang.Math.max;
 import static java.util.stream.Collectors.toList;
 
@@ -69,7 +69,7 @@ public class Hero implements Combatant {
     }
 
     public List<CombatAction> getCombatActions() {
-        return newArrayList(new WeaponAttack(getWeapon()));
+        return newArrayList(Attack.with(getWeapon()));
     }
 
 
@@ -78,8 +78,8 @@ public class Hero implements Combatant {
         return getStrength().getBonus();
     }
 
-    public HandWeapon getWeapon() {
-        return getEquipment(HandWeapon.class, FISTS);
+    public Weapon getWeapon() {
+        return getEquipment(Weapon.class, FISTS);
     }
 
     public Armor getArmor() {

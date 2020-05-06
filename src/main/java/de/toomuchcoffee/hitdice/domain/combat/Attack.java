@@ -1,12 +1,13 @@
 package de.toomuchcoffee.hitdice.domain.combat;
 
+import de.toomuchcoffee.hitdice.domain.equipment.Weapon;
 import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static java.lang.Math.max;
 
-@RequiredArgsConstructor
-public class WeaponAttack implements CombatAction {
+@RequiredArgsConstructor(staticName = "with")
+public class Attack implements CombatAction {
     private final Weapon weapon;
 
     public String execute(Combatant attacker, Combatant defender) {

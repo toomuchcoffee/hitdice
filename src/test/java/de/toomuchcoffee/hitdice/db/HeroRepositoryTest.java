@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.db;
 
 import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.config.JpaConfig;
-import de.toomuchcoffee.hitdice.domain.Dice;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +14,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
+import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.SHORTSWORD;
@@ -53,7 +53,7 @@ public class HeroRepositoryTest {
                         HEALTH.ordinal(),
                         false,
                         ItemType.POTION,
-                        ImmutableMap.of("potency", Dice.of(2, 4).serialize()))
+                        ImmutableMap.of("potency", n(2).D(4).serialize()))
         );
         items.forEach(i -> i.setHero(hero));
         hero.setItems(items);

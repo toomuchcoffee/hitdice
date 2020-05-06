@@ -4,7 +4,7 @@ import de.toomuchcoffee.hitdice.controller.dto.HeroUpdate;
 import de.toomuchcoffee.hitdice.controller.dto.ModalData;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
-import de.toomuchcoffee.hitdice.domain.equipment.HandWeapon;
+import de.toomuchcoffee.hitdice.domain.equipment.Weapon;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class HeroController {
 
     @GetMapping("confirm")
     public String confirm(@SessionAttribute Hero hero, Model model) {
-        HandWeapon dagger = HandWeapon.builder()
+        Weapon dagger = Weapon.builder()
                 .displayName("my first dagger")
                 .metallic(true)
                 .ordinal(DAGGER.ordinal())

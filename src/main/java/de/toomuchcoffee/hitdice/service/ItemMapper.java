@@ -22,7 +22,7 @@ public class ItemMapper {
                         .protection((Integer) dbItem.getProperties().get("protection"))
                         .build();
             case WEAPON:
-                return HandWeapon.builder()
+                return Weapon.builder()
                         .displayName(dbItem.getDisplayName())
                         .metallic(dbItem.isMetallic())
                         .ordinal(dbItem.getOrdinal())
@@ -55,9 +55,9 @@ public class ItemMapper {
         if (item instanceof Armor) {
             type = ItemType.ARMOR;
             properties.put("protection", ((Armor) item).getProtection());
-        } else if (item instanceof HandWeapon) {
+        } else if (item instanceof Weapon) {
             type = ItemType.WEAPON;
-            properties.put("damage", ((HandWeapon) item).getDamage().serialize());
+            properties.put("damage", ((Weapon) item).getDamage().serialize());
         } else if (item instanceof Shield) {
             type = ItemType.SHIELD;
             properties.put("defense", ((Shield) item).getDefense());

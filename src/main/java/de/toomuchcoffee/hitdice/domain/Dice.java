@@ -16,23 +16,44 @@ import static java.lang.Integer.parseInt;
 @RequiredArgsConstructor
 @ToString
 public class Dice {
-    public static final Dice D2 = of(1, 2);
-    public static final Dice D3 = of(1, 3);
-    public static final Dice D4 = of(1, 4);
-    public static final Dice D6 = of(1, 6);
-    public static final Dice _3D6 = of(3, 6);
-    public static final Dice D8 = of(1, 8);
-    public static final Dice D10 = of(1, 10);
-    public static final Dice D12 = of(1, 12);
-    public static final Dice D20 = of(1, 20);
-    public static final Dice D100 = of(1, 100);
+    public static final Dice D2 = Die(2);
+    public static final Dice D3 = Die(3);
+    public static final Dice D4 = Die(4);
+    public static final Dice D6 = Die(6);
+    public static final Dice _3D6 = n(3).D(6);
+    public static final Dice D8 = Die(8);
+    public static final Dice D10 = Die(10);
+    public static final Dice D12 = Die(12);
+    public static final Dice D20 = Die(20);
+    public static final Dice D100 = Die(100);
 
     private final int count;
-    private final int sides;
-    private final int plus;
+    private int sides;
+    private int plus;
 
     @EqualsAndHashCode.Exclude
     private final Random random = new Random();
+
+    public static Dice n(int n) {
+        return new Dice(n);
+    }
+
+    public static Dice Die(int sides) {
+        Dice dice = new Dice(1);
+        dice.sides = sides;
+        return dice;
+    }
+
+    public Dice D(int sides) {
+        this.sides = sides;
+        return this;
+    }
+
+    public Dice p(int plus) {
+        this.plus = plus;
+        return this;
+    }
+
 
     public Integer roll() {
         return IntStream.range(0, count).map(a -> random.nextInt(sides) + 1).sum() + plus;
@@ -40,14 +61,6 @@ public class Dice {
 
     public boolean check(int score) {
         return roll() <= score;
-    }
-
-    public static Dice of(int count, int sides, int plus) {
-        return new Dice(count, sides, plus);
-    }
-
-    public static Dice of(int count, int sides) {
-        return of(count, sides, 0);
     }
 
     public String serialize() {
@@ -72,7 +85,7 @@ public class Dice {
             int count = parseInt(matcher.group(1));
             int sides = parseInt(matcher.group(2));
             int plus = Optional.ofNullable(matcher.group(3)).map(Integer::parseInt).orElse(0);
-            return Dice.of(count, sides, plus);
+            return n(count).D(sides).p(plus);
         }
         throw new IllegalArgumentException(String.format("'%s' does not match required format!", s));
     }

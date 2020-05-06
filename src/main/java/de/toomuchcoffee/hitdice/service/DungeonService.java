@@ -28,10 +28,10 @@ public class DungeonService {
         Tile[][] tiles = createTiles();
         Dungeon dungeon = new Dungeon(tiles);
         addEvents(dungeon, heroLevel, newHashSet(ROOM));
-        Position start = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
-        dungeon.setPosition(start);
         Position door = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM));
         dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR);
+        Position start = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
+        dungeon.setPosition(start);
         return dungeon;
     }
 

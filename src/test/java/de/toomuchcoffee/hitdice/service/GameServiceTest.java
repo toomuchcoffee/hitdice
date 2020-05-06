@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.db.*;
-import de.toomuchcoffee.hitdice.domain.Dice;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
+import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
 import static de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory.HEALTH;
 import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.LONGSWORD;
@@ -117,7 +117,7 @@ public class GameServiceTest {
                         false,
                         ItemType.POTION,
                         ImmutableMap.of(
-                                "potency", Dice.of(2, 4).serialize(),
+                                "potency", n(2).D(4).serialize(),
                                 "type", HEALTH.name()
                         ))
         );

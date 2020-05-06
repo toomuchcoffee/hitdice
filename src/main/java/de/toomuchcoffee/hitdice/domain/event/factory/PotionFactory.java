@@ -9,14 +9,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D2;
-import static de.toomuchcoffee.hitdice.domain.Dice.of;
+import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.COMMON;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.VERY_RARE;
 
 @Getter
 @RequiredArgsConstructor
 public enum PotionFactory implements EventFactory<Potion> {
-    HEALTH(of(2, 4), AttributeType.HEALTH, COMMON),
+    HEALTH(n(2).D(4), AttributeType.HEALTH, COMMON),
     STRENGTH(D2, AttributeType.STRENGTH, VERY_RARE),
     DEXTERITY(D2, AttributeType.DEXTERITY, VERY_RARE),
     STAMINA(D2, AttributeType.STAMINA, VERY_RARE);
