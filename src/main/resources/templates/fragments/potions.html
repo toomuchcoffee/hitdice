@@ -9,7 +9,7 @@
 <div th:fragment="potions (potions)" id="potions">
 
     <span th:each="potion : ${hero.potions}">
-        <a th:href="@{'/hero/use/' + ${potion.type}}" data-toggle="tooltip" th:title="${potion.displayName}">
+        <a class="badge badge-light" th:href="@{'/hero/use/' + ${potion.type}}" data-toggle="tooltip" th:title="${potion.displayName}">
             <span th:if="${potion.type.name() == 'HEALTH'}">
                 <i class="fas fa-flask text-danger"></i>
             </span>
