@@ -3,13 +3,16 @@ package de.toomuchcoffee.hitdice.service;
 
 import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
+import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
+import de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -41,17 +44,19 @@ public class EventServiceTest {
                 MonsterFactory.BEHOLDER // very rare (1 -> 6)
         );
 
-        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ettin");
-        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ettin");
-        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ooze");
-        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Ooze");
-        assertThat(((Monster) eventService.createMonster(monsterFactories)).getName()).isEqualTo("Beholder");
+        assertThat(((Monster) eventService.create(monsterFactories)).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.create(monsterFactories)).getName()).isEqualTo("Ettin");
+        assertThat(((Monster) eventService.create(monsterFactories)).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.create(monsterFactories)).getName()).isEqualTo("Ooze");
+        assertThat(((Monster) eventService.create(monsterFactories)).getName()).isEqualTo("Beholder");
     }
 
     @Test
     public void createsTheRightItem() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
-        assertThat(((Item) eventService.createItem()).getDisplayName()).isEqualTo("health potion");
+        List<EventFactory<Potion>> factories = Arrays.asList(PotionFactory.values());
+
+        assertThat(((Item) eventService.create(factories)).getDisplayName()).isEqualTo("health potion");
     }
 }

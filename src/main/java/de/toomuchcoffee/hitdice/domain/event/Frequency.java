@@ -3,10 +3,27 @@ package de.toomuchcoffee.hitdice.domain.event;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @RequiredArgsConstructor
 public enum Frequency {
-    VERY_RARE(1), RARE(2), UNCOMMON(4), COMMON(13);
+    COMMON(13), UNCOMMON(4), RARE(2), VERY_RARE(1);
 
     private final int probability;
+
+    public static Set<Frequency> forLevel(int level, int... mods) {
+        Set<Frequency> frequencies = new HashSet<>();
+        int calcIndex = (int) (Math.ceil(1.0 * level / 4)) - 1;
+        frequencies.add(values()[normalizeIndex(calcIndex)]);
+        for (int mod : mods) {
+            frequencies.add(values()[normalizeIndex(calcIndex + mod)]);
+        }
+        return frequencies;
+    }
+
+    private static int normalizeIndex(int index) {
+        return index < 0 ? 0 : (index > values().length ? values().length - 1 : index);
+    }
 }

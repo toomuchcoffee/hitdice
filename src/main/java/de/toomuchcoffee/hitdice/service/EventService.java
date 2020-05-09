@@ -1,52 +1,54 @@
 package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
+import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.domain.event.factory.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
+import static de.toomuchcoffee.hitdice.domain.event.Frequency.forLevel;
+import static de.toomuchcoffee.hitdice.domain.event.Frequency.values;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
 public class EventService {
     private final Random random;
 
-    public Optional<Object> createEvent(List<MonsterFactory> monsterFactories) {
+    public Optional<Object> createEvent(int heroLevel) {
         switch (D20.roll()) {
             case 1:
+                List<EventFactory<?>> potionFactories = init(asList(PotionFactory.values()), newHashSet(values()));
+                return Optional.of(create(potionFactories));
             case 2:
-                return Optional.of(createItem());
+                List<EventFactory<?>> monsterFactories = init(asList(MonsterFactory.values()), newHashSet(forLevel(heroLevel)));
+                return Optional.of(create(monsterFactories));
             case 3:
-                return Optional.of(createMonster(monsterFactories));
+                List<EventFactory<?>> itemFactories = init(
+                        newArrayList(asList(ArmorFactory.values()), asList(ShieldFactory.values()), asList(WeaponFactory.values())).stream()
+                                .flatMap(Collection::stream)
+                                .collect(Collectors.toList()),
+                        newHashSet(forLevel(heroLevel, 1, -1)));
+                return Optional.of(create(itemFactories));
             default:
                 return Optional.empty();
         }
     }
 
-    private static final List<EventFactory<?>> FACTORIES = new ArrayList<>();
-    static {
-        FACTORIES.addAll(asList(PotionFactory.values()));
-        FACTORIES.addAll(asList(ArmorFactory.values()));
-        FACTORIES.addAll(asList(ShieldFactory.values()));
-        FACTORIES.addAll(asList(WeaponFactory.values()));
+    private List<EventFactory<?>> init(List<EventFactory<?>> factories, Set<Frequency> frequencies){
+        return factories.stream()
+                .filter(f -> frequencies.contains(f.getFrequency()))
+                .collect(Collectors.toList());
     }
 
     @VisibleForTesting
-    Object createItem() {
-        return create(FACTORIES);
-    }
-
-    @VisibleForTesting
-    Object createMonster(List<MonsterFactory> factories) {
-        return create(factories);
-    }
-
-    private Object create(List<? extends EventFactory<?>> factories) {
+    Object create(List<? extends EventFactory<?>> factories) {
         int sum = factories.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
         int roll = random.nextInt(sum);
         int p = 0;
@@ -57,11 +59,5 @@ public class EventService {
             }
         }
         throw new IllegalStateException();
-    }
-
-    public List<MonsterFactory> findFactories(int heroLevel) {
-        return Arrays.stream(MonsterFactory.values())
-                .filter(t -> t.getLevel() > heroLevel - 5 && t.getLevel() <= heroLevel)
-                .collect(toList());
     }
 }

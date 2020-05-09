@@ -2,7 +2,6 @@ package de.toomuchcoffee.hitdice.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
-import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType;
@@ -75,12 +74,11 @@ public class DungeonService {
     }
 
     private void addEvents(Dungeon dungeon, int heroLevel, Set<TileType> filter) {
-        List<MonsterFactory> factories = eventService.findFactories(heroLevel);
         for (int x = 0; x < dungeon.getWidth(); x++) {
             for (int y = 0; y < dungeon.getHeight(); y++) {
                 Tile tile = dungeon.getTiles()[x][y];
                 if (!tile.isOccupied() && filter.contains(tile.getType())) {
-                    eventService.createEvent(factories).ifPresent(tile::setOccupant);
+                    eventService.createEvent(heroLevel).ifPresent(tile::setOccupant);
                 }
             }
         }
