@@ -24,6 +24,10 @@ public class FrequencyTest {
         assertThat(forLevel(12, 0)).isEqualTo(newHashSet(RARE));
         assertThat(forLevel(13, 0)).isEqualTo(newHashSet(VERY_RARE));
         assertThat(forLevel(99, 0)).isEqualTo(newHashSet(VERY_RARE));
-        assertThat(forLevel(1, 1)).isEqualTo(newHashSet(COMMON, UNCOMMON));
+        assertThat(forLevel(4, 1)).isEqualTo(newHashSet(COMMON, UNCOMMON));
+        assertThat(forLevel(8, 1)).isEqualTo(newHashSet(UNCOMMON, RARE));
+        assertThat(forLevel(12, 1)).isEqualTo(newHashSet(RARE, VERY_RARE));
+        assertThat(forLevel(16, 1)).isEqualTo(newHashSet(VERY_RARE));
+        assertThat(forLevel(99, 1)).isEqualTo(newHashSet(VERY_RARE));
     }
 }

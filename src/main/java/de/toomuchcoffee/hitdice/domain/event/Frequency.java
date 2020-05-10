@@ -24,6 +24,6 @@ public enum Frequency {
     }
 
     private static int normalizeIndex(int index) {
-        return index < 0 ? 0 : (index > values().length ? values().length - 1 : index);
+        return index < 0 ? 0 : (Math.min(index, values().length - 1));
     }
 }
