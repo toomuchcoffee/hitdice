@@ -47,6 +47,10 @@
 </nav>
 
 <div class="container">
+    <div th:if="${alert}" class="alert alert-success" role="alert">
+        <span th:text="${alert}">
+    </div>
+
     <div class="content">
         <div layout:fragment="page_content"></div>
     </div>

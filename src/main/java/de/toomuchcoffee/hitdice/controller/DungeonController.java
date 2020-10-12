@@ -54,6 +54,10 @@ public class DungeonController {
                        HttpSession session,
                        RedirectAttributes attributes) {
         Tile tile = dungeonService.move(dungeon, direction);
+        if (dungeon.isExplored()) {
+            heroService.increaseExperience(hero, 100);
+            attributes.addFlashAttribute("alert", "The dungeon level is fully explored! You gained 100XP.");
+        }
         if (tile.getType() == MAGIC_DOOR) {
             attributes.addFlashAttribute("modal", ModalData.magicDoorModal());
             return "redirect:/dungeon";

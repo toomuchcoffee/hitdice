@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
@@ -101,6 +102,12 @@ public class Dungeon {
 
     private void visit() {
         getTilesWithinView(position).forEach(tile -> tile.setExplored(true));
+    }
+
+    public boolean isExplored() {
+        return Arrays.stream(tiles)
+                .flatMap(Arrays::stream)
+                .allMatch(t -> !t.isVisitable() || t.isExplored());
     }
 
     public void setPosition(Position pos) {
