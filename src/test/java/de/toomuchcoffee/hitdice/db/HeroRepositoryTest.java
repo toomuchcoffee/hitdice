@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -28,6 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HeroRepositoryTest {
     @Autowired
     private HeroRepository heroRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     public void savesGame() {
@@ -66,6 +71,9 @@ public class HeroRepositoryTest {
         assertThat(found.getName()).isEqualTo("foo");
         assertThat(found.getItems()).isEqualTo(items);
         assertThat(found.getCreated()).isNotNull();
+
+        List<Item> foundItems = entityManager.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+        assertThat(foundItems).hasSize(3);
     }
 
 }
