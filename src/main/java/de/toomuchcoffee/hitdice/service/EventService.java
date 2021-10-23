@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.service;
 
-import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.event.Frequency;
 import de.toomuchcoffee.hitdice.domain.event.factory.*;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.Dice.D20;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.forLevel;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.values;
-import static java.util.Arrays.asList;
 
 @Service
 @RequiredArgsConstructor
@@ -24,17 +21,17 @@ public class EventService {
     public Optional<Object> createEvent(int heroLevel) {
         switch (D20.roll()) {
             case 1:
-                List<EventFactory<?>> potionFactories = init(asList(PotionFactory.values()), newHashSet(values()));
+                List<EventFactory<?>> potionFactories = init(List.of(PotionFactory.values()), Set.of(values()));
                 return Optional.of(create(potionFactories));
             case 2:
-                List<EventFactory<?>> monsterFactories = init(asList(MonsterFactory.values()), newHashSet(forLevel(heroLevel)));
+                List<EventFactory<?>> monsterFactories = init(List.of(MonsterFactory.values()), new HashSet<>(forLevel(heroLevel)));
                 return Optional.of(create(monsterFactories));
             case 3:
                 List<EventFactory<?>> itemFactories = init(
-                        newArrayList(asList(ArmorFactory.values()), asList(ShieldFactory.values()), asList(WeaponFactory.values())).stream()
+                        Stream.of(List.of(ArmorFactory.values()), List.of(ShieldFactory.values()), List.of(WeaponFactory.values()))
                                 .flatMap(Collection::stream)
                                 .collect(Collectors.toList()),
-                        newHashSet(forLevel(heroLevel, 1, -1)));
+                        new HashSet<>(forLevel(heroLevel, 1, -1)));
                 return Optional.of(create(itemFactories));
             default:
                 return Optional.empty();
@@ -47,7 +44,6 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    @VisibleForTesting
     Object create(List<? extends EventFactory<?>> factories) {
         int sum = factories.stream().mapToInt(t -> t.getFrequency().getProbability()).sum();
         int roll = random.nextInt(sum);

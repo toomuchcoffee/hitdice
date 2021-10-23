@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.service;
 
-import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.db.*;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
@@ -98,25 +97,25 @@ class GameServiceTest {
     }
 
     private List<Item> getItems() {
-        return newArrayList(
+        return List.of(
                 ItemTestData.createItem(
                         LONGSWORD.getDisplayName(),
                         LONGSWORD.ordinal(),
                         LONGSWORD.isMetallic(),
                         ItemType.WEAPON,
-                        ImmutableMap.of("damage", D8.serialize())
+                        Map.of("damage", D8.serialize())
                 ),
                 ItemTestData.createItem(
                         LEATHER.getDisplayName(),
                         LEATHER.ordinal(),
                         LEATHER.isMetallic(),
                         ItemType.ARMOR,
-                        ImmutableMap.of("protection", LEATHER.getProtection())),
+                        Map.of("protection", LEATHER.getProtection())),
                 ItemTestData.createItem("health potion",
                         HEALTH.ordinal(),
                         false,
                         ItemType.POTION,
-                        ImmutableMap.of(
+                        Map.of(
                                 "potency", n(2).D(4).serialize(),
                                 "type", HEALTH.name()
                         ))

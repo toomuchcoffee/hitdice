@@ -13,7 +13,6 @@ import lombok.Setter;
 
 import java.util.*;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.Dice._3D6;
 import static de.toomuchcoffee.hitdice.domain.attribute.AttributeType.*;
@@ -33,6 +32,8 @@ public class Hero implements Combatant {
     private int experience;
 
     private int level;
+
+    private boolean currentDungeonExplored;
 
     public void initialize() {
         attributes = new TreeMap<>();
@@ -69,7 +70,7 @@ public class Hero implements Combatant {
     }
 
     public List<CombatAction> getCombatActions() {
-        return newArrayList(Attack.with(getWeapon()));
+        return List.of(Attack.with(getWeapon()));
     }
 
 

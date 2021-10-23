@@ -4,13 +4,12 @@ import lombok.Getter;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.world.Direction.*;
 
 @Getter
 public class Hallway extends Square {
-    private int length;
-    private Direction orientation;
+    private final int length;
+    private final Direction orientation;
 
     public Hallway(Position start, int length, Direction orientation) {
         this.length = length;
@@ -47,9 +46,9 @@ public class Hallway extends Square {
 
     public List<Direction> getEdges() {
         if (orientation == SOUTH || orientation == NORTH) {
-            return newArrayList(EAST, WEST);
+            return List.of(EAST, WEST);
         } else {
-            return newArrayList(NORTH, SOUTH);
+            return List.of(NORTH, SOUTH);
         }
     }
 

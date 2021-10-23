@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -38,7 +37,7 @@ class EventServiceTest {
     void createsTheRightMonster() {
         when(random.nextInt(7)).thenReturn(0, 3, 4, 5, 6);
 
-        List<MonsterFactory> monsterFactories = newArrayList(
+        List<MonsterFactory> monsterFactories = List.of(
                 MonsterFactory.ETTIN, // uncommon (4 -> 0-3)
                 MonsterFactory.OOZE, // rare (2 -> 4-5)
                 MonsterFactory.BEHOLDER // very rare (1 -> 6)

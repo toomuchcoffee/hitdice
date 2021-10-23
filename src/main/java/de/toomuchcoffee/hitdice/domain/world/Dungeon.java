@@ -9,9 +9,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.SOIL;
+import static java.util.stream.Collectors.toList;
 
 @Getter
 @Setter
@@ -23,6 +25,10 @@ public class Dungeon {
 
     public Dungeon(Tile[][] tiles) {
         this.tiles = tiles;
+    }
+
+    public List<Tile> getFlattenedTiles() {
+        return Stream.of(tiles).flatMap(Arrays::stream).collect(toList());
     }
 
     public int getWidth() {

@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Set;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 
 @Controller
@@ -42,6 +42,7 @@ public class DungeonController {
         Dungeon dungeon = (Dungeon) session.getAttribute("dungeon");
         if (dungeon == null) {
             dungeon = dungeonService.create(hero.getLevel());
+            hero.setCurrentDungeonExplored(false);
             session.setAttribute("dungeon", dungeon);
         }
         return "dungeon/map";
@@ -54,9 +55,10 @@ public class DungeonController {
                        HttpSession session,
                        RedirectAttributes attributes) {
         Tile tile = dungeonService.move(dungeon, direction);
-        if (dungeon.isExplored()) {
+        if (dungeon.isExplored() && !hero.isCurrentDungeonExplored()) {
             heroService.increaseExperience(hero, 100);
             attributes.addFlashAttribute("alert", "The dungeon level is fully explored! You gained 100XP.");
+            hero.setCurrentDungeonExplored(true);
         }
         if (tile.getType() == MAGIC_DOOR) {
             attributes.addFlashAttribute("modal", ModalData.magicDoorModal());
@@ -83,7 +85,7 @@ public class DungeonController {
 
     @GetMapping("flee")
     public String flee(@SessionAttribute Dungeon dungeon) {
-        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
+        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon, Set.of(ROOM, HALLWAY));
         dungeon.setPosition(position);
         return "redirect:/dungeon";
     }

@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.service;
 
-import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 import static java.lang.Integer.MAX_VALUE;
 import static java.lang.Integer.MIN_VALUE;
@@ -26,10 +23,10 @@ public class DungeonService {
     public Dungeon create(int heroLevel) {
         Tile[][] tiles = createTiles();
         Dungeon dungeon = new Dungeon(tiles);
-        addEvents(dungeon, heroLevel, newHashSet(ROOM));
-        Position door = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM));
+        addEvents(dungeon, heroLevel);
+        Position door = getAnyUnoccupiedPosition(dungeon, Set.of(ROOM));
         dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR);
-        Position start = getAnyUnoccupiedPosition(dungeon, newHashSet(ROOM, HALLWAY));
+        Position start = getAnyUnoccupiedPosition(dungeon, Set.of(ROOM, HALLWAY));
         dungeon.setPosition(start);
         return dungeon;
     }
@@ -73,15 +70,11 @@ public class DungeonService {
         return createTiles(squares, bounds);
     }
 
-    private void addEvents(Dungeon dungeon, int heroLevel, Set<TileType> filter) {
-        for (int x = 0; x < dungeon.getWidth(); x++) {
-            for (int y = 0; y < dungeon.getHeight(); y++) {
-                Tile tile = dungeon.getTiles()[x][y];
-                if (!tile.isOccupied() && filter.contains(tile.getType())) {
-                    eventService.createEvent(heroLevel).ifPresent(tile::setOccupant);
-                }
-            }
-        }
+    private void addEvents(Dungeon dungeon, int heroLevel) {
+        dungeon.getFlattenedTiles().stream()
+                .filter(t -> t.getType() == ROOM)
+                .filter(t -> !t.isOccupied())
+                .forEach(tile -> eventService.createEvent(heroLevel).ifPresent(tile::setOccupant));
     }
 
     private List<Square> createSquares(int dungeonSize, int featureCount) {
@@ -132,7 +125,7 @@ public class DungeonService {
         int xOffset = bounds.getXMin();
         int yOffset = bounds.getYMin();
 
-        List<Square> list = newArrayList(squares);
+        List<Square> list = new ArrayList<>(squares);
         list.add(bounds);
         for (Square square : list) {
             square.setXMin(square.getXMin() - xOffset);
@@ -142,7 +135,6 @@ public class DungeonService {
         }
     }
 
-    @VisibleForTesting
     Square bounds(List<Square> squares) {
         int xMin = MAX_VALUE, xMax = MIN_VALUE, yMin = MAX_VALUE, yMax = MIN_VALUE;
         for (Square square : squares) {
@@ -184,19 +176,19 @@ public class DungeonService {
     }
 
     private Room createRoom(Position point, Direction entrance) {
-        int width = 3 + 2 * random.nextInt(3);
-        int height = 3 + 2 * random.nextInt(3);
+        int width = 2 + 2 * random.nextInt(3);
+        int height = 2 + 2 * random.nextInt(3);
         return new Room(point.getX(), point.getY(), width, height, entrance);
     }
 
     private Room createRoom(Position point) {
-        int width = 3 + 2 * random.nextInt(3);
-        int height = 3 + 2 * random.nextInt(3);
+        int width = 2 + 2 * random.nextInt(3);
+        int height = 2 + 2 * random.nextInt(3);
         return new Room(point.getX(), point.getY(), width, height);
     }
 
     private Hallway createHallway(int startX, int startY, Direction orientation) {
-        int length = 3 + 2 * random.nextInt(4);
+        int length = 2 + 2 * random.nextInt(4);
         return new Hallway(Position.of(startX, startY), length, orientation);
     }
 

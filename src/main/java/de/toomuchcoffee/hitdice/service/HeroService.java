@@ -1,6 +1,5 @@
 package de.toomuchcoffee.hitdice.service;
 
-import com.google.common.annotations.VisibleForTesting;
 import de.toomuchcoffee.hitdice.domain.Hero;
 import de.toomuchcoffee.hitdice.domain.attribute.AttributeType;
 import de.toomuchcoffee.hitdice.domain.equipment.Item;
@@ -46,7 +45,6 @@ public class HeroService {
         }
     }
 
-    @VisibleForTesting
     int xpForNextLevel(int level) {
         return IntStream.range(0, level).map(l -> (l + 1) * 100).sum();
     }
