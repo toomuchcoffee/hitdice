@@ -11,11 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D8;
 import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
@@ -97,8 +97,8 @@ public class GameServiceTest {
         return expected;
     }
 
-    private HashSet<Item> getItems() {
-        return newHashSet(
+    private List<Item> getItems() {
+        return newArrayList(
                 ItemTestData.createItem(
                         LONGSWORD.getDisplayName(),
                         LONGSWORD.ordinal(),

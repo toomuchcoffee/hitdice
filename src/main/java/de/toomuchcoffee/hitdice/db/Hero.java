@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -31,7 +31,7 @@ public class Hero {
     private Integer health;
 
     @OneToMany(mappedBy = "hero", cascade = ALL, orphanRemoval = true, fetch = EAGER)
-    private Set<Item> items;
+    private List<Item> items;
 
     @CreatedDate
     private Date created;

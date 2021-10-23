@@ -1,6 +1,7 @@
 .dungeon-box {
 	margin: 0 auto;
 	text-align: center;
+	overflow: auto
 }
 
 div.btn-group {

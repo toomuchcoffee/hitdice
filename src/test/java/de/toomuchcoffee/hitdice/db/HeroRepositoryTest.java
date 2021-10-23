@@ -7,14 +7,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Set;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static de.toomuchcoffee.hitdice.domain.Dice.D6;
 import static de.toomuchcoffee.hitdice.domain.Dice.n;
 import static de.toomuchcoffee.hitdice.domain.event.factory.ArmorFactory.LEATHER;
@@ -32,7 +31,7 @@ public class HeroRepositoryTest {
     private HeroRepository heroRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private TestEntityManager entityManager;
 
     @Test
     public void savesGame() {
@@ -40,7 +39,7 @@ public class HeroRepositoryTest {
         hero.setName("foo");
         Hero save = heroRepository.save(hero);
 
-        Set<Item> items = newHashSet(
+        List<Item> items = newArrayList(
                 ItemTestData.createItem(
                         SHORTSWORD.getDisplayName(),
                         SHORTSWORD.ordinal(),
@@ -72,7 +71,8 @@ public class HeroRepositoryTest {
         assertThat(found.getItems()).isEqualTo(items);
         assertThat(found.getCreated()).isNotNull();
 
-        List<Item> foundItems = entityManager.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+        List<Item> foundItems = entityManager.getEntityManager()
+                .createQuery("SELECT i FROM Item i", Item.class).getResultList();
         assertThat(foundItems).hasSize(3);
     }
 

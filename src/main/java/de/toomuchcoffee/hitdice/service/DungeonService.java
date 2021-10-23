@@ -62,7 +62,7 @@ public class DungeonService {
     }
 
     public Tile[][] createTiles() {
-        int dungeonSize = 25;
+        int dungeonSize = 18;
         int featureCount = 2 + random.nextInt(6);
 
         List<Square> squares = createSquares(dungeonSize, featureCount);

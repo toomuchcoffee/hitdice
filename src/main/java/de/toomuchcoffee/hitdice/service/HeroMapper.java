@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 @Component
 @RequiredArgsConstructor
@@ -42,9 +41,9 @@ public class HeroMapper {
     public de.toomuchcoffee.hitdice.db.Hero toDb(Hero hero) {
         de.toomuchcoffee.hitdice.db.Hero dbHero = new de.toomuchcoffee.hitdice.db.Hero();
 
-        Set<Item> items = hero.getEquipment().stream()
+        List<Item> items = hero.getEquipment().stream()
                 .map(itemMapper::toDb)
-                .collect(toSet());
+                .collect(toList());
         items.forEach(item -> item.setHero(dbHero));
         dbHero.setItems(items);
 
