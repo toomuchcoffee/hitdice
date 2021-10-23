@@ -3,12 +3,12 @@ package de.toomuchcoffee.hitdice.service;
 import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.db.*;
 import de.toomuchcoffee.hitdice.domain.TestData;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -25,22 +25,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class GameServiceTest {
+@ExtendWith(MockitoExtension.class)
+class GameServiceTest {
     @Mock
     private HeroRepository heroRepository;
 
     private GameService gameService;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         ItemMapper itemMapper = new ItemMapper();
         HeroMapper heroMapper = new HeroMapper(itemMapper);
         gameService = new GameService(heroRepository, heroMapper);
     }
 
     @Test
-    public void savesGame() {
+    void savesGame() {
         de.toomuchcoffee.hitdice.domain.Hero hero = getHero();
 
         gameService.save(hero);
@@ -50,19 +50,19 @@ public class GameServiceTest {
 
         Hero expected = getGame();
 
-        assertThat(argumentCaptor.getValue()).isEqualToIgnoringGivenFields(expected, "items");
+        assertThat(argumentCaptor.getValue()).usingRecursiveComparison().ignoringFields("items").isEqualTo(expected);
         assertThat(argumentCaptor.getValue().getItems()).containsAll(getItems());
     }
 
     @Test
-    public void restoresGame() {
+    void restoresGame() {
         when(heroRepository.findById(123)).thenReturn(Optional.of(getGame()));
 
         de.toomuchcoffee.hitdice.domain.Hero hero = gameService.restore(123);
 
         de.toomuchcoffee.hitdice.domain.Hero expected = getHero();
 
-        assertThat(hero).isEqualToIgnoringGivenFields(expected, "combatActions", "equipment");
+        assertThat(hero).usingRecursiveComparison().ignoringFields("combatActions", "equipment").isEqualTo(expected);
         assertThat(hero.getEquipment()).hasSize(3);
         assertThat(hero.getEquipment().stream()
                 .map(de.toomuchcoffee.hitdice.domain.equipment.Item::getDisplayName)

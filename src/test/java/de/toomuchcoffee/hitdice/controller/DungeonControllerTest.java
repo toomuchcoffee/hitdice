@@ -10,16 +10,14 @@ import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Position;
 import de.toomuchcoffee.hitdice.service.DungeonService;
 import de.toomuchcoffee.hitdice.service.HeroService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Random;
@@ -36,8 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = DungeonController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-@RunWith(SpringRunner.class)
-public class DungeonControllerTest {
+class DungeonControllerTest {
 
     @MockBean
     private DungeonService dungeonService;
@@ -59,13 +56,13 @@ public class DungeonControllerTest {
             {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)}
     };
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         hero = TestData.getHero();
     }
 
     @Test
-    public void dungeonCreate() throws Exception {
+    void dungeonCreate() throws Exception {
         when(random.nextInt(anyInt())).thenReturn(-4);
         when(dungeonService.create(1)).thenReturn(new Dungeon(new Tile[][]{{new Tile(ROOM)}}));
 
@@ -81,7 +78,7 @@ public class DungeonControllerTest {
     }
 
     @Test
-    public void dungeonExploreSouth() throws Exception {
+    void dungeonExploreSouth() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(TILES);
@@ -101,7 +98,7 @@ public class DungeonControllerTest {
     }
 
     @Test
-    public void dungeonTreasure() throws Exception {
+    void dungeonTreasure() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(TILES);
@@ -123,7 +120,7 @@ public class DungeonControllerTest {
     }
 
     @Test
-    public void dungeonPotion() throws Exception {
+    void dungeonPotion() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
         Dungeon dungeon = new Dungeon(TILES);

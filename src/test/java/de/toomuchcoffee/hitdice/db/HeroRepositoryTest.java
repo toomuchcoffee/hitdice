@@ -3,13 +3,11 @@ package de.toomuchcoffee.hitdice.db;
 import com.google.common.collect.ImmutableMap;
 import de.toomuchcoffee.hitdice.config.JpaConfig;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -24,9 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import(JpaConfig.class)
-@RunWith(SpringRunner.class)
 @AutoConfigureEmbeddedDatabase(provider = DOCKER)
-public class HeroRepositoryTest {
+class HeroRepositoryTest {
     @Autowired
     private HeroRepository heroRepository;
 
@@ -34,7 +31,7 @@ public class HeroRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    public void savesGame() {
+    void savesGame() {
         Hero hero = new Hero();
         hero.setName("foo");
         Hero save = heroRepository.save(hero);

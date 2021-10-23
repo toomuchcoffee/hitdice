@@ -1,33 +1,26 @@
 package de.toomuchcoffee.hitdice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Parameterized.class)
 @RequiredArgsConstructor
-public class HeroServiceTest {
+class HeroServiceTest {
 
     private HeroService heroService;
 
-    private final int level;
-    private final int expectedXp;
-
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         heroService = new HeroService();
     }
 
-    @Parameters
-    public static List<Object[]> balanceRates() {
+    static List<Object[]> thresholds() {
         return Arrays.asList(new Object[][]{
                 {0, 0},
                 {1, 100},
@@ -47,8 +40,9 @@ public class HeroServiceTest {
         });
     }
 
-    @Test
-    public void shouldRequire100MoreForEachLevel() {
+    @ParameterizedTest
+    @MethodSource("thresholds")
+    void shouldRequire100MoreForEachLevel(int level, int expectedXp) {
         int xp = heroService.xpForNextLevel(level);
         assertThat(xp).isEqualTo(expectedXp);
     }

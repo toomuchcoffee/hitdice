@@ -6,16 +6,14 @@ import de.toomuchcoffee.hitdice.domain.Monster;
 import de.toomuchcoffee.hitdice.domain.TestData;
 import de.toomuchcoffee.hitdice.domain.combat.Combat;
 import de.toomuchcoffee.hitdice.domain.combat.CombatService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory.ORC;
@@ -25,8 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = CombatController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-@RunWith(SpringRunner.class)
-public class CombatControllerTest {
+class CombatControllerTest {
     @MockBean
     private CombatService combatService;
 
@@ -35,15 +32,15 @@ public class CombatControllerTest {
 
     private Combat combat;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         Hero hero = TestData.getHero();
         Monster monster = ORC.create();
         combat = new Combat(hero, monster);
     }
 
     @Test
-    public void combatStart() throws Exception {
+    void combatStart() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("combat", combat);
 

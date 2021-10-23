@@ -3,15 +3,13 @@ package de.toomuchcoffee.hitdice.controller;
 
 import de.toomuchcoffee.hitdice.controller.dto.Game;
 import de.toomuchcoffee.hitdice.service.GameService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = GameController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-@RunWith(SpringRunner.class)
-public class GameControllerTest {
+class GameControllerTest {
 
     @MockBean
     private GameService gameService;
@@ -34,7 +31,7 @@ public class GameControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void listsGames() throws Exception {
+    void listsGames() throws Exception {
         String dateString = "13-01-2019 20:52";
         Date created = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateString);
         Game game = new Game();

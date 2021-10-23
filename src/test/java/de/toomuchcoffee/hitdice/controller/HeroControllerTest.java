@@ -7,15 +7,13 @@ import de.toomuchcoffee.hitdice.service.HeroService;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Collections.singletonList;
@@ -26,8 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = HeroController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-@RunWith(SpringRunner.class)
-public class HeroControllerTest {
+class HeroControllerTest {
 
     @MockBean
     private HeroService heroService;
@@ -35,10 +32,10 @@ public class HeroControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private Hero hero = TestData.getHero();
+    private final Hero hero = TestData.getHero();
 
     @Test
-    public void heroCreateStart() throws Exception {
+    void heroCreateStart() throws Exception {
         when(heroService.create()).thenReturn(hero);
 
         MockHttpSession session = new MockHttpSession();
@@ -59,11 +56,14 @@ public class HeroControllerTest {
                 .andExpect(xpath("//div[@id='hero-roll']/a[2]/@href").string("/hero/confirm"))
         ;
 
-        assertThat(session.getAttribute("hero")).isEqualToIgnoringGivenFields(hero, "combatActions");
+        assertThat(session.getAttribute("hero"))
+                .usingRecursiveComparison()
+                .ignoringFields("combatActions")
+                .isEqualTo(hero);
     }
 
     @Test
-    public void heroCreateContinue() throws Exception {
+    void heroCreateContinue() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
 
@@ -86,7 +86,7 @@ public class HeroControllerTest {
     }
 
     @Test
-    public void heroCreateFinish() throws Exception {
+    void heroCreateFinish() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
 

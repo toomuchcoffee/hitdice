@@ -6,11 +6,11 @@ import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.equipment.Potion;
 import de.toomuchcoffee.hitdice.domain.event.factory.MonsterFactory;
 import de.toomuchcoffee.hitdice.domain.event.factory.PotionFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,21 +21,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class EventServiceTest {
+@ExtendWith(MockitoExtension.class)
+class EventServiceTest {
 
     @Mock
     private Random random;
 
     private EventService eventService;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         eventService = new EventService(random);
     }
 
     @Test
-    public void createsTheRightMonster() {
+    void createsTheRightMonster() {
         when(random.nextInt(7)).thenReturn(0, 3, 4, 5, 6);
 
         List<MonsterFactory> monsterFactories = newArrayList(
@@ -52,7 +52,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void createsTheRightItem() {
+    void createsTheRightItem() {
         when(random.nextInt(anyInt())).thenReturn(0);
 
         List<EventFactory<Potion>> factories = Arrays.asList(PotionFactory.values());

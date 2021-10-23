@@ -1,15 +1,16 @@
 package de.toomuchcoffee.hitdice.domain.event;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static de.toomuchcoffee.hitdice.domain.event.Frequency.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FrequencyTest {
+class FrequencyTest {
+
     @Test
-    public void forHeroLevel() {
+    void forHeroLevel() {
         // hero level   events of frequency
         // --------------------------------
         // 1-4          common

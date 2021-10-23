@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import static de.toomuchcoffee.hitdice.domain.Dice.D4;
 import static de.toomuchcoffee.hitdice.domain.event.factory.WeaponFactory.DAGGER;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @Controller
 @RequestMapping("hero")
@@ -48,8 +47,8 @@ public class HeroController {
         return "create";
     }
 
-    @PostMapping(value = "finalize", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    public String finalize(@SessionAttribute Hero hero, HeroUpdate heroUpdate, Model model) {
+    @PostMapping(value = "finalize")
+    public String finalize(@SessionAttribute Hero hero, @ModelAttribute HeroUpdate heroUpdate) {
         hero.setName(heroUpdate.getName());
         return "game/mode";
     }
