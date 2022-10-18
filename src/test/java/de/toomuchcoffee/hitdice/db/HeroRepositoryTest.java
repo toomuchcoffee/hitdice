@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,26 +36,24 @@ class HeroRepositoryTest {
         hero.setName("foo");
         Hero save = heroRepository.save(hero);
 
-        List<Item> items = List.of(
-                ItemTestData.createItem(
-                        SHORTSWORD.getDisplayName(),
-                        SHORTSWORD.ordinal(),
-                        SHORTSWORD.isMetallic(),
-                        ItemType.WEAPON,
-                        Map.of("damage", D6.serialize())
-                ),
-                ItemTestData.createItem(
-                        LEATHER.getDisplayName(),
-                        LEATHER.ordinal(),
-                        LEATHER.isMetallic(),
-                        ItemType.ARMOR,
-                        Map.of("protection", LEATHER.getProtection())),
-                ItemTestData.createItem("health potion",
-                        HEALTH.ordinal(),
-                        false,
-                        ItemType.POTION,
-                        Map.of("potency", n(2).D(4).serialize()))
-        );
+        List<Item> items = new ArrayList<Item>();
+        items.add(ItemTestData.createItem(
+                SHORTSWORD.getDisplayName(),
+                SHORTSWORD.ordinal(),
+                SHORTSWORD.isMetallic(),
+                ItemType.WEAPON,
+                Map.of("damage", D6.serialize())));
+        items.add(ItemTestData.createItem(
+                LEATHER.getDisplayName(),
+                LEATHER.ordinal(),
+                LEATHER.isMetallic(),
+                ItemType.ARMOR,
+                Map.of("protection", LEATHER.getProtection())));
+        items.add(ItemTestData.createItem("health potion",
+                HEALTH.ordinal(),
+                false,
+                ItemType.POTION,
+                Map.of("potency", n(2).D(4).serialize())));
         items.forEach(i -> i.setHero(hero));
         hero.setItems(items);
         heroRepository.save(hero);

@@ -12,7 +12,7 @@ class DungeonTest {
 
     @Test
     void viewMapShowsHeroSymbol() {
-        Dungeon dungeon = new Dungeon(new Tile[][]{{new Tile(ROOM)}});
+        Dungeon dungeon = new Dungeon(new Tile[][]{{new Tile(Position.of(0, 0), ROOM)}});
         dungeon.setPosition(Position.of(0, 0));
         String[][] map = dungeon.getMap();
 
@@ -24,7 +24,7 @@ class DungeonTest {
         Tile[][] tiles = new Tile[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                tiles[i][j] = new Tile(SOIL);
+                tiles[i][j] = new Tile(Position.of(i, j), SOIL);
             }
         }
         Dungeon dungeon = new Dungeon(tiles);

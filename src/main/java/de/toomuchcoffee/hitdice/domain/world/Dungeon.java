@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.MAGIC_DOOR;
@@ -29,6 +30,22 @@ public class Dungeon {
 
     public List<Tile> getFlattenedTiles() {
         return Stream.of(tiles).flatMap(Arrays::stream).collect(toList());
+    }
+
+    public void putTile(Tile tile) {
+        tiles[tile.getPosition().getX()][tile.getPosition().getY()] = tile;
+    }
+
+    public Optional<Position> getAnyUnoccupiedPosition(TileType... tileTypes) {
+        List<Position> available = getFlattenedTiles().stream()
+                .filter(Tile::isUnoccupied)
+                .filter(t -> Set.of(tileTypes).contains(t.getType()))
+                .map(Tile::getPosition)
+                .filter(p -> !p.equals(getPosition()))
+                .collect(toList());
+        return available.stream()
+                .skip((int) (available.size() * Math.random()))
+                .findAny();
     }
 
     public int getWidth() {
@@ -92,18 +109,15 @@ public class Dungeon {
     }
 
     private List<Tile> getTilesWithinView(Position position) {
-        List<Tile> tiles = new ArrayList<>();
-        int viewRange = 1;
-        int minX = Math.max(0, position.getX() - viewRange);
-        int maxX = Math.min(getWidth() - 1, position.getX() + viewRange);
-        int minY = Math.max(0, position.getY() - viewRange);
-        int maxY = Math.min(getHeight() - 1, position.getY() + viewRange);
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                tiles.add(getTile(Position.of(x, y)));
-            }
-        }
-        return tiles;
+        return getFlattenedTiles().stream().filter(t -> {
+            int viewRange = 1;
+            int minX = Math.max(0, position.getX() - viewRange);
+            int maxX = Math.min(getWidth() - 1, position.getX() + viewRange);
+            int minY = Math.max(0, position.getY() - viewRange);
+            int maxY = Math.min(getHeight() - 1, position.getY() + viewRange);
+            Position p = t.getPosition();
+            return p.getX() >= minX && p.getX() <= maxX && p.getY() >= minY && p.getY() <= maxY;
+        }).collect(toList());
     }
 
     private void visit() {
@@ -125,12 +139,13 @@ public class Dungeon {
     @Setter
     @RequiredArgsConstructor
     public static class Tile {
+        private final Position position;
         private final TileType type;
         private Object occupant;
         private boolean explored;
 
-        public boolean isOccupied() {
-            return type == SOIL || type == MAGIC_DOOR || occupant != null;
+        public boolean isUnoccupied() {
+            return type != SOIL && type != MAGIC_DOOR && occupant == null;
         }
 
         public boolean isVisitable() {

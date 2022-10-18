@@ -8,7 +8,8 @@ import de.toomuchcoffee.hitdice.domain.equipment.Weapon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
 import de.toomuchcoffee.hitdice.domain.world.Position;
-import de.toomuchcoffee.hitdice.service.DungeonService;
+import de.toomuchcoffee.hitdice.service.DungeonCreationService;
+import de.toomuchcoffee.hitdice.service.DungeonExplorationService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DungeonControllerTest {
 
     @MockBean
-    private DungeonService dungeonService;
+    private DungeonCreationService dungeonCreationService;
+
+    @MockBean
+    private DungeonExplorationService dungeonExplorationService;
 
     @MockBean
     private HeroService heroService;
@@ -51,9 +55,9 @@ class DungeonControllerTest {
     private Hero hero;
 
     private final Tile[][] TILES = new Tile[][]{
-            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
-            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)},
-            {new Tile(ROOM), new Tile(ROOM), new Tile(ROOM)}
+            {new Tile(Position.of(0, 0), ROOM), new Tile(Position.of(1, 0), ROOM), new Tile(Position.of(2, 0), ROOM)},
+            {new Tile(Position.of(0, 1), ROOM), new Tile(Position.of(1, 1), ROOM), new Tile(Position.of(2, 1), ROOM)},
+            {new Tile(Position.of(0, 2), ROOM), new Tile(Position.of(1, 2), ROOM), new Tile(Position.of(2, 2), ROOM)},
     };
 
     @BeforeEach
@@ -64,7 +68,7 @@ class DungeonControllerTest {
     @Test
     void dungeonCreate() throws Exception {
         when(random.nextInt(anyInt())).thenReturn(-4);
-        when(dungeonService.create(1)).thenReturn(new Dungeon(new Tile[][]{{new Tile(ROOM)}}));
+        when(dungeonCreationService.create(1)).thenReturn(new Dungeon(new Tile[][]{{new Tile(Position.of(0, 0), ROOM)}}));
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("hero", hero);
@@ -85,7 +89,7 @@ class DungeonControllerTest {
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        when(dungeonService.move(dungeon, SOUTH)).thenCallRealMethod();
+        when(dungeonExplorationService.move(dungeon, SOUTH)).thenCallRealMethod();
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
@@ -94,7 +98,7 @@ class DungeonControllerTest {
                 .andExpect(redirectedUrl("/dungeon"))
         ;
 
-        verify(dungeonService).move(eq(dungeon), eq(SOUTH));
+        verify(dungeonExplorationService).move(eq(dungeon), eq(SOUTH));
     }
 
     @Test
@@ -105,10 +109,10 @@ class DungeonControllerTest {
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        Tile tile = new Tile(ROOM);
+        Tile tile = new Tile(Position.of(0, 0), ROOM);
         Weapon object = SHORTSWORD.create();
         tile.setOccupant(object);
-        when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
+        when(dungeonExplorationService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)
@@ -127,10 +131,10 @@ class DungeonControllerTest {
         dungeon.setPosition(Position.of(0, 0));
         session.setAttribute("dungeon", dungeon);
 
-        Tile tile = new Tile(ROOM);
+        Tile tile = new Tile(Position.of(0, 0), ROOM);
         Potion object = HEALTH.create();
         tile.setOccupant(object);
-        when(dungeonService.move(dungeon, SOUTH)).thenReturn(tile);
+        when(dungeonExplorationService.move(dungeon, SOUTH)).thenReturn(tile);
 
         this.mvc.perform(get("/dungeon/SOUTH")
                 .session(session)

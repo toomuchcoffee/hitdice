@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,9 +18,7 @@ public enum Frequency {
         Set<Frequency> frequencies = new HashSet<>();
         int calcIndex = (int) (Math.ceil(1.0 * level / 4)) - 1;
         frequencies.add(values()[normalizeIndex(calcIndex)]);
-        for (int mod : mods) {
-            frequencies.add(values()[normalizeIndex(calcIndex + mod)]);
-        }
+        IntStream.of(mods).forEach(mod -> frequencies.add(values()[normalizeIndex(calcIndex + mod)]));
         return frequencies;
     }
 

@@ -8,8 +8,8 @@ import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.world.Direction;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
-import de.toomuchcoffee.hitdice.domain.world.Position;
-import de.toomuchcoffee.hitdice.service.DungeonService;
+import de.toomuchcoffee.hitdice.service.DungeonCreationService;
+import de.toomuchcoffee.hitdice.service.DungeonExplorationService;
 import de.toomuchcoffee.hitdice.service.HeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.Set;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 
@@ -28,7 +27,8 @@ import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 @RequestMapping("dungeon")
 @RequiredArgsConstructor
 public class DungeonController {
-    private final DungeonService dungeonService;
+    private final DungeonCreationService dungeonCreationService;
+    private final DungeonExplorationService dungeonExplorationService;
     private final HeroService heroService;
 
     @GetMapping("enter")
@@ -41,7 +41,7 @@ public class DungeonController {
     public String index(HttpSession session, @SessionAttribute Hero hero) {
         Dungeon dungeon = (Dungeon) session.getAttribute("dungeon");
         if (dungeon == null) {
-            dungeon = dungeonService.create(hero.getLevel());
+            dungeon = dungeonCreationService.create(hero.getLevel());
             hero.setCurrentDungeonExplored(false);
             session.setAttribute("dungeon", dungeon);
         }
@@ -54,7 +54,7 @@ public class DungeonController {
                        @SessionAttribute Hero hero,
                        HttpSession session,
                        RedirectAttributes attributes) {
-        Tile tile = dungeonService.move(dungeon, direction);
+        Tile tile = dungeonExplorationService.move(dungeon, direction);
         if (dungeon.isExplored() && !hero.isCurrentDungeonExplored()) {
             heroService.increaseExperience(hero, 100);
             attributes.addFlashAttribute("alert", "The dungeon level is fully explored! You gained 100XP.");
@@ -79,20 +79,20 @@ public class DungeonController {
 
     @GetMapping("clear")
     public String clear(@SessionAttribute Dungeon dungeon) {
-        dungeonService.clear(dungeon);
+        dungeonExplorationService.clear(dungeon);
         return "redirect:/dungeon";
     }
 
     @GetMapping("flee")
     public String flee(@SessionAttribute Dungeon dungeon) {
-        Position position = dungeonService.getAnyUnoccupiedPosition(dungeon, Set.of(ROOM, HALLWAY));
-        dungeon.setPosition(position);
+        dungeon.getAnyUnoccupiedPosition(ROOM, HALLWAY)
+                .ifPresent(dungeon::setPosition);
         return "redirect:/dungeon";
     }
 
     @GetMapping("collect")
     public String collect(@SessionAttribute Dungeon dungeon, @SessionAttribute Hero hero) {
-        dungeonService.getTreasure(dungeon).ifPresent(item -> heroService.collectTreasure(hero, item));
+        dungeonExplorationService.getTreasure(dungeon).ifPresent(item -> heroService.collectTreasure(hero, item));
         return "redirect:/dungeon/clear";
     }
 

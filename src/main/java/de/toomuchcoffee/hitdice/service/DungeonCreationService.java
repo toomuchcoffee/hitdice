@@ -1,13 +1,13 @@
 package de.toomuchcoffee.hitdice.service;
 
-import de.toomuchcoffee.hitdice.domain.equipment.Item;
 import de.toomuchcoffee.hitdice.domain.world.*;
 import de.toomuchcoffee.hitdice.domain.world.Dungeon.Tile;
-import de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static de.toomuchcoffee.hitdice.domain.world.Dungeon.TileType.*;
 import static java.lang.Integer.MAX_VALUE;
@@ -15,7 +15,7 @@ import static java.lang.Integer.MIN_VALUE;
 
 @Service
 @RequiredArgsConstructor
-public class DungeonService {
+public class DungeonCreationService {
 
     private final Random random;
     private final EventService eventService;
@@ -24,38 +24,9 @@ public class DungeonService {
         Tile[][] tiles = createTiles();
         Dungeon dungeon = new Dungeon(tiles);
         addEvents(dungeon, heroLevel);
-        Position door = getAnyUnoccupiedPosition(dungeon, Set.of(ROOM));
-        dungeon.getTiles()[door.getX()][door.getY()] = new Tile(MAGIC_DOOR);
-        Position start = getAnyUnoccupiedPosition(dungeon, Set.of(ROOM, HALLWAY));
-        dungeon.setPosition(start);
+        dungeon.getAnyUnoccupiedPosition(ROOM).ifPresent(p -> dungeon.putTile(new Tile(p, MAGIC_DOOR)));
+        dungeon.getAnyUnoccupiedPosition(ROOM, HALLWAY).ifPresent(dungeon::setPosition);
         return dungeon;
-    }
-
-    public Tile move(Dungeon dungeon, Direction direction) {
-        Position position = dungeon.move(direction);
-        return dungeon.getTile(position);
-    }
-
-    public Position getAnyUnoccupiedPosition(Dungeon dungeon, Set<TileType> filter) {
-        if (dungeon.getWidth() == 1) {
-            return Position.of(0, 0);
-        }
-
-        Position pos;
-        do {
-            pos = Position.of(random.nextInt(dungeon.getWidth()), random.nextInt(dungeon.getHeight()));
-        } while (pos.equals(dungeon.getPosition()) || dungeon.getTile(pos).isOccupied() || !filter.contains(dungeon.getTile(pos).getType()));
-        return pos;
-    }
-
-    public void clear(Dungeon dungeon) {
-        dungeon.getTile(dungeon.getPosition()).setOccupant(null);
-    }
-
-    public Optional<Item> getTreasure(Dungeon dungeon) {
-        return Optional.ofNullable(dungeon.getTile(dungeon.getPosition()).getOccupant())
-                .filter(e -> e instanceof Item)
-                .map(i -> (Item) i);
     }
 
     public Tile[][] createTiles() {
@@ -73,7 +44,7 @@ public class DungeonService {
     private void addEvents(Dungeon dungeon, int heroLevel) {
         dungeon.getFlattenedTiles().stream()
                 .filter(t -> t.getType() == ROOM)
-                .filter(t -> !t.isOccupied())
+                .filter(Tile::isUnoccupied)
                 .forEach(tile -> eventService.createEvent(heroLevel).ifPresent(tile::setOccupant));
     }
 
@@ -158,16 +129,16 @@ public class DungeonService {
         Tile[][] tiles = new Tile[bounds.getXMax()][bounds.getYMax()];
         for (int x = bounds.getXMin(); x < bounds.getXMax(); x++) {
             for (int y = bounds.getYMin(); y < bounds.getYMax(); y++) {
-                tiles[x][y] = new Tile(SOIL);
+                tiles[x][y] = new Tile(Position.of(x, y), SOIL);
             }
         }
         for (Square square : squares) {
             for (int x = square.getXMin(); x < square.getXMax(); x++) {
                 for (int y = square.getYMin(); y < square.getYMax(); y++) {
                     if (square instanceof Room) {
-                        tiles[x][y] = new Tile(ROOM);
+                        tiles[x][y] = new Tile(Position.of(x, y), ROOM);
                     } else if (square instanceof Hallway) {
-                        tiles[x][y] = new Tile(HALLWAY);
+                        tiles[x][y] = new Tile(Position.of(x, y), HALLWAY);
                     }
                 }
             }
